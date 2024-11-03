@@ -25,8 +25,6 @@ def fetch_tikeri_bs():
     return tikeri
 def insert_into_db(shifri_list):
     try:
-        # TODO:
-        #Da se smenet argumentive so env promenlivi
         conn = psycopg2.connect(
             dbname=os.getenv("POSTGRES_DB", "postgres"),
             user=os.getenv("POSTGRES_USER", "postgres"),
