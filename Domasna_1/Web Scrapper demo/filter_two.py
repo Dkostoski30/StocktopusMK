@@ -1,14 +1,11 @@
-from asyncio import as_completed
+import calendar
+import time
 from concurrent.futures import ThreadPoolExecutor
-
-import pandas as pd
+from datetime import datetime, timedelta
+import os
+import psycopg2
 import requests
 from bs4 import BeautifulSoup
-import time
-import re
-import psycopg2
-from datetime import datetime, timedelta
-import calendar
 
 NUM_OF_YEARS = 10
 
@@ -22,21 +19,15 @@ def fetch_historic_data_bs4(ticker):
         if _ == 0:
             date_from = date_to - timedelta(days=364)
         else:
-
-            # Handle leap years by adjusting date_from correctly
             if calendar.isleap(year):
-                # Subtract 366 days if it's a leap year, otherwise 365 days
                 date_from = date_to - timedelta(days=366)
             else:
                 date_from = date_to - timedelta(days=365)
-
-        #Dodaj leap year edge cases i nes slicno na to
 
         params = {
             "FromDate": date_from.strftime("%d.%m.%Y"),
             "ToDate": date_to.strftime("%d.%m.%Y"),
         }
-
 
         response = requests.get(base_url, params=params)
 
@@ -54,16 +45,13 @@ def fetch_historic_data_bs4(ticker):
 
     return historic_data
 
-
-#TODO: Da se implementirat funkcija za zapisvenje v baza
-
 def fetch_tickers():
     conn = psycopg2.connect(
-        dbname='postgres',
-        user='postgres',
-        password='1234',
-        host='localhost',
-        port='5432'
+        dbname=os.getenv("POSTGRES_DB", "postgres"),
+        user=os.getenv("POSTGRES_USER", "postgres"),
+        password=os.getenv("POSTGRES_PASSWORD", "1234"),
+        host=os.getenv("DB_HOST", "localhost"),
+        port=os.getenv("DB_PORT", "5432")
     )
     cursor = conn.cursor()
 
