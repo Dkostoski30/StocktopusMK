@@ -111,7 +111,7 @@ def init():
     tickers = fetch_tickers()
 
     print(tickers)
-    #TODO: Make 10 threads work for 10 different tickers
+
     max_workers = 10
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(start_thread, tickers)
