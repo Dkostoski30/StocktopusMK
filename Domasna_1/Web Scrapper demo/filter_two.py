@@ -8,6 +8,7 @@ import time
 import re
 import psycopg2
 from datetime import datetime, timedelta
+import calendar
 
 NUM_OF_YEARS = 10
 
@@ -17,11 +18,17 @@ def fetch_historic_data_bs4(ticker):
     date_to = datetime.now()
 
     for _ in range(NUM_OF_YEARS):
-
+        year = date_to.year
         if _ == 0:
-            date_from = date_to - timedelta(days=365)
+            date_from = date_to - timedelta(days=364)
         else:
-            date_from = date_to - timedelta(days=365)
+
+            # Handle leap years by adjusting date_from correctly
+            if calendar.isleap(year):
+                # Subtract 366 days if it's a leap year, otherwise 365 days
+                date_from = date_to - timedelta(days=366)
+            else:
+                date_from = date_to - timedelta(days=365)
 
         #Dodaj leap year edge cases i nes slicno na to
 
