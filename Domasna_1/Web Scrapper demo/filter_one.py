@@ -1,14 +1,9 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
-import requests
-from bs4 import BeautifulSoup
-import time
-import re
 import psycopg2
+import requests
+import os
+from bs4 import BeautifulSoup
+
+
 def has_num(shifra):
     return any(char.isdigit() for char in shifra)
 
@@ -33,15 +28,22 @@ def insert_into_db(shifri_list):
         # TODO:
         #Da se smenet argumentive so env promenlivi
         conn = psycopg2.connect(
-            dbname='postgres',
-            user='postgres',
-            password='1234',
-            host='localhost',
-            port='5432'
+            dbname=os.getenv("POSTGRES_DB", "postgres"),
+            user=os.getenv("POSTGRES_USER", "postgres"),
+            password=os.getenv("POSTGRES_PASSWORD", "1234"),
+            host=os.getenv("DB_HOST", "localhost"),
+            port=os.getenv("DB_PORT", "5432")
         )
 
-        #TODO:
-        #Da se dodajt uslov da se kreirat tabela Stocks(stock_id, tiker) ako vekje ne postojt
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS Stocks (
+                stock_id SERIAL PRIMARY KEY,
+                stock_name VARCHAR(50) UNIQUE
+            );
+        """)
+        conn.commit()
 
         # TODO:
         #posle testiranjeto ovie 3 da se trgnet
@@ -62,7 +64,3 @@ def insert_into_db(shifri_list):
 
     except Exception as e:
         print(f"Database connection error: {e}")
-
-if __name__ == '__main__':
-    tikeri = fetch_tikeri_bs()
-    insert_into_db(tikeri)

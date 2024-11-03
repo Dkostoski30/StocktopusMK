@@ -2,8 +2,6 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import time
-import re
-import psycopg2
 from datetime import datetime, timedelta
 
 NUM_OF_YEARS = 10
@@ -49,11 +47,3 @@ def fetch_historic_data_bs4(ticker):
 
 
 #Optional: thredoj
-
-if __name__ == "__main__":
-    start_time = time.time()
-    df = pd.DataFrame(fetch_historic_data_bs4("adin"),
-                      columns=["Datum", "Posl. trans", "max", "min", "avg", "%", "kol.", "vol", "total vol"])
-    end_time = time.time()
-    print(end_time - start_time)
-    print(df.head())
