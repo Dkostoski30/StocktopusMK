@@ -92,10 +92,14 @@ def insert_data_toDB(tiker, data):
         port='5432'
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM Stocks WHERE stock_name = %s;", (tiker,))
+    cursor.execute("SELECT stock_id FROM stocks WHERE stock_name = %s;", (tiker,))
     result = cursor.fetchone()
     stock_id = result[0]
     data_with_id = [[stock_id] + row for row in data]
+
+
+
+
     for row in data_with_id:
         cursor.execute(
             """
@@ -113,15 +117,41 @@ def start_thread(tiker):
     data = fetch_historic_data_bs4(tiker)
     insert_data_toDB(tiker, data)
 
-def init():
+def init(pipe_tickers):
+    conn = psycopg2.connect(
+        dbname='postgres',
+        user='postgres',
+        password='1234',
+        host='localhost',
+        port='5432'
+    )
+    cursor = conn.cursor()
+    create_table_sql = """
+       CREATE TABLE IF NOT EXISTS stockdetails (
+           stock_id int NOT NULL,
+           date VARCHAR(10) NOT NULL,
+           last_transaction_price VARCHAR(20),
+           max_price VARCHAR(20),
+           min_price VARCHAR(20),
+           average_price VARCHAR(20),
+           percentage_change VARCHAR(10),
+           quantity VARCHAR(20),
+           trade_volume VARCHAR(20),
+           total_volume VARCHAR(20),
+           PRIMARY KEY (stock_id, date),
+           FOREIGN KEY (stock_id) REFERENCES stocks(stock_id)
+       );
+       """
+    cursor.execute(create_table_sql)
     start_time = time.time()
-    tickers = fetch_tickers()
+    tickers = pipe_tickers
 
-    print(tickers)
+    #print(tickers)
 
     max_workers = 10
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(start_thread, tickers)
     end_time = time.time()
     print(end_time - start_time)
+
 

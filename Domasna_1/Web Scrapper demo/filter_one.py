@@ -64,3 +64,10 @@ def insert_into_db(shifri_list):
 
     except Exception as e:
         print(f"Database connection error: {e}")
+
+
+
+def init():
+    tikeri = fetch_tikeri_bs()
+    insert_into_db(tikeri)
+    return tikeri
