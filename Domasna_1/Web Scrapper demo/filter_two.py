@@ -1,32 +1,33 @@
-import pandas as pd
+import calendar
+import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta
+import os
+import psycopg2
 import requests
 from bs4 import BeautifulSoup
-import time
-import re
-import psycopg2
-from datetime import datetime, timedelta
 
 NUM_OF_YEARS = 10
 
 def fetch_historic_data_bs4(ticker):
-    base_url = f"https://www.mse.mk/mk/stats/symbolhistory/{ticker}"
+    base_url = f"https://www.mse.mk/mk/stats/symbolhistory/{ticker.lower()}"
     historic_data = []
     date_to = datetime.now()
 
     for _ in range(NUM_OF_YEARS):
-
+        year = date_to.year
         if _ == 0:
             date_from = date_to - timedelta(days=364)
         else:
-            date_from = date_to - timedelta(days=365)
-
-        #Dodaj leap year edge cases i nes slicno na to
+            if calendar.isleap(year):
+                date_from = date_to - timedelta(days=366)
+            else:
+                date_from = date_to - timedelta(days=365)
 
         params = {
             "FromDate": date_from.strftime("%d.%m.%Y"),
             "ToDate": date_to.strftime("%d.%m.%Y"),
         }
-
 
         response = requests.get(base_url, params=params)
 
@@ -44,16 +45,101 @@ def fetch_historic_data_bs4(ticker):
 
     return historic_data
 
+def fetch_tickers():
+    conn = psycopg2.connect(
+        dbname=os.getenv("POSTGRES_DB", "postgres"),
+        user=os.getenv("POSTGRES_USER", "postgres"),
+        password=os.getenv("POSTGRES_PASSWORD", "1234"),
+        host=os.getenv("DB_HOST", "localhost"),
+        port=os.getenv("DB_PORT", "5432")
+    )
+    cursor = conn.cursor()
 
-#TODO: Da se implementirat funkcija za zapisvenje v baza
+    cursor.execute("""
+               SELECT EXISTS (
+                   SELECT FROM stocks
+               );
+           """)
+    if cursor.fetchone()[0]:
+        cursor.execute("SELECT stock_name FROM stocks")
+        stocks = cursor.fetchall()
+        stocks = [element[0] for element in stocks]
+        return stocks
+    else:
+        print("Table 'Stocks' does not exist.")
+        return []
 
 
-#Optional: thredoj
+def insert_data_toDB(tiker, data):
 
-if __name__ == "__main__":
+    conn = psycopg2.connect(
+        dbname='postgres',
+        user='postgres',
+        password='1234',
+        host='localhost',
+        port='5432'
+    )
+    cursor = conn.cursor()
+    cursor.execute("SELECT stock_id FROM stocks WHERE stock_name = %s;", (tiker,))
+    result = cursor.fetchone()
+    stock_id = result[0]
+    data_with_id = [[stock_id] + row for row in data]
+
+
+
+
+    for row in data_with_id:
+        cursor.execute(
+            """
+            INSERT INTO stockdetails (stock_id, date, last_transaction_price, max_price, min_price, 
+                                      average_price, percentage_change, quantity, trade_volume, total_volume)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (stock_id, date) DO NOTHING;
+            """,
+            row
+        )
+
+    conn.commit()
+
+def start_thread(tiker):
+    data = fetch_historic_data_bs4(tiker)
+    insert_data_toDB(tiker, data)
+
+def init(pipe_tickers):
+    conn = psycopg2.connect(
+        dbname='postgres',
+        user='postgres',
+        password='1234',
+        host='localhost',
+        port='5432'
+    )
+    cursor = conn.cursor()
+    create_table_sql = """
+       CREATE TABLE IF NOT EXISTS stockdetails (
+           stock_id int NOT NULL,
+           date VARCHAR(10) NOT NULL,
+           last_transaction_price VARCHAR(20),
+           max_price VARCHAR(20),
+           min_price VARCHAR(20),
+           average_price VARCHAR(20),
+           percentage_change VARCHAR(10),
+           quantity VARCHAR(20),
+           trade_volume VARCHAR(20),
+           total_volume VARCHAR(20),
+           PRIMARY KEY (stock_id, date),
+           FOREIGN KEY (stock_id) REFERENCES stocks(stock_id)
+       );
+       """
+    cursor.execute(create_table_sql)
     start_time = time.time()
-    df = pd.DataFrame(fetch_historic_data_bs4("adin"),
-                      columns=["Datum", "Posl. trans", "max", "min", "avg", "%", "kol.", "vol", "total vol"])
+    tickers = pipe_tickers
+
+    #print(tickers)
+
+    max_workers = 10
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        executor.map(start_thread, tickers)
     end_time = time.time()
     print(end_time - start_time)
-    print(df.head())
+
+
