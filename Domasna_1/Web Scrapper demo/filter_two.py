@@ -108,7 +108,7 @@ def insert_data_toDB(ticker, data, conn):
         conn.commit()
         print(f"Data inserted successfully for ticker: {ticker}")
     except Exception as e:
-        conn.rollback()  # Roll back if there's an error
+        conn.rollback()
         print(f"Failed to insert data for ticker '{ticker}': {e}")
 
 def start_thread(tiker):
