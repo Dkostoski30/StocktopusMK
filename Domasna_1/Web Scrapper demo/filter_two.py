@@ -2,13 +2,11 @@ import calendar
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
-import os
-from functools import partial
-from psycopg2 import pool
-from psycopg2.extras import execute_values
+
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
+from psycopg2 import pool
 
 NUM_OF_YEARS = 10
 conn_pool = psycopg2.pool.ThreadedConnectionPool(

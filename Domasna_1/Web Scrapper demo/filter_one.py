@@ -1,7 +1,9 @@
-import psycopg2
 import requests
-import os
 from bs4 import BeautifulSoup
+import psycopg2
+from psycopg2 import pool
+import logging
+import os
 
 
 def has_num(shifra):
@@ -12,7 +14,7 @@ def fetch_tikeri_bs():
     response = requests.get(url)
 
     if response.status_code != 200:
-        print("Failed to retrieve the page")
+        logging.error("Failed to retrieve the page")
         return []
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -23,49 +25,40 @@ def fetch_tikeri_bs():
     tikeri = [option['value'] for option in options if not has_num(option['value'])]
 
     return tikeri
+
 def insert_into_db(shifri_list):
     try:
-        conn = psycopg2.connect(
-            dbname=os.getenv("POSTGRES_DB", "postgres"),
-            user=os.getenv("POSTGRES_USER", "postgres"),
-            password=os.getenv("POSTGRES_PASSWORD", "1234"),
-            host=os.getenv("DB_HOST", "localhost"),
-            port=os.getenv("DB_PORT", "5432")
-        )
+        with db_pool.getconn() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS Stocks (
+                        stock_id SERIAL PRIMARY KEY,
+                        stock_name VARCHAR(50) UNIQUE
+                    );
+                """)
+                conn.commit()
 
-        cursor = conn.cursor()
+                if shifri_list:
+                    insert_query = "INSERT INTO Stocks (stock_name) VALUES (%s) ON CONFLICT (stock_name) DO NOTHING;"
+                    cursor.executemany(insert_query, [(shifra,) for shifra in shifri_list])
+                    conn.commit()
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS Stocks (
-                stock_id SERIAL PRIMARY KEY,
-                stock_name VARCHAR(50) UNIQUE
-            );
-        """)
-        conn.commit()
-
-        # TODO:
-        #posle testiranjeto ovie 3 da se trgnet
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM Stocks;")
-        conn.commit()
-
-        for shifra in shifri_list:
-            try:
-                cursor.execute("INSERT INTO Stocks (stock_name) VALUES (%s) ON CONFLICT (stock_name) DO NOTHING;", (shifra,))
-            except Exception as e:
-                print(f"Error inserting {shifra}: {e}")
-
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
+    except psycopg2.DatabaseError as e:
+        logging.error(f"Database error: {e}")
     except Exception as e:
-        print(f"Database connection error: {e}")
-
-
+        logging.error(f"Error: {e}")
 
 def init():
     tikeri = fetch_tikeri_bs()
     insert_into_db(tikeri)
     return tikeri
+
+db_pool = psycopg2.pool.SimpleConnectionPool(
+    1,
+    2,
+    dbname=os.getenv("POSTGRES_DB", "postgres"),
+    user=os.getenv("POSTGRES_USER", "postgres"),
+    password=os.getenv("POSTGRES_PASSWORD", "1234"),
+    host=os.getenv("DB_HOST", "localhost"),
+    port=os.getenv("DB_PORT", "5432")
+)

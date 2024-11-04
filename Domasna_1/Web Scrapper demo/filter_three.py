@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 
+
 def fetch_historic_data_bs4(ticker, start_date):
     base_url = f"https://www.mse.mk/mk/stats/symbolhistory/{ticker}"
     historic_data = []
@@ -30,6 +31,7 @@ def fetch_historic_data_bs4(ticker, start_date):
         date_to = date_from - timedelta(days=1)
 
     return historic_data
+
 
 if __name__ == "__main__":
     start_date = datetime(2024, 10, 31).date()

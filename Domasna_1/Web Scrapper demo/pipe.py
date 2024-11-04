@@ -1,14 +1,9 @@
+import time
+
+import psycopg2
+
 import filter_one
 import filter_two
-import pandas as pd
-import time
-import psycopg2
-import requests
-from bs4 import BeautifulSoup
-
-
-
-
 
 if __name__ == '__main__':
     conn = psycopg2.connect(
