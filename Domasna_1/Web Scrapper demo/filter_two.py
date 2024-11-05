@@ -2,7 +2,7 @@ import calendar
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
-
+import os
 import psycopg2
 import requests
 from requests import adapters
@@ -113,11 +113,11 @@ def start_thread(tiker, conn, session):
 def init(pipe_tickers, conn):
     print('Second filter started..')
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, MAX_WORKERS,
-                                                   dbname='postgres',
-                                                   user='postgres',
-                                                   password='1234',
-                                                   host='localhost',
-                                                   port='5432'
+                                                   dbname=os.getenv('POSTGRES_DB'),
+                                                   user=os.getenv('POSTGRES_USER'),
+                                                   password=os.getenv('POSTGRES_PASSWORD'),
+                                                   host=os.getenv('POSTGRES_HOST'),
+                                                   port=os.getenv('POSTGRES_PORT')
                                                    )
     with conn_pool.getconn() as conn:
         cursor = conn.cursor()
@@ -153,6 +153,7 @@ def init(pipe_tickers, conn):
 
 
     conn_pool.closeall()
+    return 1
 
 
 
