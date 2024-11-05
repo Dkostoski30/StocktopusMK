@@ -4,6 +4,9 @@ import psycopg2
 from psycopg2 import pool
 import logging
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def has_num(shifra):
@@ -52,13 +55,12 @@ def init():
     tikeri = fetch_tikeri_bs()
     insert_into_db(tikeri)
     return tikeri
-
 db_pool = psycopg2.pool.SimpleConnectionPool(
     1,
     2,
-    dbname=os.getenv("POSTGRES_DB", "postgres"),
-    user=os.getenv("POSTGRES_USER", "postgres"),
-    password=os.getenv("POSTGRES_PASSWORD", "1234"),
-    host=os.getenv("DB_HOST", "localhost"),
-    port=os.getenv("DB_PORT", "5432")
+    dbname=os.getenv("POSTGRES_DB"),
+    user=os.getenv("POSTGRES_USER"),
+    password=os.getenv("POSTGRES_PASSWORD"),
+    host=os.getenv("DB_HOST","localhost"),
+    port=os.getenv("DB_PORT")
 )

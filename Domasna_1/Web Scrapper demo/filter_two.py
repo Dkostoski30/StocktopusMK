@@ -2,12 +2,15 @@ import calendar
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
-import os
 import psycopg2
 import requests
 from requests import adapters
 from bs4 import BeautifulSoup
 from psycopg2 import pool
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 MAX_WORKERS = 20
 
@@ -99,11 +102,11 @@ def insert_data_toDB(ticker, data, conn_pool):
 
 def start_thread(tiker, conn, session):
     # conn = psycopg2.connect(
-    #     dbname='postgres',
-    #     user='postgres',
-    #     password='1234',
-    #     host='localhost',
-    #     port='5432'
+    # dbname=os.getenv("POSTGRES_DB"),
+    # user=os.getenv("POSTGRES_USER"),
+    # password=os.getenv("POSTGRES_PASSWORD"),
+    # host = os.getenv("DB_HOST", "localhost"),
+    # port=os.getenv("DB_PORT")
     # )
     print(f'Executing thread for {tiker}\n')
     data = fetch_historic_data_bs4(tiker, session)
@@ -113,11 +116,11 @@ def start_thread(tiker, conn, session):
 def init(pipe_tickers, conn):
     print('Second filter started..')
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, MAX_WORKERS,
-                                                   dbname=os.getenv('POSTGRES_DB'),
-                                                   user=os.getenv('POSTGRES_USER'),
-                                                   password=os.getenv('POSTGRES_PASSWORD'),
-                                                   host=os.getenv('POSTGRES_HOST'),
-                                                   port=os.getenv('POSTGRES_PORT')
+                                                   dbname=os.getenv("POSTGRES_DB"),
+                                                   user=os.getenv("POSTGRES_USER"),
+                                                   password=os.getenv("POSTGRES_PASSWORD"),
+                                                   host=os.getenv("DB_HOST", "localhost"),
+                                                   port=os.getenv("DB_PORT")
                                                    )
     with conn_pool.getconn() as conn:
         cursor = conn.cursor()
@@ -153,7 +156,6 @@ def init(pipe_tickers, conn):
 
 
     conn_pool.closeall()
-    return 1
 
 
 

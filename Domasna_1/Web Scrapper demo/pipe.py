@@ -4,8 +4,10 @@ import psycopg2
 
 import filter_one
 import filter_two
-import filter_two_v2
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def check_table(table_name, conn):
 
@@ -23,11 +25,11 @@ def check_table(table_name, conn):
 
 if __name__ == '__main__':
     conn = psycopg2.connect(
-        dbname='postgres',
-        user='postgres',
-        password='1234',
-        host='localhost',
-        port='5432'
+        dbname=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        host=os.getenv("DB_HOST","localhost"),
+        port=os.getenv("DB_PORT")
     )
     start_time = time.time()
     tickers = []

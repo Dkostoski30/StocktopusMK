@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def fetch_historic_data_bs4(ticker, start_date):
