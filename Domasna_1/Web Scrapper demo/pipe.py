@@ -9,7 +9,6 @@ import filter_two_v2
 
 def check_table(table_name, conn):
 
-    table_name = "stocks"
     exists_query = f"""
         SELECT EXISTS (
             SELECT 1 
@@ -32,10 +31,15 @@ if __name__ == '__main__':
     )
     start_time = time.time()
     tickers = []
-    if not check_table('stocks', conn):
+
+    if not check_table('stocks', conn) or not check_table('stockdetails', conn):
+        print('Creating stocks table and fetching tickers')
         tickers = filter_one.init()
-    if not check_table('stockdetails', conn):
+        print('Creating stockdetails table and fetching historic data for each ticker')
         filter_two.init(tickers, conn)
+
+    #while stockdetails is null beskonecen loop za da cekat tretiov filter
+    #da se napolnit bazava pred da prodolzit
     end_time = time.time()
-    print(f'Time taken from start to finish: {end_time - start_time}')
+    print(f'Time taken from start to finish: {end_time - start_time:.2f}')
     print(f'Script executed..')
