@@ -37,8 +37,9 @@ if __name__ == '__main__':
     if not check_table('stocks', conn) or not check_table('stockdetails', conn):
         print('Creating stocks table and fetching tickers')
         tickers = filter_one.init()
-        print('Creating stockdetails table and fetching historic data for each ticker')
-        filter_two.init(tickers, conn)
+
+    print('Creating stockdetails table and fetching historic data for each ticker')
+    print(filter_two.init(tickers, conn))
 
     #while stockdetails is null beskonecen loop za da cekat tretiov filter
     #da se napolnit bazava pred da prodolzit

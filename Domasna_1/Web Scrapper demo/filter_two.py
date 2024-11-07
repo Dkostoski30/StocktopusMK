@@ -83,8 +83,6 @@ def insert_data_toDB(ticker, data, conn_pool):
         stock_id = result[0]
         data_with_id = [[stock_id] + row for row in data]
 
-
-
         try:
             cursor.executemany(insert_sql, [
                 (row[0], convert_date(row[1]), row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9])
@@ -112,6 +110,30 @@ def start_thread(tiker, conn, session):
     data = fetch_historic_data_bs4(tiker, session)
     insert_data_toDB(tiker, data, conn)
     return data
+
+def get_latestdata(conn):
+    cursor = conn.cursor()
+    query = """SELECT stock_id, MAX(date) AS latest_date
+                FROM stockdetails
+                GROUP BY stock_id;
+        """
+    cursor.execute(query)
+    results = cursor.fetchall()
+    return results
+
+def check_table(table_name, conn):
+
+    exists_query = f"""
+        SELECT EXISTS (
+            SELECT 1 
+            FROM pg_catalog.pg_tables 
+            WHERE schemaname = 'public' 
+            AND tablename = '{table_name}'
+        );
+    """
+    cur = conn.cursor()
+    cur.execute(exists_query)
+    return cur.fetchone()[0]
 
 def init(pipe_tickers, conn):
     print('Second filter started..')
@@ -146,16 +168,17 @@ def init(pipe_tickers, conn):
 
         tickers = pipe_tickers  # Fetch tickers once to avoid redundant DB calls
         conn_pool.putconn(conn)
-    with requests.Session() as session:
-        # Configure retries to handle transient network errors
-        adapter = requests.adapters.HTTPAdapter(max_retries=3)
-        session.mount("https://", adapter)
-        session.mount("http://", adapter)
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            executor.map(lambda ticker: start_thread(ticker, conn_pool, session), tickers)
-
+    if check_table('stockdetails', conn):
+        with requests.Session() as session:
+            # Configure retries to handle transient network errors
+            adapter = requests.adapters.HTTPAdapter(max_retries=3)
+            session.mount("https://", adapter)
+            session.mount("http://", adapter)
+            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                executor.map(lambda ticker: start_thread(ticker, conn_pool, session), tickers)
 
     conn_pool.closeall()
+    return get_latestdata(conn)
 
 
 
