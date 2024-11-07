@@ -25,6 +25,7 @@ def check_table(table_name, conn):
     return cur.fetchone()[0]
 
 if __name__ == '__main__':
+    start_time = time.time()
     conn = psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
         user=os.getenv("POSTGRES_USER"),
@@ -32,7 +33,7 @@ if __name__ == '__main__':
         host=os.getenv("DB_HOST","localhost"),
         port=os.getenv("DB_PORT")
     )
-    start_time = time.time()
+
     tickers = []
 
     if not check_table('stocks', conn) or not check_table('stockdetails', conn):

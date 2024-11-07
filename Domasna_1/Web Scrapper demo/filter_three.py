@@ -1,10 +1,9 @@
 import os
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 from psycopg2 import pool
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 import time
 from dotenv import load_dotenv
 import filter_two
