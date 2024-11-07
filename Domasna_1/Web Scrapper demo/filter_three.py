@@ -1,10 +1,13 @@
+import os
 from datetime import datetime, timedelta, date
+from psycopg2 import pool
+import psycopg2
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
 from dotenv import load_dotenv
-
+import filter_two
 load_dotenv()
 
 
@@ -12,6 +15,8 @@ def fetch_historic_data_bs4(ticker, start_date):
     base_url = f"https://www.mse.mk/mk/stats/symbolhistory/{ticker}"
     historic_data = []
     date_to = date.today() - timedelta(days=1)
+
+    print(f"Fetching historic data for {ticker} from {start_date}")
 
     while date_to >= start_date:
         date_from = max(start_date, date_to - timedelta(days=365))
@@ -36,11 +41,31 @@ def fetch_historic_data_bs4(ticker, start_date):
     return historic_data
 
 
-if __name__ == "__main__":
-    start_date = datetime(2024, 10, 31).date()
+def init(latest_data, conn):
+    yesterday=date.today() - timedelta(days=1)
+    cursor = conn.cursor()
+    for entry in latest_data:
+        id=entry[0]
+        latest_date=entry[1]
+        if latest_date<yesterday:
+            stockname_query = f"""SELECT stock_name
+            FROM Stocks
+            WHERE stock_id = '{id}';
+        """
+            conn_pool = psycopg2.pool.SimpleConnectionPool(1, 10,
+                                                           dbname=os.getenv("POSTGRES_DB"),
+                                                           user=os.getenv("POSTGRES_USER"),
+                                                           password=os.getenv("POSTGRES_PASSWORD"),
+                                                           host=os.getenv("DB_HOST", "localhost"),
+                                                           port=os.getenv("DB_PORT")
+                                                           )
+            cursor.execute(stockname_query)
+            stock_name = cursor.fetchone()[0]
+            data = fetch_historic_data_bs4(stock_name, latest_date)
+            filter_two.insert_data_toDB(stock_name, data, conn_pool)
+
     start_time = time.time()
-    df = pd.DataFrame(fetch_historic_data_bs4("adin", start_date),
-                      columns=["Datum", "Posl. trans", "max", "min", "avg", "%", "kol.", "vol", "total vol"])
+
     end_time = time.time()
     print("Execution time:", end_time - start_time)
-    print(df.tail())
+

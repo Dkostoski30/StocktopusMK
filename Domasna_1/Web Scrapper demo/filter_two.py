@@ -135,7 +135,7 @@ def check_table(table_name, conn):
     cur.execute(exists_query)
     return cur.fetchone()[0]
 
-def init(pipe_tickers, conn):
+def init(pipe_tickers, connection):
     print('Second filter started..')
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, MAX_WORKERS,
                                                    dbname=os.getenv("POSTGRES_DB"),
@@ -178,7 +178,7 @@ def init(pipe_tickers, conn):
                 executor.map(lambda ticker: start_thread(ticker, conn_pool, session), tickers)
 
     conn_pool.closeall()
-    return get_latestdata(conn)
+    return get_latestdata(connection)
 
 
 
