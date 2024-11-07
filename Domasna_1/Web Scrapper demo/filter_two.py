@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MAX_WORKERS = 20
+MAX_WORKERS = 10
 
 NUM_OF_YEARS = 10
 
@@ -122,18 +122,14 @@ def get_latestdata(conn):
     return results
 
 def check_table(table_name, conn):
-
-    exists_query = f"""
-        SELECT EXISTS (
-            SELECT 1 
-            FROM pg_catalog.pg_tables 
-            WHERE schemaname = 'public' 
-            AND tablename = '{table_name}'
-        );
-    """
     cur = conn.cursor()
-    cur.execute(exists_query)
-    return cur.fetchone()[0]
+    count_query = f"SELECT COUNT(*) FROM {table_name};"
+    cur.execute(count_query)
+    row_count = cur.fetchone()[0]
+    return row_count == 0
+
+
+
 
 def init(pipe_tickers, connection):
     print('Second filter started..')
@@ -166,11 +162,11 @@ def init(pipe_tickers, connection):
         conn.commit()
         print('Stock details table created.')
 
-        tickers = pipe_tickers  # Fetch tickers once to avoid redundant DB calls
+        tickers = pipe_tickers
         conn_pool.putconn(conn)
     if check_table('stockdetails', conn):
         with requests.Session() as session:
-            # Configure retries to handle transient network errors
+
             adapter = requests.adapters.HTTPAdapter(max_retries=3)
             session.mount("https://", adapter)
             session.mount("http://", adapter)

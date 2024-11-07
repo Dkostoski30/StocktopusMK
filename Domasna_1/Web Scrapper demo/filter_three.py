@@ -1,4 +1,6 @@
 import os
+from concurrent.futures import as_completed
+from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta, date
 from psycopg2 import pool
 import psycopg2
@@ -40,31 +42,48 @@ def fetch_historic_data_bs4(ticker, start_date):
     return historic_data
 
 
-def init(latest_data, conn):
-    yesterday=date.today() - timedelta(days=1)
-    cursor = conn.cursor()
-    for entry in latest_data:
-        id=entry[0]
-        latest_date=entry[1]
-        if latest_date<yesterday:
-            stockname_query = f"""SELECT stock_name
-            FROM Stocks
-            WHERE stock_id = '{id}';
-        """
-            conn_pool = psycopg2.pool.SimpleConnectionPool(1, 10,
-                                                           dbname=os.getenv("POSTGRES_DB"),
-                                                           user=os.getenv("POSTGRES_USER"),
-                                                           password=os.getenv("POSTGRES_PASSWORD"),
-                                                           host=os.getenv("DB_HOST", "localhost"),
-                                                           port=os.getenv("DB_PORT")
-                                                           )
-            cursor.execute(stockname_query)
-            stock_name = cursor.fetchone()[0]
-            data = fetch_historic_data_bs4(stock_name, latest_date)
-            filter_two.insert_data_toDB(stock_name, data, conn_pool)
+def process_stock_entry(entry, conn_pool):
+    id = entry[0]
+    latest_date = entry[1]
+    yesterday = date.today() - timedelta(days=1)
 
-    start_time = time.time()
+    if latest_date < yesterday:
+        try:
+            with conn_pool.getconn() as conn:
+                cursor = conn.cursor()
+                stockname_query = f"SELECT stock_name FROM Stocks WHERE stock_id = '{id}';"
+                cursor.execute(stockname_query)
+                stock_name = cursor.fetchone()[0]
 
-    end_time = time.time()
-    print("Execution time:", end_time - start_time)
+
+
+                data = fetch_historic_data_bs4(stock_name, latest_date)
+                filter_two.insert_data_toDB(stock_name, data, conn_pool)
+        except Exception as e:
+            pass
+
+
+def init(latest_data):
+
+    num_threads = min(10, len(latest_data))
+
+    conn_pool = psycopg2.pool.SimpleConnectionPool(1, num_threads + 25,
+                                                   dbname=os.getenv("POSTGRES_DB"),
+                                                   user=os.getenv("POSTGRES_USER"),
+                                                   password=os.getenv("POSTGRES_PASSWORD"),
+                                                   host=os.getenv("DB_HOST", "localhost"),
+                                                   port=os.getenv("DB_PORT")
+                                                   )
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = [executor.submit(process_stock_entry, entry, conn_pool) for entry in latest_data]
+
+        for future in as_completed(futures):
+            try:
+                future.result()  # Retrieve any exceptions raised in threads
+            except Exception as e:
+                print(f"Error processing stock entry: {e}")
+
+
+
+
 

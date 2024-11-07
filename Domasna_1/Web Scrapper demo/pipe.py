@@ -11,18 +11,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def check_table(table_name, conn):
-
-    exists_query = f"""
-        SELECT EXISTS (
-            SELECT 1 
-            FROM pg_catalog.pg_tables 
-            WHERE schemaname = 'public' 
-            AND tablename = '{table_name}'
-        );
-    """
     cur = conn.cursor()
-    cur.execute(exists_query)
-    return cur.fetchone()[0]
+    count_query = f"SELECT COUNT(*) FROM {table_name};"
+    cur.execute(count_query)
+    row_count = cur.fetchone()[0]
+    return row_count == 0
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -30,7 +23,7 @@ if __name__ == '__main__':
         dbname=os.getenv("POSTGRES_DB"),
         user=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("DB_HOST","localhost"),
+        host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT")
     )
 
@@ -42,9 +35,9 @@ if __name__ == '__main__':
 
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers, conn)
-
-    filter_three.init(latest_data, conn)
     conn.close()
+    filter_three.init(latest_data)
+
 
     end_time = time.time()
     print(f'Time taken from start to finish: {end_time - start_time:.2f}')
