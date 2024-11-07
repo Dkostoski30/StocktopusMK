@@ -1,14 +1,16 @@
 import os
-from concurrent.futures import as_completed
 from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import as_completed
 from datetime import timedelta, date
-from psycopg2 import pool
+
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
-import time
 from dotenv import load_dotenv
+from psycopg2 import pool
+
 import filter_two
+
 load_dotenv()
 
 
@@ -55,8 +57,6 @@ def process_stock_entry(entry, conn_pool):
                 cursor.execute(stockname_query)
                 stock_name = cursor.fetchone()[0]
 
-
-
                 data = fetch_historic_data_bs4(stock_name, latest_date)
                 filter_two.insert_data_toDB(stock_name, data, conn_pool)
         except Exception as e:
@@ -64,8 +64,7 @@ def process_stock_entry(entry, conn_pool):
 
 
 def init(latest_data):
-
-    num_threads = min(10, len(latest_data))
+    num_threads = min(10, len(latest_data) + 1)
 
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, num_threads + 25,
                                                    dbname=os.getenv("POSTGRES_DB"),
@@ -82,8 +81,3 @@ def init(latest_data):
                 future.result()  # Retrieve any exceptions raised in threads
             except Exception as e:
                 print(f"Error processing stock entry: {e}")
-
-
-
-
-

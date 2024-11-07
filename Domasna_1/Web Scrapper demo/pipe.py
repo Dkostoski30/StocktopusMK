@@ -10,12 +10,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def check_table(table_name, conn):
     cur = conn.cursor()
     count_query = f"SELECT COUNT(*) FROM {table_name};"
     cur.execute(count_query)
     row_count = cur.fetchone()[0]
     return row_count == 0
+
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -26,10 +28,36 @@ if __name__ == '__main__':
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT")
     )
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Stocks (
+            stock_id SERIAL PRIMARY KEY,
+            stock_name VARCHAR(50) UNIQUE
+        );
+    """)
+
+    create_table_sql = """
+        CREATE TABLE IF NOT EXISTS stockdetails (
+            stock_id int NOT NULL,
+            date DATE NOT NULL,
+            last_transaction_price FLOAT,
+            max_price FLOAT,
+            min_price FLOAT,
+            average_price FLOAT,
+            percentage_change FLOAT,
+            quantity BIGINT,
+            trade_volume BIGINT,
+            total_volume BIGINT,
+            PRIMARY KEY (stock_id, date),
+            FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
+        );
+    """
+    cursor.execute(create_table_sql)
+    conn.commit()
     tickers = []
 
-    if not check_table('stocks', conn) or not check_table('stockdetails', conn):
+    if check_table('stocks', conn) and check_table('stockdetails', conn):
         print('Creating stocks table and fetching tickers')
         tickers = filter_one.init()
 
@@ -37,7 +65,6 @@ if __name__ == '__main__':
     latest_data = filter_two.init(tickers, conn)
     conn.close()
     filter_three.init(latest_data)
-
 
     end_time = time.time()
     print(f'Time taken from start to finish: {end_time - start_time:.2f}')

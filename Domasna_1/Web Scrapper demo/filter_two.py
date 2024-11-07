@@ -16,8 +16,31 @@ MAX_WORKERS = 10
 
 NUM_OF_YEARS = 10
 
+
 def convert_date(date_str):
     return datetime.strptime(date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
+
+
+def convert_float(value):
+    converted_float = None
+    if value == "":
+        return None
+    try:
+        converted_float = float(value.replace(".", "").replace(",", "."))
+    except Exception as e:
+        print(f"Failed to convert float : {e}")
+
+    return converted_float
+
+
+def convert_bigint(value):
+    converted_int = None
+    try:
+        converted_int = int(value.replace(".", ""))
+    except Exception as e:
+        print(f"Failed to convert float : {e}")
+
+    return converted_int
 
 
 def fetch_historic_data_bs4(ticker, session):
@@ -49,11 +72,11 @@ def fetch_historic_data_bs4(ticker, session):
                 data_row = [cell.text for cell in row.find_all('td')]
                 historic_data.append(data_row)
 
-
         date_to = date_from
     end = time.time()
     print(f'Fetching took {end - start:.2f} seconds')
     return historic_data
+
 
 insert_sql = """
               INSERT INTO stockdetails (stock_id, date, last_transaction_price, max_price, min_price, 
@@ -62,11 +85,13 @@ insert_sql = """
               ON CONFLICT (stock_id, date) DO NOTHING;
           """
 
+
 def batch_insert_data(data_with_id, cursor):
     BATCH_SIZE = 100
     for i in range(0, len(data_with_id), BATCH_SIZE):
         batch = data_with_id[i:i + BATCH_SIZE]
         cursor.executemany(insert_sql, batch)
+
 
 def insert_data_toDB(ticker, data, conn_pool):
     start_time = time.time()
@@ -85,7 +110,11 @@ def insert_data_toDB(ticker, data, conn_pool):
 
         try:
             cursor.executemany(insert_sql, [
-                (row[0], convert_date(row[1]), row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9])
+                (row[0], convert_date(row[1]),
+                 convert_float(row[2]), convert_float(row[3]),
+                 convert_float(row[4]), convert_float(row[5]),
+                 convert_float(row[6]), convert_bigint(row[7]),
+                 convert_bigint(row[8]), convert_bigint(row[9]))
                 for row in data_with_id
             ])
             conn.commit()
@@ -98,18 +127,13 @@ def insert_data_toDB(ticker, data, conn_pool):
             end_time = time.time()
             print(f"Insertion took {end_time - start_time:.2f} seconds")
 
+
 def start_thread(tiker, conn, session):
-    # conn = psycopg2.connect(
-    # dbname=os.getenv("POSTGRES_DB"),
-    # user=os.getenv("POSTGRES_USER"),
-    # password=os.getenv("POSTGRES_PASSWORD"),
-    # host = os.getenv("DB_HOST", "localhost"),
-    # port=os.getenv("DB_PORT")
-    # )
     print(f'Executing thread for {tiker}\n')
     data = fetch_historic_data_bs4(tiker, session)
     insert_data_toDB(tiker, data, conn)
     return data
+
 
 def get_latestdata(conn):
     cursor = conn.cursor()
@@ -121,14 +145,13 @@ def get_latestdata(conn):
     results = cursor.fetchall()
     return results
 
+
 def check_table(table_name, conn):
     cur = conn.cursor()
     count_query = f"SELECT COUNT(*) FROM {table_name};"
     cur.execute(count_query)
     row_count = cur.fetchone()[0]
     return row_count == 0
-
-
 
 
 def init(pipe_tickers, connection):
@@ -143,21 +166,21 @@ def init(pipe_tickers, connection):
     with conn_pool.getconn() as conn:
         cursor = conn.cursor()
         create_table_sql = """
-              CREATE TABLE IF NOT EXISTS stockdetails (
-                  stock_id int NOT NULL,
-                  date DATE NOT NULL,
-                  last_transaction_price VARCHAR(20),
-                  max_price VARCHAR(20),
-                  min_price VARCHAR(20),
-                  average_price VARCHAR(20),
-                  percentage_change VARCHAR(10),
-                  quantity VARCHAR(20),
-                  trade_volume VARCHAR(20),
-                  total_volume VARCHAR(20),
-                  PRIMARY KEY (stock_id, date),
-                  FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
-              );
-          """
+            CREATE TABLE IF NOT EXISTS stockdetails (
+                stock_id int NOT NULL,
+                date DATE NOT NULL,
+                last_transaction_price FLOAT,
+                max_price FLOAT,
+                min_price FLOAT,
+                average_price FLOAT,
+                percentage_change FLOAT,
+                quantity BIGINT,
+                trade_volume BIGINT,
+                total_volume BIGINT,
+                PRIMARY KEY (stock_id, date),
+                FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
+            );
+        """
         cursor.execute(create_table_sql)
         conn.commit()
         print('Stock details table created.')
@@ -166,7 +189,6 @@ def init(pipe_tickers, connection):
         conn_pool.putconn(conn)
     if check_table('stockdetails', conn):
         with requests.Session() as session:
-
             adapter = requests.adapters.HTTPAdapter(max_retries=3)
             session.mount("https://", adapter)
             session.mount("http://", adapter)
@@ -175,6 +197,3 @@ def init(pipe_tickers, connection):
 
     conn_pool.closeall()
     return get_latestdata(connection)
-
-
-

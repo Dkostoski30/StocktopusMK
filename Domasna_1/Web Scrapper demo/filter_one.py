@@ -12,6 +12,7 @@ load_dotenv()
 def has_num(shifra):
     return any(char.isdigit() for char in shifra)
 
+
 def fetch_tikeri_bs():
     url = 'https://www.mse.mk/mk/stats/symbolhistory/kmb'
     response = requests.get(url)
@@ -28,6 +29,7 @@ def fetch_tikeri_bs():
     tikeri = [option['value'] for option in options if not has_num(option['value'])]
 
     return tikeri
+
 
 def insert_into_db(shifri_list):
     try:
@@ -51,16 +53,19 @@ def insert_into_db(shifri_list):
     except Exception as e:
         logging.error(f"Error: {e}")
 
+
 def init():
     tikeri = fetch_tikeri_bs()
     insert_into_db(tikeri)
     return tikeri
+
+
 db_pool = psycopg2.pool.SimpleConnectionPool(
     1,
     2,
     dbname=os.getenv("POSTGRES_DB"),
     user=os.getenv("POSTGRES_USER"),
     password=os.getenv("POSTGRES_PASSWORD"),
-    host=os.getenv("DB_HOST","localhost"),
+    host=os.getenv("DB_HOST", "localhost"),
     port=os.getenv("DB_PORT")
 )
