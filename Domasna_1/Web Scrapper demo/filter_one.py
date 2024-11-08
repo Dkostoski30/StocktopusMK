@@ -13,6 +13,14 @@ def has_num(shifra):
     return any(char.isdigit() for char in shifra)
 
 
+def check_table(table_name, conn):
+    cur = conn.cursor()
+    count_query = f"SELECT COUNT(*) FROM {table_name};"
+    cur.execute(count_query)
+    row_count = cur.fetchone()[0]
+    return row_count == 0
+
+
 def fetch_tikeri_bs():
     url = 'https://www.mse.mk/mk/stats/symbolhistory/kmb'
     response = requests.get(url)
@@ -29,6 +37,25 @@ def fetch_tikeri_bs():
     tikeri = [option['value'] for option in options if not has_num(option['value'])]
 
     return tikeri
+
+
+def get_all_tickers():
+    query_all = """
+        SELECT stock_name
+        FROM stocks
+    """
+    conn = psycopg2.connect(
+        dbname=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+    )
+    cursor = conn.cursor()
+    cursor.execute(query_all)
+    all_tickers = cursor.fetchall()
+    conn.close()
+    return all_tickers
 
 
 def insert_into_db(shifri_list):
@@ -54,10 +81,13 @@ def insert_into_db(shifri_list):
         logging.error(f"Error: {e}")
 
 
-def init():
-    tikeri = fetch_tikeri_bs()
-    insert_into_db(tikeri)
-    return tikeri
+def init(conn):
+    if check_table('stocks', conn):
+        tikeri = fetch_tikeri_bs()
+        insert_into_db(tikeri)
+        return tikeri
+    else:
+        return [entry[0] for entry in get_all_tickers()]
 
 
 db_pool = psycopg2.pool.SimpleConnectionPool(

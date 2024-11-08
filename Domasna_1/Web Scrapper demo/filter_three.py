@@ -1,5 +1,4 @@
 import os
-from concurrent.futures import as_completed
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import as_completed
 from datetime import timedelta, date
@@ -7,9 +6,7 @@ from psycopg2 import pool
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
-import time
 from dotenv import load_dotenv
-from psycopg2 import pool
 
 import filter_two
 
@@ -59,8 +56,6 @@ def process_stock_entry(entry, conn_pool):
                 cursor.execute(stockname_query)
                 stock_name = cursor.fetchone()[0]
 
-
-
                 data = fetch_historic_data_bs4(stock_name, latest_date)
                 filter_two.insert_data_toDB(stock_name, data, conn_pool)
         except Exception as e:
@@ -87,9 +82,8 @@ def get_all_tickers():
 
 
 def init(latest_data):
-    num_threads = min(10, len(latest_data) + 1)
-
     all_tickers = get_all_tickers()
+    num_threads = min(10, len(latest_data) + 1)
     missing_tickers = []
     if len(latest_data) != len(all_tickers):
         ld_IDs = [entry[0] for entry in latest_data]
@@ -98,26 +92,23 @@ def init(latest_data):
             if ticker_id not in ld_IDs:
                 missing_tickers.append((ticker_id, date.today() - timedelta(days=3650)))
     if len(missing_tickers) != 0:
-        print(f"Missing tickers: {missing_tickers}")
-        #print(latest_data)
+        print(f"Missing tickers: {[entry[0] for entry in missing_tickers]}")
+
     latest_data.extend(missing_tickers)
-    conn_pool = psycopg2.pool.SimpleConnectionPool(1, num_threads + 25,
+
+    conn_pool = psycopg2.pool.SimpleConnectionPool(1, len(all_tickers) + 1,
                                                    dbname=os.getenv("POSTGRES_DB"),
                                                    user=os.getenv("POSTGRES_USER"),
                                                    password=os.getenv("POSTGRES_PASSWORD"),
                                                    host=os.getenv("DB_HOST", "localhost"),
                                                    port=os.getenv("DB_PORT")
                                                    )
+
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
         futures = [executor.submit(process_stock_entry, entry, conn_pool) for entry in latest_data]
 
         for future in as_completed(futures):
             try:
-                future.result()  # Retrieve any exceptions raised in threads
+                future.result()
             except Exception as e:
                 print(f"Error processing stock entry: {e}")
-
-
-
-
-

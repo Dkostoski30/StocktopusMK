@@ -1,7 +1,5 @@
 import time
-
 import psycopg2
-
 import filter_one
 import filter_two
 import filter_three
@@ -55,11 +53,8 @@ if __name__ == '__main__':
     """
     cursor.execute(create_table_sql)
     conn.commit()
-    tickers = []
 
-    if check_table('stocks', conn) and check_table('stockdetails', conn):
-        print('Creating stocks table and fetching tickers')
-        tickers = filter_one.init()
+    tickers = filter_one.init(conn)
     conn.close()
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
