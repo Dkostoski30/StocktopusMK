@@ -135,7 +135,14 @@ def start_thread(tiker, conn, session):
     return data
 
 
-def get_latestdata(conn):
+def get_latestdata():
+    conn = psycopg2.connect(
+        dbname=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+    )
     cursor = conn.cursor()
     query = """SELECT stock_id, MAX(date) AS latest_date
                 FROM stockdetails
@@ -143,6 +150,7 @@ def get_latestdata(conn):
         """
     cursor.execute(query)
     results = cursor.fetchall()
+    cursor.close()
     return results
 
 
@@ -154,7 +162,7 @@ def check_table(table_name, conn):
     return row_count == 0
 
 
-def init(pipe_tickers, connection):
+def init(pipe_tickers):
     print('Second filter started..')
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, MAX_WORKERS,
                                                    dbname=os.getenv("POSTGRES_DB"),
@@ -196,4 +204,4 @@ def init(pipe_tickers, connection):
                 executor.map(lambda ticker: start_thread(ticker, conn_pool, session), tickers)
 
     conn_pool.closeall()
-    return get_latestdata(connection)
+    return get_latestdata()

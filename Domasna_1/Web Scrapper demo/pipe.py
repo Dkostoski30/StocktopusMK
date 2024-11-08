@@ -60,10 +60,10 @@ if __name__ == '__main__':
     if check_table('stocks', conn) and check_table('stockdetails', conn):
         print('Creating stocks table and fetching tickers')
         tickers = filter_one.init()
-
-    print('Creating stockdetails table and fetching historic data for each ticker')
-    latest_data = filter_two.init(tickers, conn)
     conn.close()
+    print('Creating stockdetails table and fetching historic data for each ticker')
+    latest_data = filter_two.init(tickers)
+
     filter_three.init(latest_data)
 
     end_time = time.time()

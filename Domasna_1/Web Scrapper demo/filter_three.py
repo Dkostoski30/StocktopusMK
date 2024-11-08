@@ -1,11 +1,13 @@
 import os
+from concurrent.futures import as_completed
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import as_completed
 from datetime import timedelta, date
-
+from psycopg2 import pool
 import psycopg2
 import requests
 from bs4 import BeautifulSoup
+import time
 from dotenv import load_dotenv
 from psycopg2 import pool
 
@@ -57,15 +59,48 @@ def process_stock_entry(entry, conn_pool):
                 cursor.execute(stockname_query)
                 stock_name = cursor.fetchone()[0]
 
+
+
                 data = fetch_historic_data_bs4(stock_name, latest_date)
                 filter_two.insert_data_toDB(stock_name, data, conn_pool)
         except Exception as e:
             pass
 
 
+def get_all_tickers():
+    query = """
+        SELECT stock_id, stock_name
+        FROM stocks
+    """
+    conn = psycopg2.connect(
+        dbname=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+    )
+    cursor = conn.cursor()
+    cursor.execute(query)
+    all_tickers = cursor.fetchall()
+    conn.close()
+    return all_tickers
+
+
 def init(latest_data):
     num_threads = min(10, len(latest_data) + 1)
 
+    all_tickers = get_all_tickers()
+    missing_tickers = []
+    if len(latest_data) != len(all_tickers):
+        ld_IDs = [entry[0] for entry in latest_data]
+        at_IDs = [entry[0] for entry in all_tickers]
+        for ticker_id in at_IDs:
+            if ticker_id not in ld_IDs:
+                missing_tickers.append((ticker_id, date.today() - timedelta(days=3650)))
+    if len(missing_tickers) != 0:
+        print(f"Missing tickers: {missing_tickers}")
+        #print(latest_data)
+    latest_data.extend(missing_tickers)
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, num_threads + 25,
                                                    dbname=os.getenv("POSTGRES_DB"),
                                                    user=os.getenv("POSTGRES_USER"),
@@ -81,3 +116,8 @@ def init(latest_data):
                 future.result()  # Retrieve any exceptions raised in threads
             except Exception as e:
                 print(f"Error processing stock entry: {e}")
+
+
+
+
+
