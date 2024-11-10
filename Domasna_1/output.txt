@@ -1,0 +1,1078 @@
+Creating stockdetails table and fetching historic data for each ticker
+Second filter started..
+Stock details table created.
+Executing thread for ADIN
+
+Executing thread for ALK
+
+Executing thread for ALKB
+
+Executing thread for AMEH
+
+Executing thread for APTK
+
+Executing thread for ATPP
+
+Executing thread for AUMK
+
+Executing thread for BANA
+
+Executing thread for BGOR
+
+Executing thread for BIKF
+
+Fetching took 6.51 seconds
+Fetching took 7.90 seconds
+Fetching took 9.80 seconds
+Fetching took 9.99 seconds
+Fetching took 10.01 seconds
+Fetching took 10.62 seconds
+Fetching took 10.98 seconds
+Fetching took 11.19 seconds
+Fetching took 11.29 seconds
+Fetching took 11.71 seconds
+Data inserted successfully for ticker: ALKB
+Insertion took 5.89 seconds
+Executing thread for BIM
+
+Data inserted successfully for ticker: BIKF
+Insertion took 1.37 seconds
+Executing thread for BLTU
+
+Data inserted successfully for ticker: ATPP
+Insertion took 2.43 seconds
+Executing thread for CBNG
+
+Data inserted successfully for ticker: APTK
+Insertion took 5.71 seconds
+Executing thread for CDHV
+
+Data inserted successfully for ticker: AMEH
+Insertion took 3.82 seconds
+Executing thread for CEVI
+
+Data inserted successfully for ticker: ALK
+Insertion took 3.63 seconds
+Executing thread for CKB
+
+Data inserted successfully for ticker: AUMK
+Insertion took 3.66 seconds
+Executing thread for CKBKO
+
+Fetching took 4.28 seconds
+Data inserted successfully for ticker: ADIN
+Insertion took 5.87 seconds
+Executing thread for DEBA
+
+Data inserted successfully for ticker: BANA
+Insertion took 6.40 seconds
+Executing thread for DIMI
+
+Fetching took 5.23 seconds
+Fetching took 5.59 seconds
+Fetching took 5.93 seconds
+Fetching took 6.66 seconds
+Data inserted successfully for ticker: BGOR
+Insertion took 8.41 seconds
+Executing thread for EDST
+
+Fetching took 7.14 seconds
+Fetching took 4.82 seconds
+Fetching took 8.14 seconds
+Data inserted successfully for ticker: CKBKO
+Insertion took 3.23 seconds
+Executing thread for ELMA
+
+Fetching took 5.29 seconds
+Data inserted successfully for ticker: CBNG
+Insertion took 3.22 seconds
+Executing thread for ELNC
+
+Data inserted successfully for ticker: CDHV
+Insertion took 2.59 seconds
+Executing thread for ENER
+
+Data inserted successfully for ticker: BIM
+Insertion took 7.08 seconds
+Executing thread for ENSA
+
+Data inserted successfully for ticker: CKB
+Insertion took 4.29 seconds
+Executing thread for EUHA
+
+Fetching took 3.83 seconds
+Data inserted successfully for ticker: BLTU
+Insertion took 6.11 seconds
+Executing thread for EUMK
+
+Data inserted successfully for ticker: CEVI
+Insertion took 3.20 seconds
+Executing thread for EVRO
+
+Data inserted successfully for ticker: DEBA
+Insertion took 3.31 seconds
+Executing thread for FAKM
+
+Fetching took 3.67 seconds
+Data inserted successfully for ticker: EDST
+Insertion took 2.91 seconds
+Executing thread for FERS
+
+Fetching took 3.53 seconds
+Data inserted successfully for ticker: ENSA
+Insertion took 0.14 seconds
+Executing thread for FKTL
+
+Fetching took 4.98 seconds
+Fetching took 4.44 seconds
+Data inserted successfully for ticker: DIMI
+Insertion took 5.85 seconds
+Executing thread for FROT
+
+Data inserted successfully for ticker: ELMA
+Insertion took 2.71 seconds
+Executing thread for FUBT
+
+Data inserted successfully for ticker: ELNC
+Insertion took 0.94 seconds
+Executing thread for GALE
+
+Fetching took 6.95 seconds
+Fetching took 5.63 seconds
+Fetching took 7.21 seconds
+Fetching took 5.82 seconds
+Data inserted successfully for ticker: EUMK
+Insertion took 4.88 seconds
+Executing thread for GDKM
+
+Fetching took 6.65 seconds
+Fetching took 8.99 seconds
+Data inserted successfully for ticker: FKTL
+Insertion took 0.78 seconds
+Executing thread for GECK
+
+Data inserted successfully for ticker: ENER
+Insertion took 4.01 seconds
+Executing thread for GECT
+
+Fetching took 6.14 seconds
+Fetching took 7.31 seconds
+Data inserted successfully for ticker: EVRO
+Insertion took 6.07 seconds
+Executing thread for GIMS
+
+Data inserted successfully for ticker: EUHA
+Insertion took 5.59 seconds
+Executing thread for GRDN
+
+Fetching took 4.53 seconds
+Fetching took 9.46 seconds
+Data inserted successfully for ticker: FERS
+Insertion took 5.26 seconds
+Executing thread for GRNT
+
+Fetching took 5.06 seconds
+Data inserted successfully for ticker: FAKM
+Insertion took 5.62 seconds
+Executing thread for GRSN
+
+Data inserted successfully for ticker: FROT
+Insertion took 4.10 seconds
+Executing thread for GRZD
+
+Fetching took 6.26 seconds
+Data inserted successfully for ticker: FUBT
+Insertion took 6.10 seconds
+Executing thread for GTC
+
+Data inserted successfully for ticker: GDKM
+Insertion took 3.34 seconds
+Executing thread for GTRG
+
+Fetching took 6.17 seconds
+Fetching took 7.24 seconds
+Fetching took 5.63 seconds
+Data inserted successfully for ticker: GALE
+Insertion took 6.55 seconds
+Executing thread for IJUG
+
+Fetching took 5.29 seconds
+Fetching took 4.65 seconds
+Fetching took 6.20 seconds
+Data inserted successfully for ticker: GECT
+Insertion took 7.20 seconds
+Executing thread for INB
+
+Fetching took 5.65 seconds
+Data inserted successfully for ticker: GRDN
+Insertion took 4.22 seconds
+Executing thread for INHO
+
+Data inserted successfully for ticker: GECK
+Insertion took 7.38 seconds
+Executing thread for INOV
+
+Data inserted successfully for ticker: GRSN
+Insertion took 1.96 seconds
+Executing thread for INPR
+
+Data inserted successfully for ticker: GIMS
+Insertion took 4.64 seconds
+Executing thread for INTP
+
+Fetching took 4.66 seconds
+Fetching took 4.01 seconds
+Fetching took 4.18 seconds
+Data inserted successfully for ticker: GRNT
+Insertion took 7.00 seconds
+Executing thread for JAKO
+
+Fetching took 3.72 seconds
+Data inserted successfully for ticker: INOV
+Insertion took 0.29 seconds
+Executing thread for JUSK
+
+Data inserted successfully for ticker: GTC
+Insertion took 6.45 seconds
+Executing thread for KARO
+
+Data inserted successfully for ticker: GRZD
+Insertion took 6.77 seconds
+Executing thread for KDFO
+
+Fetching took 4.13 seconds
+Data inserted successfully for ticker: IJUG
+Insertion took 4.04 seconds
+Executing thread for KJUBI
+
+Fetching took 3.29 seconds
+Fetching took 7.36 seconds
+Fetching took 3.24 seconds
+Data inserted successfully for ticker: GTRG
+Insertion took 9.13 seconds
+Executing thread for KKST
+
+Data inserted successfully for ticker: JAKO
+Insertion took 1.37 seconds
+Executing thread for KLST
+
+Fetching took 4.65 seconds
+Fetching took 5.45 seconds
+Data inserted successfully for ticker: INB
+Insertion took 7.01 seconds
+Executing thread for KMB
+
+Data inserted successfully for ticker: INHO
+Insertion took 6.61 seconds
+Executing thread for KMPR
+
+Fetching took 2.63 seconds
+Fetching took 5.40 seconds
+Data inserted successfully for ticker: JUSK
+Insertion took 1.98 seconds
+Executing thread for KOMU
+
+Data inserted successfully for ticker: INTP
+Insertion took 6.60 seconds
+Executing thread for KONF
+
+Data inserted successfully for ticker: KKST
+Insertion took 0.67 seconds
+Executing thread for KONZ
+
+Data inserted successfully for ticker: KDFO
+Insertion took 2.44 seconds
+Executing thread for KORZ
+
+Data inserted successfully for ticker: KARO
+Insertion took 3.89 seconds
+Executing thread for KPSS
+
+Data inserted successfully for ticker: INPR
+Insertion took 6.45 seconds
+Executing thread for KULT
+
+Fetching took 5.01 seconds
+Fetching took 4.80 seconds
+Fetching took 5.46 seconds
+Fetching took 7.27 seconds
+Fetching took 10.23 seconds
+Fetching took 7.12 seconds
+Data inserted successfully for ticker: KMPR
+Insertion took 3.69 seconds
+Executing thread for KVAS
+
+Fetching took 7.95 seconds
+Fetching took 8.04 seconds
+Fetching took 6.11 seconds
+Data inserted successfully for ticker: KJUBI
+Insertion took 8.70 seconds
+Executing thread for LAJO
+
+Data inserted successfully for ticker: KULT
+Insertion took 0.62 seconds
+Executing thread for LHND
+
+Data inserted successfully for ticker: KORZ
+Insertion took 1.04 seconds
+Executing thread for LOTO
+
+Data inserted successfully for ticker: KPSS
+Insertion took 4.33 seconds
+Executing thread for LOZP
+
+Data inserted successfully for ticker: KOMU
+Insertion took 3.85 seconds
+Executing thread for MAGP
+
+Data inserted successfully for ticker: KMB
+Insertion took 3.70 seconds
+Executing thread for MAKP
+
+Fetching took 3.87 seconds
+Data inserted successfully for ticker: KLST
+Insertion took 4.22 seconds
+Executing thread for MAKS
+
+Data inserted successfully for ticker: KONZ
+Insertion took 4.40 seconds
+Executing thread for MB
+
+Data inserted successfully for ticker: KONF
+Insertion took 3.76 seconds
+Executing thread for MERM
+
+Data inserted successfully for ticker: KVAS
+Insertion took 2.53 seconds
+Executing thread for MKSD
+
+Fetching took 6.69 seconds
+Fetching took 7.30 seconds
+Fetching took 7.36 seconds
+Fetching took 8.38 seconds
+Fetching took 8.87 seconds
+Fetching took 7.55 seconds
+Fetching took 10.00 seconds
+Fetching took 8.36 seconds
+Data inserted successfully for ticker: LAJO
+Insertion took 3.95 seconds
+Executing thread for MLKR
+
+Data inserted successfully for ticker: MAGP
+Insertion took 3.18 seconds
+Executing thread for MODA
+
+Fetching took 6.84 seconds
+Fetching took 9.17 seconds
+Data inserted successfully for ticker: LHND
+Insertion took 5.41 seconds
+Executing thread for MPOL
+
+Data inserted successfully for ticker: MB
+Insertion took 3.80 seconds
+Executing thread for MPT
+
+Data inserted successfully for ticker: LOTO
+Insertion took 5.43 seconds
+Executing thread for MPTE
+
+Data inserted successfully for ticker: MAKP
+Insertion took 4.78 seconds
+Executing thread for MTUR
+
+Data inserted successfully for ticker: LOZP
+Insertion took 3.76 seconds
+Executing thread for MZHE
+
+Data inserted successfully for ticker: MAKS
+Insertion took 5.28 seconds
+Executing thread for MZPU
+Fetching took 5.16 seconds
+
+Fetching took 6.71 seconds
+Fetching took 3.82 seconds
+Fetching took 6.27 seconds
+Fetching took 4.92 seconds
+Data inserted successfully for ticker: MPTE
+Insertion took 1.23 seconds
+Executing thread for NEME
+
+Fetching took 5.74 seconds
+Data inserted successfully for ticker: MLKR
+Insertion took 2.37 seconds
+Executing thread for NOSK
+
+Fetching took 6.06 seconds
+Data inserted successfully for ticker: MKSD
+Insertion took 8.72 seconds
+Executing thread for OBPP
+
+Data inserted successfully for ticker: MERM
+Insertion took 8.79 seconds
+Executing thread for OILK
+
+Fetching took 6.06 seconds
+Fetching took 3.98 seconds
+Fetching took 4.10 seconds
+Fetching took 3.76 seconds
+Data inserted successfully for ticker: MODA
+Insertion took 8.66 seconds
+Executing thread for OKTA
+
+Data inserted successfully for ticker: MPOL
+Insertion took 6.30 seconds
+Executing thread for OMOS
+
+Fetching took 6.13 seconds
+Data inserted successfully for ticker: OBPP
+Insertion took 0.97 seconds
+Executing thread for OPFO
+
+Data inserted successfully for ticker: MTUR
+Insertion took 6.48 seconds
+Executing thread for OPTK
+
+Data inserted successfully for ticker: MZHE
+Insertion took 5.70 seconds
+Executing thread for ORAN
+
+Data inserted successfully for ticker: MPT
+Insertion took 6.86 seconds
+Executing thread for OSPO
+
+Fetching took 3.46 seconds
+Fetching took 4.32 seconds
+Fetching took 4.45 seconds
+Data inserted successfully for ticker: MZPU
+Insertion took 7.25 seconds
+Executing thread for OTEK
+
+Data inserted successfully for ticker: OMOS
+Insertion took 0.48 seconds
+Executing thread for PELK
+
+Data inserted successfully for ticker: NOSK
+Insertion took 5.91 seconds
+Executing thread for PGGV
+
+Fetching took 4.53 seconds
+Data inserted successfully for ticker: OILK
+Insertion took 5.51 seconds
+Executing thread for PKB
+
+Data inserted successfully for ticker: NEME
+Insertion took 5.27 seconds
+Executing thread for POPK
+
+Data inserted successfully for ticker: OPFO
+Insertion took 2.04 seconds
+Executing thread for PPIV
+
+Data inserted successfully for ticker: OPTK
+Insertion took 3.11 seconds
+Executing thread for PROD
+
+Data inserted successfully for ticker: OKTA
+Insertion took 3.55 seconds
+Executing thread for PROT
+
+Fetching took 9.34 seconds
+Fetching took 6.07 seconds
+Fetching took 9.24 seconds
+Fetching took 6.94 seconds
+Data inserted successfully for ticker: OSPO
+Insertion took 1.04 seconds
+Executing thread for PTRS
+
+Fetching took 7.69 seconds
+Data inserted successfully for ticker: PGGV
+Insertion took 1.59 seconds
+Executing thread for RADE
+
+Fetching took 9.87 seconds
+Fetching took 7.52 seconds
+Data inserted successfully for ticker: ORAN
+Insertion took 5.45 seconds
+Executing thread for REPL
+
+Fetching took 10.21 seconds
+Data inserted successfully for ticker: OTEK
+Insertion took 5.78 seconds
+Executing thread for RIMI
+
+Fetching took 8.76 seconds
+Data inserted successfully for ticker: PROT
+Insertion took 0.07 seconds
+Executing thread for RINS
+
+Data inserted successfully for ticker: PELK
+Insertion took 2.30 seconds
+Executing thread for RZEK
+
+Data inserted successfully for ticker: PKB
+Insertion took 4.04 seconds
+Executing thread for RZIT
+
+Data inserted successfully for ticker: PROD
+Insertion took 3.09 seconds
+Executing thread for RZIZ
+
+Fetching took 6.09 secondsFetching took 7.29 seconds
+
+Fetching took 12.55 seconds
+Data inserted successfully for ticker: POPK
+Insertion took 4.34 seconds
+Executing thread for RZLE
+
+Fetching took 4.91 seconds
+Fetching took 6.45 seconds
+Fetching took 3.62 seconds
+Fetching took 7.12 seconds
+Fetching took 7.27 seconds
+Data inserted successfully for ticker: PTRS
+Insertion took 5.32 seconds
+Executing thread for RZLV
+
+Fetching took 7.58 seconds
+Fetching took 10.02 seconds
+Data inserted successfully for ticker: RINS
+Insertion took 4.16 seconds
+Executing thread for RZTK
+
+Data inserted successfully for ticker: RIMI
+Insertion took 5.01 seconds
+Executing thread for RZUG
+
+Data inserted successfully for ticker: RADE
+Insertion took 8.19 seconds
+Executing thread for RZUS
+
+Data inserted successfully for ticker: PPIV
+Insertion took 8.14 seconds
+Executing thread for SBT
+
+Fetching took 4.09 seconds
+Fetching took 3.61 seconds
+Data inserted successfully for ticker: RZLE
+Insertion took 6.57 seconds
+Executing thread for SDOM
+
+Data inserted successfully for ticker: RZIT
+Insertion took 6.58 seconds
+Executing thread for SIL
+
+Data inserted successfully for ticker: RZEK
+Insertion took 6.81 seconds
+Executing thread for SKON
+
+Data inserted successfully for ticker: RZIZ
+Insertion took 5.49 seconds
+Executing thread for SKP
+
+Fetching took 3.68 seconds
+Data inserted successfully for ticker: REPL
+Insertion took 6.83 seconds
+Executing thread for SLAV
+
+Fetching took 5.47 seconds
+Fetching took 6.39 seconds
+Fetching took 4.71 seconds
+Data inserted successfully for ticker: RZLV
+Insertion took 6.65 seconds
+Executing thread for SNBT
+
+Data inserted successfully for ticker: RZTK
+Insertion took 6.38 seconds
+Executing thread for SNBTO
+
+Data inserted successfully for ticker: RZUS
+Insertion took 5.29 seconds
+Executing thread for SOLN
+
+Fetching took 6.44 seconds
+Fetching took 7.87 seconds
+Data inserted successfully for ticker: SBT
+Insertion took 5.25 seconds
+Executing thread for SPAZ
+
+Data inserted successfully for ticker: SKP
+Insertion took 3.36 seconds
+Executing thread for SPAZP
+
+Data inserted successfully for ticker: RZUG
+Insertion took 5.02 seconds
+Executing thread for SPOL
+
+Fetching took 8.93 seconds
+Fetching took 5.69 seconds
+Fetching took 5.83 seconds
+Fetching took 9.21 seconds
+Data inserted successfully for ticker: SIL
+Insertion took 4.51 seconds
+Executing thread for SSPR
+
+Fetching took 6.07 seconds
+Fetching took 5.05 seconds
+Data inserted successfully for ticker: SKON
+Insertion took 3.89 seconds
+Executing thread for STB
+
+Data inserted successfully for ticker: SNBTO
+Insertion took 2.84 seconds
+Executing thread for STBP
+
+Data inserted successfully for ticker: SDOM
+Insertion took 7.01 seconds
+Executing thread for STIL
+
+Data inserted successfully for ticker: SNBT
+Insertion took 4.24 seconds
+Executing thread for STOK
+
+Fetching took 7.84 seconds
+Fetching took 8.56 seconds
+Fetching took 6.40 seconds
+Fetching took 4.98 seconds
+Data inserted successfully for ticker: SLAV
+Insertion took 7.95 seconds
+Executing thread for TAJM
+
+Data inserted successfully for ticker: SOLN
+Insertion took 7.11 seconds
+Executing thread for TBKO
+
+Data inserted successfully for ticker: SPAZ
+Insertion took 6.46 seconds
+Executing thread for TEAL
+
+Fetching took 7.74 seconds
+Fetching took 6.41 seconds
+Fetching took 6.39 seconds
+Data inserted successfully for ticker: SPOL
+Insertion took 5.58 seconds
+Executing thread for TEHN
+
+Data inserted successfully for ticker: SPAZP
+Insertion took 5.20 seconds
+Executing thread for TEL
+
+Data inserted successfully for ticker: SSPR
+Insertion took 7.06 seconds
+Executing thread for TETE
+
+Fetching took 5.24 seconds
+Fetching took 5.93 seconds
+Data inserted successfully for ticker: STBP
+Insertion took 6.93 seconds
+Executing thread for TIKV
+
+Fetching took 4.07 seconds
+Fetching took 7.52 seconds
+Fetching took 5.45 seconds
+Data inserted successfully for ticker: STB
+Insertion took 6.76 seconds
+Executing thread for TKPR
+
+Data inserted successfully for ticker: STIL
+Insertion took 6.48 seconds
+Executing thread for TKVS
+
+Data inserted successfully for ticker: STOK
+Insertion took 6.16 seconds
+Executing thread for TNB
+
+Data inserted successfully for ticker: TBKO
+Insertion took 2.34 seconds
+Executing thread for TRDB
+
+Fetching took 6.78 seconds
+Data inserted successfully for ticker: TEAL
+Insertion took 7.15 seconds
+Executing thread for TRPS
+
+Data inserted successfully for ticker: TEL
+Insertion took 6.29 seconds
+Executing thread for TRUB
+
+Data inserted successfully for ticker: TAJM
+Insertion took 6.46 seconds
+Executing thread for TSMP
+
+Fetching took 7.52 seconds
+Fetching took 6.33 seconds
+Data inserted successfully for ticker: TEHN
+Insertion took 6.59 seconds
+Executing thread for TSZS
+
+Fetching took 6.78 seconds
+Fetching took 7.49 seconds
+Fetching took 7.79 seconds
+Fetching took 4.77 seconds
+Data inserted successfully for ticker: TETE
+Insertion took 6.19 seconds
+Executing thread for TTK
+
+Fetching took 4.81 seconds
+Fetching took 4.56 seconds
+Fetching took 6.89 seconds
+Data inserted successfully for ticker: TIKV
+Insertion took 5.80 seconds
+Executing thread for TTKO
+
+Data inserted successfully for ticker: TRUB
+Insertion took 1.75 seconds
+Executing thread for UNI
+
+Data inserted successfully for ticker: TRDB
+Insertion took 4.87 seconds
+Executing thread for USJE
+
+Data inserted successfully for ticker: TKPR
+Insertion took 4.67 seconds
+Executing thread for VARG
+
+Data inserted successfully for ticker: TKVS
+Insertion took 6.27 seconds
+Executing thread for VFPM
+
+Data inserted successfully for ticker: TSZS
+Insertion took 1.52 seconds
+Executing thread for VITA
+
+Data inserted successfully for ticker: TNB
+Insertion took 5.83 seconds
+Executing thread for VROS
+
+Fetching took 6.42 seconds
+Data inserted successfully for ticker: TSMP
+Insertion took 6.42 seconds
+Executing thread for VSC
+
+Fetching took 4.66 seconds
+Fetching took 5.54 seconds
+Fetching took 6.94 seconds
+Fetching took 6.01 seconds
+Data inserted successfully for ticker: TRPS
+Insertion took 7.36 seconds
+Executing thread for VTKS
+
+Data inserted successfully for ticker: VFPM
+Insertion took 0.44 seconds
+Executing thread for ZAS
+
+Fetching took 7.63 seconds
+Fetching took 7.47 seconds
+Fetching took 3.04 seconds
+Data inserted successfully for ticker: TTKO
+Insertion took 3.31 seconds
+Executing thread for ZILU
+
+Data inserted successfully for ticker: VARG
+Insertion took 5.05 seconds
+Executing thread for ZILUP
+
+Fetching took 4.38 seconds
+Fetching took 10.61 seconds
+Fetching took 7.13 seconds
+Data inserted successfully for ticker: TTK
+Insertion took 7.42 seconds
+Executing thread for ZIMS
+
+Data inserted successfully for ticker: USJE
+Insertion took 6.61 seconds
+Executing thread for ZKAR
+
+Data inserted successfully for ticker: UNI
+Insertion took 6.10 seconds
+Executing thread for ZPKO
+
+Fetching took 3.90 seconds
+Fetching took 4.30 seconds
+Data inserted successfully for ticker: VITA
+Insertion took 7.23 seconds
+Executing thread for ZPOG
+
+Fetching took 3.75 seconds
+Fetching took 3.73 seconds
+Data inserted successfully for ticker: VSC
+Insertion took 5.22 seconds
+Executing thread for ZUAS
+
+Data inserted successfully for ticker: VTKS
+Insertion took 7.73 seconds
+Fetching took 4.92 seconds
+Data inserted successfully for ticker: ZAS
+Insertion took 7.42 seconds
+Data inserted successfully for ticker: VROS
+Insertion took 7.16 seconds
+Data inserted successfully for ticker: ZIMS
+Insertion took 3.40 seconds
+Data inserted successfully for ticker: ZILU
+Insertion took 5.45 seconds
+Data inserted successfully for ticker: ZILUP
+Insertion took 4.67 seconds
+Fetching took 4.14 seconds
+Data inserted successfully for ticker: ZPKO
+Insertion took 2.70 seconds
+Data inserted successfully for ticker: ZKAR
+Insertion took 2.06 seconds
+Fetching took 3.67 seconds
+Data inserted successfully for ticker: ZPOG
+Insertion took 1.59 seconds
+Data inserted successfully for ticker: ZUAS
+Insertion took 0.63 seconds
+Fetching historic data for ADIN from 2024-11-08
+Fetching historic data for AMEH from 2024-11-08
+Fetching historic data for BANA from 2024-11-08Fetching historic data for ATPP from 2024-11-08
+
+Fetching historic data for ALKB from 2024-11-08Fetching historic data for AUMK from 2024-11-08
+
+Fetching historic data for BGOR from 2024-11-08Fetching historic data for BIKF from 2024-11-08
+Fetching historic data for APTK from 2024-11-08
+Fetching historic data for ALK from 2024-11-08
+
+Data inserted successfully for ticker: AMEH
+Insertion took 0.03 seconds
+Fetching historic data for BIM from 2024-11-08
+Data inserted successfully for ticker: ADINData inserted successfully for ticker: BANA
+Insertion took 0.06 seconds
+
+Data inserted successfully for ticker: APTK
+Insertion took 0.07 seconds
+Insertion took 0.15 seconds
+Data inserted successfully for ticker: ALKB
+Insertion took 0.11 seconds
+Fetching historic data for BLTU from 2024-11-08
+Data inserted successfully for ticker: AUMK
+Insertion took 0.07 seconds
+Fetching historic data for CDHV from 2024-11-08
+Data inserted successfully for ticker: BGOR
+Insertion took 0.00 seconds
+Data inserted successfully for ticker: ALK
+Fetching historic data for CKB from 2024-11-08
+Insertion took 0.05 seconds
+Fetching historic data for CKBKO from 2024-11-08
+Fetching historic data for CBNG from 2024-11-08
+Data inserted successfully for ticker: ATPP
+Insertion took 0.03 seconds
+Fetching historic data for CEVI from 2024-11-08
+Data inserted successfully for ticker: BIKF
+Insertion took 0.01 seconds
+Fetching historic data for DIMI from 2024-11-08
+Fetching historic data for EDST from 2024-11-08
+Fetching historic data for DEBA from 2024-11-08
+Data inserted successfully for ticker: CDHV
+Insertion took 0.08 seconds
+Data inserted successfully for ticker: DEBAData inserted successfully for ticker: DIMI
+Insertion took 0.10 seconds
+
+Insertion took 0.13 seconds
+Data inserted successfully for ticker: BIM
+Insertion took 0.06 seconds
+Data inserted successfully for ticker: CKB
+Insertion took 0.07 seconds
+Fetching historic data for ELMA from 2024-11-08Data inserted successfully for ticker: EDST
+Insertion took 0.04 seconds
+
+Data inserted successfully for ticker: CKBKOFetching historic data for ENER from 2024-11-08
+Data inserted successfully for ticker: BLTU
+Insertion took 0.02 seconds
+
+Insertion took 0.07 seconds
+Fetching historic data for ENSA from 2024-11-08
+Fetching historic data for EVRO from 2024-11-08
+Fetching historic data for EUHA from 2024-11-08
+Fetching historic data for ELNC from 2024-11-08
+Fetching historic data for FAKM from 2024-11-08
+Fetching historic data for EUMK from 2024-11-08
+Data inserted successfully for ticker: CEVI
+Insertion took 0.08 secondsData inserted successfully for ticker: CBNG
+
+Insertion took 0.06 seconds
+Fetching historic data for FERS from 2024-11-08
+Fetching historic data for FKTL from 2024-11-08
+Data inserted successfully for ticker: ENSA
+Insertion took 0.19 seconds
+Data inserted successfully for ticker: EVRO
+Insertion took 0.19 seconds
+Data inserted successfully for ticker: ELMA
+Insertion took 0.15 secondsData inserted successfully for ticker: ENER
+Fetching historic data for FROT from 2024-11-08
+
+Insertion took 0.16 seconds
+Data inserted successfully for ticker: EUHA
+Insertion took 0.06 seconds
+Data inserted successfully for ticker: FERS
+Insertion took 0.02 seconds
+Data inserted successfully for ticker: ELNC
+Insertion took 0.03 seconds
+Data inserted successfully for ticker: EUMK
+Fetching historic data for GDKM from 2024-11-08
+Insertion took 0.03 seconds
+Fetching historic data for GECK from 2024-11-08
+Fetching historic data for GRDN from 2024-11-08
+Data inserted successfully for ticker: FAKM
+Insertion took 0.04 seconds
+Fetching historic data for GRSN from 2024-11-08
+Fetching historic data for GIMS from 2024-11-08
+Fetching historic data for GRNT from 2024-11-08
+Fetching historic data for GALE from 2024-11-08
+Fetching historic data for GECT from 2024-11-08
+Data inserted successfully for ticker: FKTL
+Insertion took 0.03 seconds
+Fetching historic data for GRZD from 2024-11-08
+Data inserted successfully for ticker: GECK
+Insertion took 0.11 seconds
+Data inserted successfully for ticker: GRDNData inserted successfully for ticker: FROT
+Insertion took 0.13 seconds
+Fetching historic data for GTC from 2024-11-08
+
+Insertion took 0.20 seconds
+Data inserted successfully for ticker: GIMS
+Insertion took 0.09 seconds
+Fetching historic data for GTRG from 2024-11-08
+Data inserted successfully for ticker: GDKM
+Fetching historic data for IJUG from 2024-11-08
+Insertion took 0.16 seconds
+Fetching historic data for INHO from 2024-11-08
+Data inserted successfully for ticker: GRZD
+Insertion took 0.08 seconds
+Data inserted successfully for ticker: GRNT
+Insertion took 0.08 seconds
+Fetching historic data for INPR from 2024-11-08
+Fetching historic data for INTP from 2024-11-08
+Fetching historic data for INB from 2024-11-08
+Fetching historic data for INOV from 2024-11-08
+Data inserted successfully for ticker: GECT
+Insertion took 0.03 seconds
+Fetching historic data for JAKO from 2024-11-08
+Data inserted successfully for ticker: GTC
+Insertion took 0.12 seconds
+Data inserted successfully for ticker: INHO
+Insertion took 0.12 seconds
+Data inserted successfully for ticker: INB
+Insertion took 0.14 seconds
+Data inserted successfully for ticker: INTP
+Insertion took 0.02 seconds
+Fetching historic data for KKST from 2024-11-08
+Data inserted successfully for ticker: JAKO
+Insertion took 0.06 seconds
+Fetching historic data for KLST from 2024-11-08
+Fetching historic data for KARO from 2024-11-08
+Fetching historic data for JUSK from 2024-11-08
+Data inserted successfully for ticker: GTRG
+Insertion took 0.03 seconds
+Fetching historic data for KMPR from 2024-11-08
+Fetching historic data for KDFO from 2024-11-08Fetching historic data for KJUBI from 2024-11-08
+
+Fetching historic data for KMB from 2024-11-08
+Data inserted successfully for ticker: INOV
+Insertion took 0.07 seconds
+Fetching historic data for KOMU from 2024-11-08
+Data inserted successfully for ticker: KARO
+Insertion took 0.18 seconds
+Data inserted successfully for ticker: JUSK
+Insertion took 0.04 seconds
+Data inserted successfully for ticker: KOMU
+Insertion took 0.08 seconds
+Data inserted successfully for ticker: KMPR
+Insertion took 0.12 seconds
+Fetching historic data for KONF from 2024-11-08
+Data inserted successfully for ticker: GRSN
+Insertion took 0.12 seconds
+Fetching historic data for KONZ from 2024-11-08
+Data inserted successfully for ticker: KLST
+Insertion took 0.08 seconds
+Fetching historic data for KULT from 2024-11-08
+Data inserted successfully for ticker: KDFO
+Insertion took 0.01 seconds
+Fetching historic data for LAJO from 2024-11-08
+Fetching historic data for KPSS from 2024-11-08
+Data inserted successfully for ticker: KJUBI
+Insertion took 0.03 seconds
+Data inserted successfully for ticker: KMB
+Insertion took 0.02 seconds
+Fetching historic data for LHND from 2024-11-08
+Fetching historic data for LOTO from 2024-11-08
+Fetching historic data for KORZ from 2024-11-08
+Fetching historic data for KVAS from 2024-11-08
+Data inserted successfully for ticker: KKST
+Insertion took 0.03 seconds
+Fetching historic data for LOZP from 2024-11-08
+Data inserted successfully for ticker: LAJO
+Insertion took 0.07 seconds
+Data inserted successfully for ticker: KONZ
+Insertion took 0.20 seconds
+Fetching historic data for MAGP from 2024-11-08
+Data inserted successfully for ticker: KULT
+Insertion took 0.12 seconds
+Data inserted successfully for ticker: KPSS
+Insertion took 0.10 seconds
+Data inserted successfully for ticker: LHND
+Insertion took 0.12 seconds
+Data inserted successfully for ticker: KONF
+Insertion took 0.16 secondsData inserted successfully for ticker: LOTO
+
+Insertion took 0.10 seconds
+Fetching historic data for MAKP from 2024-11-08
+Data inserted successfully for ticker: KORZ
+Insertion took 0.00 seconds
+Data inserted successfully for ticker: LOZP
+Insertion took 0.04 seconds
+Fetching historic data for MLKR from 2024-11-08
+Fetching historic data for MPOL from 2024-11-08
+Fetching historic data for MB from 2024-11-08
+Data inserted successfully for ticker: KVAS
+Insertion took 0.01 seconds
+Fetching historic data for MODA from 2024-11-08
+Fetching historic data for MPT from 2024-11-08
+Fetching historic data for MPTE from 2024-11-08
+Fetching historic data for MAKS from 2024-11-08
+Fetching historic data for MKSD from 2024-11-08
+Data inserted successfully for ticker: MPOL
+Insertion took 0.07 seconds
+Data inserted successfully for ticker: MPTE
+Insertion took 0.06 seconds
+Data inserted successfully for ticker: MKSD
+Data inserted successfully for ticker: MAGP
+Insertion took 0.05 seconds
+Insertion took 0.16 seconds
+Data inserted successfully for ticker: MLKR
+Fetching historic data for MTUR from 2024-11-08
+Insertion took 0.12 seconds
+Fetching historic data for MZHE from 2024-11-08Fetching historic data for MZPU from 2024-11-08
+
+Fetching historic data for NOSK from 2024-11-08
+Data inserted successfully for ticker: MAKS
+Insertion took 0.01 seconds
+Fetching historic data for OBPP from 2024-11-08
+Data inserted successfully for ticker: MAKP
+Insertion took 0.03 seconds
+Data inserted successfully for ticker: MB
+Insertion took 0.02 seconds
+Fetching historic data for OILK from 2024-11-08
+Fetching historic data for OKTA from 2024-11-08
+Fetching historic data for NEME from 2024-11-08
+Data inserted successfully for ticker: MODA
+Insertion took 0.03 seconds
+Fetching historic data for OMOS from 2024-11-08
+Data inserted successfully for ticker: NOSK
+Insertion took 0.19 seconds
+Data inserted successfully for ticker: NEME
+Insertion took 0.05 seconds
+Data inserted successfully for ticker: OILK
+Insertion took 0.09 secondsFetching historic data for OPFO from 2024-11-08
+
+Data inserted successfully for ticker: MZPU
+Insertion took 0.02 seconds
+Fetching historic data for OPTK from 2024-11-08
+Fetching historic data for OSPO from 2024-11-08
+Data inserted successfully for ticker: MTUR
+Insertion took 0.01 seconds
+Fetching historic data for OTEK from 2024-11-08
+Data inserted successfully for ticker: OMOS
+Insertion took 0.03 seconds
+Fetching historic data for PELK from 2024-11-08
+Fetching historic data for ORAN from 2024-11-08
+Time taken from start to finish: 191.25
+Script executed..
