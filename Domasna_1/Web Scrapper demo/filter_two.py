@@ -21,26 +21,28 @@ def convert_date(date_str):
     return datetime.strptime(date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
 
 
-def convert_float(value):
-    converted_float = None
-    if value == "":
-        return None
-    try:
-        converted_float = float(value.replace(".", "").replace(",", "."))
-    except Exception as e:
-        print(f"Failed to convert float : {e}")
+# will be used in the insert_data_toDB function for converting the data when training and testing models
 
-    return converted_float
-
-
-def convert_bigint(value):
-    converted_int = None
-    try:
-        converted_int = int(value.replace(".", ""))
-    except Exception as e:
-        print(f"Failed to convert float : {e}")
-
-    return converted_int
+# def convert_float(value):
+#     converted_float = None
+#     if value == "":
+#         return None
+#     try:
+#         converted_float = float(value.replace(".", "").replace(",", "."))
+#     except Exception as e:
+#         print(f"Failed to convert float : {e}")
+#
+#     return converted_float
+#
+#
+# def convert_bigint(value):
+#     converted_int = None
+#     try:
+#         converted_int = int(value.replace(".", ""))
+#     except Exception as e:
+#         print(f"Failed to convert float : {e}")
+#
+#     return converted_int
 
 
 def fetch_historic_data_bs4(ticker, session):
@@ -111,10 +113,10 @@ def insert_data_toDB(ticker, data, conn_pool):
         try:
             cursor.executemany(insert_sql, [
                 (row[0], convert_date(row[1]),
-                 convert_float(row[2]), convert_float(row[3]),
-                 convert_float(row[4]), convert_float(row[5]),
-                 convert_float(row[6]), convert_bigint(row[7]),
-                 convert_bigint(row[8]), convert_bigint(row[9]))
+                 row[2], row[3],
+                 row[4], row[5],
+                 row[6], row[7],
+                 row[8], row[9])
                 for row in data_with_id
             ])
             conn.commit()
@@ -177,14 +179,14 @@ def init(pipe_tickers):
             CREATE TABLE IF NOT EXISTS stockdetails (
                 stock_id int NOT NULL,
                 date DATE NOT NULL,
-                last_transaction_price FLOAT,
-                max_price FLOAT,
-                min_price FLOAT,
-                average_price FLOAT,
-                percentage_change FLOAT,
-                quantity BIGINT,
-                trade_volume BIGINT,
-                total_volume BIGINT,
+                last_transaction_price VARCHAR(255),
+                max_price VARCHAR(255),
+                min_price VARCHAR(255),
+                average_price VARCHAR(255),
+                percentage_change VARCHAR(255),
+                quantity VARCHAR(255),
+                trade_volume VARCHAR(255),
+                total_volume VARCHAR(255),
                 PRIMARY KEY (stock_id, date),
                 FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
             );

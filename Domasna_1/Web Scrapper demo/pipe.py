@@ -37,19 +37,19 @@ if __name__ == '__main__':
 
     create_table_sql = """
         CREATE TABLE IF NOT EXISTS stockdetails (
-            stock_id int NOT NULL,
-            date DATE NOT NULL,
-            last_transaction_price FLOAT,
-            max_price FLOAT,
-            min_price FLOAT,
-            average_price FLOAT,
-            percentage_change FLOAT,
-            quantity BIGINT,
-            trade_volume BIGINT,
-            total_volume BIGINT,
-            PRIMARY KEY (stock_id, date),
-            FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
-        );
+                stock_id int NOT NULL,
+                date DATE NOT NULL,
+                last_transaction_price VARCHAR(255),
+                max_price VARCHAR(255),
+                min_price VARCHAR(255),
+                average_price VARCHAR(255),
+                percentage_change VARCHAR(255),
+                quantity VARCHAR(255),
+                trade_volume VARCHAR(255),
+                total_volume VARCHAR(255),
+                PRIMARY KEY (stock_id, date),
+                FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
+            );
     """
     cursor.execute(create_table_sql)
     conn.commit()
