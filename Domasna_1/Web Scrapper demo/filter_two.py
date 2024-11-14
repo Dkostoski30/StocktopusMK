@@ -10,7 +10,7 @@ from psycopg2 import pool
 import os
 from dotenv import load_dotenv
 import json
-import logging
+import pipe
 load_dotenv()
 
 MAX_WORKERS = 10
@@ -168,7 +168,6 @@ def save_data_to_json(ticker, data):
             print(f"Error processing row {row} for {ticker}: {e}")
             continue
 
-    # Attempt to write JSON data to file
     try:
         with open(file_path, 'w') as json_file:
             json.dump(data_json, json_file, indent=4)
@@ -180,9 +179,12 @@ def save_data_to_json(ticker, data):
         print(f"Saving to JSON took {end_time - start_time:.2f} seconds")
 
 def start_thread(tiker, conn, session):
+    start_time = time.time()
     print(f'Executing thread for {tiker}\n')
     data = fetch_historic_data_bs4(tiker, session)
     save_data_to_json(tiker, data)
+    end_time = time.time()
+    pipe.time_taken += (end_time - start_time)
     insert_data_toDB(tiker, data, conn)
     return data
 

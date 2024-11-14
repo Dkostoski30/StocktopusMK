@@ -1,4 +1,5 @@
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import as_completed
 from datetime import timedelta, date
@@ -7,7 +8,7 @@ import psycopg2
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from requests import adapters
+import pipe
 
 import filter_two
 
@@ -48,7 +49,7 @@ def process_stock_entry(entry, conn_pool):
     id = entry[0]
     latest_date = entry[1]
     yesterday = date.today() - timedelta(days=1)
-
+    start_time = time.time()
     if latest_date < yesterday:
         try:
             with conn_pool.getconn() as conn:
@@ -56,8 +57,9 @@ def process_stock_entry(entry, conn_pool):
                 stockname_query = f"SELECT stock_name FROM Stocks WHERE stock_id = '{id}';"
                 cursor.execute(stockname_query)
                 stock_name = cursor.fetchone()[0]
-
                 data = fetch_historic_data_bs4(stock_name, latest_date)
+                end_time = time.time()
+                pipe.time_taken += (end_time - start_time)
                 filter_two.insert_data_toDB(stock_name, data, conn_pool)
                 filter_two.save_data_to_json(stock_name, data)
         except Exception as e:
