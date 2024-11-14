@@ -7,6 +7,7 @@ import psycopg2
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from requests import adapters
 
 import filter_two
 
@@ -58,6 +59,7 @@ def process_stock_entry(entry, conn_pool):
 
                 data = fetch_historic_data_bs4(stock_name, latest_date)
                 filter_two.insert_data_toDB(stock_name, data, conn_pool)
+                filter_two.save_data_to_json(stock_name, data)
         except Exception as e:
             pass
 
@@ -95,20 +97,41 @@ def init(latest_data):
         print(f"Missing tickers: {[entry[0] for entry in missing_tickers]}")
 
     latest_data.extend(missing_tickers)
-
-    conn_pool = psycopg2.pool.SimpleConnectionPool(1, len(all_tickers) + 1,
+    # Connection pool
+    conn_pool = psycopg2.pool.SimpleConnectionPool(1, 10,
                                                    dbname=os.getenv("POSTGRES_DB"),
                                                    user=os.getenv("POSTGRES_USER"),
                                                    password=os.getenv("POSTGRES_PASSWORD"),
                                                    host=os.getenv("DB_HOST", "localhost"),
-                                                   port=os.getenv("DB_PORT")
-                                                   )
+                                                   port=os.getenv("DB_PORT"))
 
-    with ThreadPoolExecutor(max_workers=num_threads) as executor:
-        futures = [executor.submit(process_stock_entry, entry, conn_pool) for entry in latest_data]
+    with conn_pool.getconn() as conn:
+        cursor = conn.cursor()
+        create_table_sql = """
+                CREATE TABLE IF NOT EXISTS stockdetails (
+                    stock_id int NOT NULL,
+                    date DATE NOT NULL,
+                    last_transaction_price FLOAT,
+                    max_price FLOAT,
+                    min_price FLOAT,
+                    average_price FLOAT,
+                    percentage_change FLOAT,
+                    quantity BIGINT,
+                    trade_volume BIGINT,
+                    total_volume BIGINT,
+                    PRIMARY KEY (stock_id, date),
+                    FOREIGN KEY (stock_id) REFERENCES stocks(stock_id)
+                );
+            """
+        cursor.execute(create_table_sql)
+        conn.commit()
+        print("Stock details table verified/created.")
+        conn_pool.putconn(conn)
 
-        for future in as_completed(futures):
-            try:
-                future.result()
-            except Exception as e:
-                print(f"Error processing stock entry: {e}")
+
+
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            executor.map(lambda entry: process_stock_entry(entry, conn_pool), latest_data)
+
+    conn_pool.closeall()
+    print("Data initialization complete.")

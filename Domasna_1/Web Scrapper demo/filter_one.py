@@ -4,6 +4,7 @@ import psycopg2
 from psycopg2 import pool
 import logging
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -34,10 +35,34 @@ def fetch_tikeri_bs():
     dropdown = soup.find('select', {'id': 'Code'})
     options = dropdown.find_all('option') if dropdown else []
 
-    tikeri = [option['value'] for option in options if not has_num(option['value'])]
+    if len(options) == 0:
+        url = 'https://www.mse.mk/en/stats/current-schedule'
+        response = requests.get(url)
+        if response.status_code != 200:
+            logging.error("Failed to retrieve the page")
+            return []
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+        #print(soup)
+        links = soup.select('#continuousTradingMode-table tbody a')
+        tikeri = [link.text for link in links if not has_num(link.text)]
+    else:
+        tikeri = [option['value'] for option in options if not has_num(option['value'])]
 
     return tikeri
 
+
+def save_to_json(shifri_list):
+
+    os.makedirs('./data', exist_ok=True)
+
+    stocks_data = [{"stock_name": shifra} for shifra in shifri_list]
+    try:
+        with open('./data/stocks.json', 'w') as json_file:
+            json.dump(stocks_data, json_file, indent=4)
+        print("Stocks data saved to './data/stocks.json'")
+    except Exception as e:
+        logging.error(f"Error saving to JSON: {e}")
 
 def get_all_tickers():
     query_all = """
@@ -84,6 +109,7 @@ def insert_into_db(shifri_list):
 def init(conn):
     if check_table('stocks', conn):
         tikeri = fetch_tikeri_bs()
+        save_to_json(tikeri)
         insert_into_db(tikeri)
         return tikeri
     else:

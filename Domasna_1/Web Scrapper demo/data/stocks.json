@@ -1,0 +1,497 @@
+[
+    {
+        "stock_name": "ADIN"
+    },
+    {
+        "stock_name": "ALK"
+    },
+    {
+        "stock_name": "ALKB"
+    },
+    {
+        "stock_name": "AMBR"
+    },
+    {
+        "stock_name": "AMEH"
+    },
+    {
+        "stock_name": "APTK"
+    },
+    {
+        "stock_name": "ATPP"
+    },
+    {
+        "stock_name": "AUMK"
+    },
+    {
+        "stock_name": "BANA"
+    },
+    {
+        "stock_name": "BGOR"
+    },
+    {
+        "stock_name": "BIKF"
+    },
+    {
+        "stock_name": "BIM"
+    },
+    {
+        "stock_name": "BLTU"
+    },
+    {
+        "stock_name": "CBNG"
+    },
+    {
+        "stock_name": "CDHV"
+    },
+    {
+        "stock_name": "CEVI"
+    },
+    {
+        "stock_name": "CKB"
+    },
+    {
+        "stock_name": "CKBKO"
+    },
+    {
+        "stock_name": "DEBA"
+    },
+    {
+        "stock_name": "DIMI"
+    },
+    {
+        "stock_name": "EDST"
+    },
+    {
+        "stock_name": "ELMA"
+    },
+    {
+        "stock_name": "ELNC"
+    },
+    {
+        "stock_name": "ENER"
+    },
+    {
+        "stock_name": "ENSA"
+    },
+    {
+        "stock_name": "EUHA"
+    },
+    {
+        "stock_name": "EUMK"
+    },
+    {
+        "stock_name": "EVRO"
+    },
+    {
+        "stock_name": "FAKM"
+    },
+    {
+        "stock_name": "FERS"
+    },
+    {
+        "stock_name": "FKTL"
+    },
+    {
+        "stock_name": "FROT"
+    },
+    {
+        "stock_name": "FUBT"
+    },
+    {
+        "stock_name": "GALE"
+    },
+    {
+        "stock_name": "GDKM"
+    },
+    {
+        "stock_name": "GECK"
+    },
+    {
+        "stock_name": "GECT"
+    },
+    {
+        "stock_name": "GIMS"
+    },
+    {
+        "stock_name": "GRDN"
+    },
+    {
+        "stock_name": "GRNT"
+    },
+    {
+        "stock_name": "GRSN"
+    },
+    {
+        "stock_name": "GRZD"
+    },
+    {
+        "stock_name": "GTC"
+    },
+    {
+        "stock_name": "GTRG"
+    },
+    {
+        "stock_name": "IJUG"
+    },
+    {
+        "stock_name": "INB"
+    },
+    {
+        "stock_name": "INHO"
+    },
+    {
+        "stock_name": "INOV"
+    },
+    {
+        "stock_name": "INPR"
+    },
+    {
+        "stock_name": "INTP"
+    },
+    {
+        "stock_name": "JAKO"
+    },
+    {
+        "stock_name": "JUSK"
+    },
+    {
+        "stock_name": "KARO"
+    },
+    {
+        "stock_name": "KDFO"
+    },
+    {
+        "stock_name": "KJUBI"
+    },
+    {
+        "stock_name": "KKST"
+    },
+    {
+        "stock_name": "KLST"
+    },
+    {
+        "stock_name": "KMB"
+    },
+    {
+        "stock_name": "KMPR"
+    },
+    {
+        "stock_name": "KOMU"
+    },
+    {
+        "stock_name": "KONF"
+    },
+    {
+        "stock_name": "KONZ"
+    },
+    {
+        "stock_name": "KORZ"
+    },
+    {
+        "stock_name": "KPSS"
+    },
+    {
+        "stock_name": "KULT"
+    },
+    {
+        "stock_name": "KVAS"
+    },
+    {
+        "stock_name": "LAJO"
+    },
+    {
+        "stock_name": "LHND"
+    },
+    {
+        "stock_name": "LOTO"
+    },
+    {
+        "stock_name": "LOZP"
+    },
+    {
+        "stock_name": "MAGP"
+    },
+    {
+        "stock_name": "MAKP"
+    },
+    {
+        "stock_name": "MAKS"
+    },
+    {
+        "stock_name": "MB"
+    },
+    {
+        "stock_name": "MERM"
+    },
+    {
+        "stock_name": "MKSD"
+    },
+    {
+        "stock_name": "MLKR"
+    },
+    {
+        "stock_name": "MODA"
+    },
+    {
+        "stock_name": "MPOL"
+    },
+    {
+        "stock_name": "MPT"
+    },
+    {
+        "stock_name": "MPTE"
+    },
+    {
+        "stock_name": "MTUR"
+    },
+    {
+        "stock_name": "MZHE"
+    },
+    {
+        "stock_name": "MZPU"
+    },
+    {
+        "stock_name": "NEME"
+    },
+    {
+        "stock_name": "NOSK"
+    },
+    {
+        "stock_name": "OBPP"
+    },
+    {
+        "stock_name": "OILK"
+    },
+    {
+        "stock_name": "OKTA"
+    },
+    {
+        "stock_name": "OMOS"
+    },
+    {
+        "stock_name": "OPFO"
+    },
+    {
+        "stock_name": "OPTK"
+    },
+    {
+        "stock_name": "ORAN"
+    },
+    {
+        "stock_name": "OSPO"
+    },
+    {
+        "stock_name": "OTEK"
+    },
+    {
+        "stock_name": "PELK"
+    },
+    {
+        "stock_name": "PGGV"
+    },
+    {
+        "stock_name": "PKB"
+    },
+    {
+        "stock_name": "POPK"
+    },
+    {
+        "stock_name": "PPIV"
+    },
+    {
+        "stock_name": "PROD"
+    },
+    {
+        "stock_name": "PROT"
+    },
+    {
+        "stock_name": "PTRS"
+    },
+    {
+        "stock_name": "RADE"
+    },
+    {
+        "stock_name": "REPL"
+    },
+    {
+        "stock_name": "RIMI"
+    },
+    {
+        "stock_name": "RINS"
+    },
+    {
+        "stock_name": "RZEK"
+    },
+    {
+        "stock_name": "RZIT"
+    },
+    {
+        "stock_name": "RZIZ"
+    },
+    {
+        "stock_name": "RZLE"
+    },
+    {
+        "stock_name": "RZLV"
+    },
+    {
+        "stock_name": "RZTK"
+    },
+    {
+        "stock_name": "RZUG"
+    },
+    {
+        "stock_name": "RZUS"
+    },
+    {
+        "stock_name": "SBT"
+    },
+    {
+        "stock_name": "SDOM"
+    },
+    {
+        "stock_name": "SIL"
+    },
+    {
+        "stock_name": "SKON"
+    },
+    {
+        "stock_name": "SKP"
+    },
+    {
+        "stock_name": "SLAV"
+    },
+    {
+        "stock_name": "SNBT"
+    },
+    {
+        "stock_name": "SNBTO"
+    },
+    {
+        "stock_name": "SOLN"
+    },
+    {
+        "stock_name": "SPAZ"
+    },
+    {
+        "stock_name": "SPAZP"
+    },
+    {
+        "stock_name": "SPOL"
+    },
+    {
+        "stock_name": "SSPR"
+    },
+    {
+        "stock_name": "STB"
+    },
+    {
+        "stock_name": "STBP"
+    },
+    {
+        "stock_name": "STIL"
+    },
+    {
+        "stock_name": "STOK"
+    },
+    {
+        "stock_name": "TAJM"
+    },
+    {
+        "stock_name": "TBKO"
+    },
+    {
+        "stock_name": "TEAL"
+    },
+    {
+        "stock_name": "TEHN"
+    },
+    {
+        "stock_name": "TEL"
+    },
+    {
+        "stock_name": "TETE"
+    },
+    {
+        "stock_name": "TIKV"
+    },
+    {
+        "stock_name": "TKPR"
+    },
+    {
+        "stock_name": "TKVS"
+    },
+    {
+        "stock_name": "TNB"
+    },
+    {
+        "stock_name": "TRDB"
+    },
+    {
+        "stock_name": "TRPS"
+    },
+    {
+        "stock_name": "TRUB"
+    },
+    {
+        "stock_name": "TSMP"
+    },
+    {
+        "stock_name": "TSZS"
+    },
+    {
+        "stock_name": "TTK"
+    },
+    {
+        "stock_name": "TTKO"
+    },
+    {
+        "stock_name": "UNI"
+    },
+    {
+        "stock_name": "USJE"
+    },
+    {
+        "stock_name": "VARG"
+    },
+    {
+        "stock_name": "VFPM"
+    },
+    {
+        "stock_name": "VITA"
+    },
+    {
+        "stock_name": "VROS"
+    },
+    {
+        "stock_name": "VSC"
+    },
+    {
+        "stock_name": "VTKS"
+    },
+    {
+        "stock_name": "ZAS"
+    },
+    {
+        "stock_name": "ZILU"
+    },
+    {
+        "stock_name": "ZILUP"
+    },
+    {
+        "stock_name": "ZIMS"
+    },
+    {
+        "stock_name": "ZKAR"
+    },
+    {
+        "stock_name": "ZPKO"
+    },
+    {
+        "stock_name": "ZPOG"
+    },
+    {
+        "stock_name": "ZUAS"
+    }
+]

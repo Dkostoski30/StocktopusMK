@@ -9,7 +9,8 @@ from bs4 import BeautifulSoup
 from psycopg2 import pool
 import os
 from dotenv import load_dotenv
-
+import json
+import logging
 load_dotenv()
 
 MAX_WORKERS = 10
@@ -95,6 +96,8 @@ def batch_insert_data(data_with_id, cursor):
         cursor.executemany(insert_sql, batch)
 
 
+
+
 def insert_data_toDB(ticker, data, conn_pool):
     start_time = time.time()
     with conn_pool.getconn() as conn:
@@ -130,9 +133,56 @@ def insert_data_toDB(ticker, data, conn_pool):
             print(f"Insertion took {end_time - start_time:.2f} seconds")
 
 
+def save_data_to_json(ticker, data):
+    start_time = time.time()
+    directory = './data/stockdetails'
+    file_path = os.path.join(directory, f'{ticker}.json')
+
+    # Ensure the directory exists
+    try:
+        os.makedirs(directory, exist_ok=True)
+    except Exception as e:
+        print(f"Failed to create directory '{directory}': {e}")
+        return
+
+    # Prepare data in JSON-compatible format
+    data_json = []
+    for row in data:
+        # Validate row length and structure
+        if len(row) != 9:
+            print(f"Skipping row with unexpected format for {ticker}: {row}")
+            continue
+        try:
+            data_json.append({
+                "date": row[0].strftime('%Y-%m-%d') if isinstance(row[1], datetime) else row[1],
+                "open": row[1],
+                "high": row[2],
+                "low": row[3],
+                "close": row[4],
+                "volume": row[5],
+                "adjusted_close": row[6],
+                "other_field_1": row[7],
+                "other_field_2": row[8]
+            })
+        except Exception as e:
+            print(f"Error processing row {row} for {ticker}: {e}")
+            continue
+
+    # Attempt to write JSON data to file
+    try:
+        with open(file_path, 'w') as json_file:
+            json.dump(data_json, json_file, indent=4)
+        print(f"Data saved successfully for ticker: {ticker} in {file_path}")
+    except Exception as e:
+        print(f"Failed to save data for ticker '{ticker}': {e}")
+    finally:
+        end_time = time.time()
+        print(f"Saving to JSON took {end_time - start_time:.2f} seconds")
+
 def start_thread(tiker, conn, session):
     print(f'Executing thread for {tiker}\n')
     data = fetch_historic_data_bs4(tiker, session)
+    save_data_to_json(tiker, data)
     insert_data_toDB(tiker, data, conn)
     return data
 

@@ -59,7 +59,7 @@ if __name__ == '__main__':
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
 
-    filter_three.init(latest_data)
+    #filter_three.init(latest_data)
 
     end_time = time.time()
     print(f'Time taken from start to finish: {end_time - start_time:.2f}')
