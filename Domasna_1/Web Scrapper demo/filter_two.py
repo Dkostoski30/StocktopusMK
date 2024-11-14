@@ -10,7 +10,6 @@ from psycopg2 import pool
 import os
 from dotenv import load_dotenv
 import json
-import pipe
 load_dotenv()
 
 MAX_WORKERS = 10
@@ -21,29 +20,6 @@ NUM_OF_YEARS = 10
 def convert_date(date_str):
     return datetime.strptime(date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
 
-
-# will be used in the insert_data_toDB function for converting the data when training and testing models
-
-# def convert_float(value):
-#     converted_float = None
-#     if value == "":
-#         return None
-#     try:
-#         converted_float = float(value.replace(".", "").replace(",", "."))
-#     except Exception as e:
-#         print(f"Failed to convert float : {e}")
-#
-#     return converted_float
-#
-#
-# def convert_bigint(value):
-#     converted_int = None
-#     try:
-#         converted_int = int(value.replace(".", ""))
-#     except Exception as e:
-#         print(f"Failed to convert float : {e}")
-#
-#     return converted_int
 
 
 def fetch_historic_data_bs4(ticker, session):
@@ -137,18 +113,13 @@ def save_data_to_json(ticker, data):
     start_time = time.time()
     directory = './data/stockdetails'
     file_path = os.path.join(directory, f'{ticker}.json')
-
-    # Ensure the directory exists
     try:
         os.makedirs(directory, exist_ok=True)
     except Exception as e:
         print(f"Failed to create directory '{directory}': {e}")
         return
-
-    # Prepare data in JSON-compatible format
     data_json = []
     for row in data:
-        # Validate row length and structure
         if len(row) != 9:
             print(f"Skipping row with unexpected format for {ticker}: {row}")
             continue
@@ -167,7 +138,6 @@ def save_data_to_json(ticker, data):
         except Exception as e:
             print(f"Error processing row {row} for {ticker}: {e}")
             continue
-
     try:
         with open(file_path, 'w') as json_file:
             json.dump(data_json, json_file, indent=4)
@@ -179,12 +149,9 @@ def save_data_to_json(ticker, data):
         print(f"Saving to JSON took {end_time - start_time:.2f} seconds")
 
 def start_thread(tiker, conn, session):
-    start_time = time.time()
     print(f'Executing thread for {tiker}\n')
     data = fetch_historic_data_bs4(tiker, session)
     save_data_to_json(tiker, data)
-    end_time = time.time()
-    pipe.time_taken += (end_time - start_time)
     insert_data_toDB(tiker, data, conn)
     return data
 

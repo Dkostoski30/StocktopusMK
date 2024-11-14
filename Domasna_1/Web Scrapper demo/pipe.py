@@ -16,8 +16,10 @@ def check_table(table_name, conn):
     row_count = cur.fetchone()[0]
     return row_count == 0
 
+global time_taken
 
 if __name__ == '__main__':
+    time_taken = 0
     start_time = time.time()
     conn = psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
@@ -59,8 +61,9 @@ if __name__ == '__main__':
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
 
-    #filter_three.init(latest_data)
+    filter_three.init(latest_data)
 
     end_time = time.time()
-    print(f'Time taken from start to finish: {end_time - start_time:.2f}')
+
+    print(f'Time taken from start to finish: {end_time-start_time:.2f}')
     print(f'Script executed..')

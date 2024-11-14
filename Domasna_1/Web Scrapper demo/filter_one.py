@@ -1,5 +1,3 @@
-import time
-
 import requests
 from bs4 import BeautifulSoup
 import psycopg2
@@ -8,7 +6,6 @@ import logging
 import os
 import json
 from dotenv import load_dotenv
-import pipe
 
 load_dotenv()
 
@@ -111,12 +108,12 @@ def insert_into_db(shifri_list):
 
 def init(conn):
     if check_table('stocks', conn):
-        start_time = time.time()
+
         tikeri = fetch_tikeri_bs()
         save_to_json(tikeri)
-        end_time = time.time()
+
         insert_into_db(tikeri)
-        pipe.time_taken += (end_time - start_time)
+
         return tikeri
     else:
         return [entry[0] for entry in get_all_tickers()]

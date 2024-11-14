@@ -1,7 +1,6 @@
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import as_completed
 from datetime import timedelta, date
 from psycopg2 import pool
 import psycopg2
@@ -99,7 +98,6 @@ def init(latest_data):
         print(f"Missing tickers: {[entry[0] for entry in missing_tickers]}")
 
     latest_data.extend(missing_tickers)
-    # Connection pool
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, 10,
                                                    dbname=os.getenv("POSTGRES_DB"),
                                                    user=os.getenv("POSTGRES_USER"),
