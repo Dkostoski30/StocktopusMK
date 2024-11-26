@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {StockDTO} from "../model/dto/stockDTO.ts";
+import config from "../config/config.ts";
 
-const API_URL = 'http://localhost:8080/api/stocks';
+const BASE_URL = config.API_BASE_URL;
 
 export const getItems = async () => {
-    const response = await axios.get<StockDTO[]>(API_URL);
+    const response = await axios.get<StockDTO[]>(`${BASE_URL}/stocks`);
     return response.data;
 };
