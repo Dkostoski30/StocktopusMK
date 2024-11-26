@@ -1,5 +1,6 @@
 package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
@@ -9,13 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class StockServiceImpl implements StockService {
 
     private final StockRepository stockRepository;
-
-    public StockServiceImpl(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
-    }
 
     @Override
     public Optional<Stock> findByStockName(String stockName) {
