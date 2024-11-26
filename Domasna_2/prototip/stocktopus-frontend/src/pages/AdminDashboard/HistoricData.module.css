@@ -1,0 +1,165 @@
+.admin {
+    background: #f8f8f8;
+    padding: 0 40px 112px 0;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    background: #fff;
+    width: 17%;
+    padding: 19px 0 9px;
+}
+
+.content {
+    width: 83%;
+    margin-left: 20px;
+    margin-top: 37px;
+}
+
+.contentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.pageTitle {
+    font: 500 48px Poppins, sans-serif;
+    color: #000;
+}
+
+.profileImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.filterForm {
+    display: flex;
+    gap: 100px;
+    margin-bottom: 40px;
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 240px;
+}
+
+.filterLabel {
+    font: 400 16px Poppins, sans-serif;
+    color: #000;
+}
+
+.filterInput {
+    border: 1px solid rgba(19, 19, 19, 0.25);
+    border-radius: 3px;
+    padding: 13px 24px;
+    font: 300 16px Poppins, sans-serif;
+    color: rgba(19, 19, 19, 0.6);
+    background: #fff;
+}
+
+.tableContainer {
+    background: #fff;
+    border-radius: 3px;
+    padding: 19px 0;
+}
+
+.tableHeader {
+    display: flex;
+    padding: 0 72px;
+    gap: 20px;
+    font: 600 16px Lato, sans-serif;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.tableRow {
+    padding: 15px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.tickerCell {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    color: #0b63f8;
+}
+
+.tickerIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.dataCell {
+    display: flex;
+    gap: 48px;
+}
+
+.actionCell {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    margin-left: auto;
+}
+
+.deleteButton {
+    background: #ff4000;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 10px 24px;
+    cursor: pointer;
+}
+
+.editButton {
+    background: #feeddd;
+    color: #faaa8d;
+    border: none;
+    border-radius: 16px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.editIcon {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 991px) {
+    .admin {
+        padding: 0 20px 100px 0;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar,
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .pageTitle {
+        font-size: 40px;
+    }
+
+    .filterForm {
+        flex-direction: column;
+        gap: 20px;
+    }
+}

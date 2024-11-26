@@ -1,0 +1,126 @@
+.authContainer {
+    border-radius: 34px;
+    background: #fff;
+    box-shadow: 0 0 45px #e1c2a8;
+    overflow: hidden;
+    border: 10px solid #fff;
+}
+
+.contentWrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.imageSection {
+    flex: 0.58;
+    background: #feeedd;
+    padding: 111px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heroImage {
+    width: 800px;
+    height: 665px;
+    max-width: 100%;
+}
+
+.formSection {
+    flex: 0.42;
+    background: #fff;
+    padding: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.registerForm {
+    width: 420px;
+    max-width: 100%;
+}
+
+.formTitle {
+    font-size: 36px;
+    color: #525252;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.inputLabel {
+    color: #828282;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.inputField {
+    border: 1px solid #ded2d9;
+    border-radius: 5px;
+    padding: 13px 10px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.submitButton {
+    width: 100%;
+    background: #50c099;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 13px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 32px;
+    cursor: pointer;
+}
+
+.formFooter {
+    margin-top: 166px;
+    text-align: center;
+}
+
+.loginPrompt {
+    font-size: 18px;
+    color: #828282;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.loginLink {
+    color: #50c099;
+    font-weight: 600;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+@media (max-width: 991px) {
+    .contentWrapper {
+        flex-direction: column;
+    }
+
+    .imageSection,
+    .formSection {
+        width: 100%;
+        padding: 40px 20px;
+    }
+
+    .formFooter {
+        margin-top: 40px;
+    }
+}

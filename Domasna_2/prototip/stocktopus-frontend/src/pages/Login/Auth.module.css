@@ -1,0 +1,163 @@
+.loginContainer {
+    border-radius: 34px;
+    background: #fff;
+    box-shadow: 0 0 45px rgb(225, 194, 168);
+    overflow: hidden;
+    border: 10px solid #fff;
+}
+
+.contentWrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.imageSection {
+    width: 58%;
+    background: rgb(254, 239, 221);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 111px 80px;
+}
+
+.loginImage {
+    width: 800px;
+    height: 665px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.formSection {
+    width: 42%;
+    background: #fff;
+    padding: 287px 80px 75px;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.formWrapper {
+    width: 420px;
+    max-width: 100%;
+}
+
+.formTitle {
+    font-size: 36px;
+    color: rgb(82, 82, 82);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.inputContainer {
+    margin-bottom: 24px;
+}
+
+.inputLabel {
+    color: #828282;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.inputField {
+    width: 100%;
+    border: 1px solid rgb(222, 210, 217);
+    border-radius: 5px;
+    padding: 13px 10px;
+    color: #333;
+}
+
+.formOptions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgb(161, 161, 161);
+    cursor: pointer;
+}
+
+.checkboxIcon {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+}
+
+.checkboxLabel {
+    font-size: 12px;
+}
+
+.visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.forgotPassword {
+    color: rgb(80, 192, 153);
+    font-size: 12px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.loginButton {
+    width: 100%;
+    background: rgb(80, 192, 153);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 13px 10px;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.registerPrompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 342px;
+    font-size: 18px;
+}
+
+.registerText {
+    color: #828282;
+}
+
+.registerLink {
+    color: rgb(80, 192, 153);
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+@media (max-width: 991px) {
+    .contentWrapper {
+        flex-direction: column;
+    }
+
+    .imageSection,
+    .formSection {
+        width: 100%;
+        padding: 100px 20px;
+    }
+
+    .registerPrompt {
+        margin-top: 40px;
+    }
+}

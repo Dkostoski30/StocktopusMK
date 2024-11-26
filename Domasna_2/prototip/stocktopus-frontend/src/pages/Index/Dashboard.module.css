@@ -1,0 +1,354 @@
+.dashboardDesign {
+    //border: 1px solid var(#f9fafa, #3c75ad);
+    background: #fafbfc;
+    min-height: 100vh;
+}
+
+.layout {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    width: 18%;
+    background: #fff;
+    padding: 21px 30px 44px;
+    color: #737791;
+    font: 400 18px Poppins, sans-serif;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 30px;
+    color: #151d48;
+    font-weight: 600;
+}
+
+.logoImage {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.navItems {
+    margin-top: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.navItem,
+.navItemActive {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 24px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.navItemActive {
+    background: #5d5fef;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 20px 50px rgba(55, 69, 87, 0.1);
+}
+
+.navIcon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.navHeader {
+    color: #151d48;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 16px 0;
+}
+
+.signOut {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: auto;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+}
+
+.mainContent {
+    flex: 1;
+    padding: 29px 53px;
+    background: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.pageTitle {
+    color: #151d48;
+    font: 600 36px/1.4 Poppins, sans-serif;
+}
+
+.searchWrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: #f9fafb;
+    border-radius: 16px;
+    min-width: 300px;
+}
+
+.searchInput {
+    border: none;
+    background: none;
+    color: #737791;
+    font: inherit;
+    width: 100%;
+}
+
+.searchInput::placeholder {
+    color: #737791;
+}
+
+.language {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 16px;
+    color: #374557;
+    font-weight: 600;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.userAvatar {
+    width: 66px;
+    height: 54px;
+    border-radius: 9999px;
+    object-fit: cover;
+}
+
+.userName {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #151d48;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.userRole {
+    color: #737791;
+    font-size: 14px;
+}
+
+.stockSection,
+.favoritesSection,
+.transactionsSection {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(238, 238, 238, 0.5);
+    border: 1px solid #f8f9fa;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.sectionTitle {
+    color: #05004e;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sectionSubtitle {
+    color: #737791;
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.exportButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #c3d3e2;
+    border-radius: 8px;
+    background: none;
+    color: #0f3659;
+    font: 500 14px Poppins, sans-serif;
+    cursor: pointer;
+}
+
+.stockGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stockCard {
+    border-radius: 16px;
+    padding: 20px;
+    background: #ffe2e5;
+}
+
+.stockIndicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fa5a7d;
+}
+
+.stockRank {
+    color: #151d48;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 16px 0;
+}
+
+.stockSymbol {
+    color: #425166;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.stockPercentage {
+    color: #4079ed;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.favoritesList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.favoriteRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.favoriteInfo {
+    display: flex;
+    gap: 20px;
+}
+
+.favoriteSymbol {
+    color: #444a6d;
+    text-decoration: underline;
+}
+
+.favoritePrice {
+    color: #000;
+    font-size: 14px;
+}
+
+.transactionBars {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 200px;
+    margin: 40px 0;
+}
+
+.transactionBar {
+    width: 12px;
+    background: #00e096;
+    border-radius: 2px;
+}
+
+.transactionYear {
+    color: #7b91b0;
+    font-size: 10px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.transactionTotal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #96a5b8;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.totalIndicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    background: #00e096;
+}
+
+.totalValue {
+    color: #222b45;
+    font: 500 14px Poppins, sans-serif;
+    margin-left: auto;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 991px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .mainContent {
+        padding: 20px;
+    }
+
+    .stockGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .favoriteRow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
