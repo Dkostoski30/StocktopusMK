@@ -18,7 +18,7 @@ export const getItems = async ({ page, size }: PaginationParams) => {
                 size: size
             }
         });
-        return response.data.content;
+        return response.data;
     } catch (error) {
         console.error("Error fetching stock details:", error);
         throw error;

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './HistoricData.module.css';
+import styles from '../pages/AdminDashboard/HistoricData.module.css';
 import { SidebarItem } from './types';
 
 interface SidebarProps {
@@ -17,12 +17,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ items, onSignOut }) => {
                 <div className={styles.activeLine} />
             </header>
 
-            <nav className={styles.navigation}>
+            <nav className={styles.navigation} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2rem auto' }}>
                 {items.map((item, index) => (
                     <a
                         key={index}
                         href="#"
                         className={`${styles.navItem} ${item.isActive ? styles.active : ''}`}
+                        style={{margin: '0.3rem auto'}}
                     >
                         <img src={item.icon} alt="" className={styles.navIcon} />
                         <span>{item.label}</span>
@@ -30,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ items, onSignOut }) => {
                 ))}
             </nav>
 
-            <footer className={styles.sidebarFooter}>
+            <footer className={styles.sidebarFooter} style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: '2rem auto' }}>
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/862d2e63579fcaa5b794b694e0012cbed9836472f8cfdb5ead0e8b84211a8afb?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.footerIcon} />
                 <button
                     onClick={onSignOut}

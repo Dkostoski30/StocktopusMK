@@ -4,6 +4,7 @@ import { Sidebar } from '../../components/Sidebar';
 import { FilterForm } from '../../components//FilterForm';
 import { TableRow } from '../../components/TableRow';
 import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
+import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 
 const sidebarItems: SidebarItem[] = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic Data', isActive: true },
@@ -53,26 +54,7 @@ export const AdminDashboard: React.FC = () => {
                     </header>
 
                     <FilterForm onSubmit={handleFilter} />
-
-                    <section className={styles.tableContainer}>
-                        <header className={styles.tableHeader}>
-                            <span>Ticker</span>
-                            <span>Date</span>
-                            <span>Max</span>
-                            <span>Min</span>
-                            <span>Price of last transaction</span>
-                        </header>
-
-                        {adminDashboard.map((item, index) => (
-                            <TableRow
-                                key={index}
-                                item={item}
-                                onEdit={handleEdit}
-                                onDelete={handleDelete}
-                            />
-                        ))}
-
-                    </section>
+                    <StockDetailsTable/>
                 </section>
             </div>
         </main>

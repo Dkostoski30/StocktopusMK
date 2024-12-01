@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'HistoricData.module.css';
+import styles from '../pages/AdminDashboard/HistoricData.module.css';
 
 interface FilterFormProps {
     onSubmit: (data: { ticker: string; dateFrom: string; dateTo: string }) => void;
@@ -10,11 +10,11 @@ export const FilterForm: React.FC<FilterFormProps> = ({ onSubmit }) => {
         <form className={styles.filterForm} onSubmit={(e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            onSubmit({
+           /* onSubmit({
                 ticker: formData.get('ticker') as string,
                 dateFrom: formData.get('dateFrom') as string,
                 dateTo: formData.get('dateTo') as string
-            });
+            });*/
         }}>
             <div className={styles.filterGroup}>
                 <label htmlFor="ticker" className={styles.filterLabel}>Ticker name</label>

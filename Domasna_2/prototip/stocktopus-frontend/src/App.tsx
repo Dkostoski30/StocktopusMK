@@ -1,12 +1,9 @@
 import './App.css';
-import React, { useEffect, useState } from "react";
-import { getItems } from "./service/stockDetailsService.ts";
-import { TableRow } from "./components/TableRow.tsx";
-import { TablePagination } from "@mui/material";
-import {StockDetailsDTO} from "./model/dto/stockDetailsDTO.ts";
+import {StockDetailsTable} from "./components/table-historic-data/StockDetailsTable.tsx";
+import {AdminDashboard} from "./pages/AdminDashboard/AdminDashboard.tsx";
 
 function App() {
-    const [items, setItems] = useState<StockDetailsDTO[]>([]);
+    /*const [items, setItems] = useState<StockDetailsDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
 
@@ -28,17 +25,17 @@ function App() {
         setItems(response);
     };
 
-    const handleEdit = () => {
+ /!*   const handleEdit = () => {
         // Handle edit logic
     };
 
     const handleDelete = () => {
         // Handle delete logic
-    };
+    };*!/*/
 
     return (
         <div className="App">
-            {items.map((item) => (
+        {/*    {items.map((item) => (
                 <TableRow
                     key={`${item.id}`}
                     item={item}
@@ -53,7 +50,8 @@ function App() {
                 onPageChange={handleChangePage}
                 rowsPerPage={size}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            />*/}
+            <AdminDashboard/>
         </div>
     );
 }

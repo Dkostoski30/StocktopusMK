@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from '../pages/AdminDashboard/HistoricData.module.css';
-import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
+import styles from '../../pages/AdminDashboard/HistoricData.module.css';
+import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 interface TableRowProps {
     item: StockDetailsDTO;
@@ -10,17 +10,16 @@ interface TableRowProps {
 
 export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) => {
     return (
-        <section className={styles.tableRow}>
+        <div className={styles.tableRow}>
             <div className={styles.tickerCell}>
-                {/*TODO: Checkbox*/}
-                {/*<img src={item.iconSrc} alt={`${item.ticker} icon`} className={styles.tickerIcon} />*/}
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>
             <div className={styles.dataCell}>
-                {/*<span>{item.date?.toLocaleDateString()}</span>*/}
                 <span>{item.maxPrice}</span>
             </div>
-            <span className={styles.priceCell}>{item.minPrice}</span>
+            <div className={styles.priceCell}>
+                <span>{item.minPrice}</span>
+            </div>
             <div className={styles.actionCell}>
                 <span className={styles.lastPrice}>{item.lastTransactionPrice}</span>
                 <button
@@ -35,11 +34,14 @@ export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) =>
                     onClick={() => onEdit(item)}
                     aria-label={`Edit ${item.stockName} data`}
                 >
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.editIcon} />
+                    <img
+                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                        alt=""
+                        className={styles.editIcon}
+                    />
                     <span>Edit</span>
                 </button>
             </div>
-            <hr className={styles.rowDivider} />
-        </section>
+        </div>
     );
 };
