@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { TableRow } from './TableRow';
-import styles from '../../pages/AdminDashboard/HistoricData.module.css';
+import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
 import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
 import {getItems} from "../../service/stockDetailsService.ts";
 import {TablePagination} from "@mui/material";
@@ -11,6 +11,7 @@ import {TablePagination} from "@mui/material";
     handleDelete: (item: StockDetailsDTO) => void;
 }*/
 
+// eslint-disable-next-line no-empty-pattern
 export const StockDetailsTable: React.FC = ({  }) => {
 
     const [items, setItems] = useState<StockDetailsDTO[]>([]);
@@ -54,7 +55,7 @@ export const StockDetailsTable: React.FC = ({  }) => {
                 </div>
                 {items.map((item) => (
                     <TableRow
-                        key={`${item.id}`}
+                        key={`${item.detailsId}`}
                         item={item}
                         onEdit={handleEdit}
                         onDelete={handleDelete}

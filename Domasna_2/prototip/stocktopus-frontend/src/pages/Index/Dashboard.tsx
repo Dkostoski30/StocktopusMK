@@ -4,8 +4,8 @@ import { StockCard } from '../../components/StockCard';
 import { FavoriteItem } from '../../components/FavoriteItem';
 import { TransactionBar } from '../../components/TransactionBar';
 import { UserProfile } from '../../components/UserProfile';
-import {Sidebar} from "../../components/Sidebar.tsx";
 import Navigation from "../../components/navigation/Navigation.tsx";
+import logo from '../../assets/logo.png';
 
 const stockData = [
     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
@@ -42,7 +42,7 @@ export const Dashboard: React.FC = () => {
             <div className={styles.layout}>
                 <nav className={styles.sidebar}>
                     <div className={styles.logo}>
-                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/a7b13d081eb2f43b64030c8804c09ad540d5e83581936bfad5fd5799c3de3ffa?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="Stocktopus logo" className={styles.logoImage} />
+                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage} />
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
 

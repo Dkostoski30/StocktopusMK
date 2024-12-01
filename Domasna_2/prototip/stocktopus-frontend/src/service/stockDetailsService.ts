@@ -1,6 +1,7 @@
 import axios from 'axios';
 import config from "../config/config.ts";
-import { StockDetailsDTO } from "../model/dto/stockDetailsDTO.ts";
+import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
+import {SetStateAction} from "react";
 
 const BASE_URL = config.API_BASE_URL;
 
@@ -9,9 +10,11 @@ interface PaginationParams {
     size: number;
 }
 
-export const getItems = async ({ page, size }: PaginationParams) => {
+export const getItems = async ({page, size}: PaginationParams) => {
     try {
-        const response = await axios.get<{content: StockDetailsDTO[]}>(`${BASE_URL}/stock-details`, {
+        const response = await axios.get<{
+            totalElements: SetStateAction<number>; content: StockDetailsDTO[]
+        }>(`${BASE_URL}/stock-details`, {
             params: {
                 page: page,
                 size: size

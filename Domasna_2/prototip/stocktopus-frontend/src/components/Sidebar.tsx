@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../pages/AdminDashboard/HistoricData.module.css';
+import styles from '../pages/AdminDashboard/AdminDashboard.module.css';
 import { SidebarItem } from './types';
 import {Link} from "react-router-dom";
 

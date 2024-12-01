@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import styles from './Auth.module.css';
-import { InputField } from './InputField';
-import { AuthLayout } from './AuthLayout';
+import styles from './RegisterForm.module.css';
+import { InputField } from '../../components/InputField';
+import { AuthLayout } from '../../components/AuthLayout';
+import {useNavigate} from "react-router-dom";
 
 export const RegisterForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -19,57 +20,52 @@ export const RegisterForm: React.FC = () => {
         e.preventDefault();
     };
 
+    const navigate = useNavigate();
+
+    const handleNavigation = (path: string) => {
+        navigate(path);
+    };
+
     return (
-        <AuthLayout>
-            <form onSubmit={handleSubmit} className={styles.registerForm}>
-                <h1 className={styles.formTitle}>Register to your Account</h1>
-
-                <div className={styles.formFields}>
-                    <InputField
-                        label="Email"
-                        value={formData.email}
-                        type="email"
-                        placeholder="mail@abc.com"
-                        onChange={handleInputChange('email')}
-                    />
-
-                    <InputField
-                        label="Username"
-                        value={formData.username}
-                        placeholder="Username"
-                        onChange={handleInputChange('username')}
-                    />
-
-                    <InputField
-                        label="Password"
-                        value={formData.password}
-                        type="password"
-                        placeholder="*****************"
-                        onChange={handleInputChange('password')}
-                    />
-
-                    <InputField
-                        label="Repeat Password"
-                        value={formData.repeatPassword}
-                        type="password"
-                        placeholder="*****************"
-                        onChange={handleInputChange('repeatPassword')}
-                    />
-                </div>
-
+        <AuthLayout title="Register to your Account">
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <InputField
+                    label="Email"
+                    value={formData.email}
+                    type="email"
+                    placeholder="mail@abc.com"
+                    onChange={handleInputChange('email')}
+                />
+                <InputField
+                    label="Username"
+                    value={formData.username}
+                    placeholder="Username"
+                    onChange={handleInputChange('username')}
+                />
+                <InputField
+                    label="Password"
+                    value={formData.password}
+                    type="password"
+                    placeholder="Enter your password"
+                    onChange={handleInputChange('password')}
+                />
+                <InputField
+                    label="Repeat Password"
+                    value={formData.repeatPassword}
+                    type="password"
+                    placeholder="Repeat your password"
+                    onChange={handleInputChange('repeatPassword')}
+                />
                 <button type="submit" className={styles.submitButton}>
                     Register
                 </button>
-
-                <footer className={styles.formFooter}>
-                    <p className={styles.loginPrompt}>
-                        Already have an account?
-                        <button className={styles.loginLink} type="button">
-                            Login
-                        </button>
-                    </p>
-                </footer>
             </form>
+            <div className={styles.loginPrompt}>
+                <p className={styles.promptText}>Already have an account?</p>
+                <button type="button" className={styles.loginLink} onClick={() => handleNavigation("/login")}>
+                    Login
+                </button>
+            </div>
         </AuthLayout>
     );
 };

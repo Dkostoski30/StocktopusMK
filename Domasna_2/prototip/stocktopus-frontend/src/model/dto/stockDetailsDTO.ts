@@ -1,5 +1,5 @@
 export interface StockDetailsDTO {
-    id: string;
+    detailsId: number;
     stockId: number;
     stockName: string;
     date: Date;

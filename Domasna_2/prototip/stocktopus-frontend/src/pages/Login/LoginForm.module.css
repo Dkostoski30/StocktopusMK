@@ -61,7 +61,7 @@
 
 .inputField {
     width: 100%;
-    border: 1px solid rgb(222, 210, 217);
+    border: 1px solid black;
     border-radius: 5px;
     padding: 13px 10px;
     color: #333;
@@ -125,12 +125,12 @@
 }
 
 .registerPrompt {
+    font-size: 18px;
+    color: #828282;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 342px;
-    font-size: 18px;
 }
 
 .registerText {
@@ -161,3 +161,63 @@
         margin-top: 40px;
     }
 }
+.authContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.contentWrapper {
+    display: flex;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imageSection {
+    flex: 1;
+}
+
+.authImage {
+    width: 100%;
+    height: auto;
+}
+
+.formSection {
+    flex: 1;
+    padding: 2rem;
+}
+
+.formWrapper {
+
+    margin: auto;
+}
+
+.formTitle {
+
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.inputField {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 13px 10px;
+    color: #333;
+    font-size: 16px;
+}
+
+::placeholder {
+    color: #a9a9a9;
+    font-size: 14px;
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: black;
+}
+

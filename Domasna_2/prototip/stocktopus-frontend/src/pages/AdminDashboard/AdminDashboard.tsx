@@ -1,11 +1,15 @@
 import React from 'react';
-import styles from './HistoricData.module.css';
-import { Sidebar } from '../../components/Sidebar';
+import styles from './AdminDashboard.module.css';
 import { FilterForm } from '../../components//FilterForm';
-import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 import Navigation from "../../components/navigation/Navigation.tsx";
 
+interface SidebarItem {
+    icon: string;
+    label: string;
+    path: string;
+    isActive: boolean;
+}
 
 const sidebarItems: SidebarItem[] = [
     {
@@ -33,33 +37,35 @@ const sidebarItems: SidebarItem[] = [
         isActive: false,
     },
 ];
-const adminDashboard: HistoricDataItem[] = [
-    {
-        ticker: 'KMB',
-        date: '23/09/2022',
-        max: '24.300,00',
-        min: '24.200,00',
-        lastPrice: '24.200,00',
-        iconSrc: 'https://cdn.builder.io/api/v1/image/assets/TEMP/78afbf77b7283a2ab4d0498aaa3ac5465213ab2b58eb75d671c400a4b5d1ade8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078'
-    },
-    // Additional data items would be added here
-];
+
+// const adminDashboard: HistoricDataItem[] = [
+//     {
+//         ticker: 'KMB',
+//         date: '23/09/2022',
+//         max: '24.300,00',
+//         min: '24.200,00',
+//         lastPrice: '24.200,00',
+//         iconSrc: 'https://cdn.builder.io/api/v1/image/assets/TEMP/78afbf77b7283a2ab4d0498aaa3ac5465213ab2b58eb75d671c400a4b5d1ade8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078'
+//     },
+// ];
 
 export const AdminDashboard: React.FC = () => {
-    const handleSignOut = () => {
-        // Handle sign out logic
-    };
+
+    // TODO: Implement the following functions
+    // const handleSignOut = () => {
+    //     // Handle sign out logic
+    // };
+    //
+    // const handleEdit = () => {
+    //     // Handle edit logic
+    // };
+    //
+    // const handleDelete = () => {
+    //     // Handle delete logic
+    // };
 
     const handleFilter = () => {
-        // Handle filter logic
-    };
-
-    const handleEdit = () => {
-        // Handle edit logic
-    };
-
-    const handleDelete = () => {
-        // Handle delete logic
+        // TODO Handle filter logic
     };
 
     return (

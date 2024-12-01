@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Navigation.module.css';
+// TODO integrate the logo
+// import logo from '../../assets/logo.png';
 
 interface SidebarItem {
     icon: string;
@@ -13,7 +15,7 @@ interface SidebarProps {
     items: SidebarItem[];
 }
 
-const Navigation: React.FC<SidebarProps> = ({ items, logo }) => {
+const Navigation: React.FC<SidebarProps> = ({ items}) => {
     const navigate = useNavigate();
 
     const handleNavigation = (path: string) => {
