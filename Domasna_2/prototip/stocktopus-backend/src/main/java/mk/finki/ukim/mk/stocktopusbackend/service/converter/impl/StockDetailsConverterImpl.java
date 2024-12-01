@@ -3,7 +3,6 @@ package mk.finki.ukim.mk.stocktopusbackend.service.converter.impl;
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
-import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class StockDetailsConverterImpl implements StockDetailsConverterService {
     @Override
     public StockDetailsDTO convertToStockDetailsDTO(StockDetails stockDetails) {
         return new StockDetailsDTO(
-                stockDetails.getId(),
+                stockDetails.getDetailsId(),
                 stockDetails.getStockId(),
                 stockService.findById(stockDetails.getStockId()).getStockName(),
                 stockDetails.getDate(),

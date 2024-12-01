@@ -13,8 +13,7 @@ import java.util.Date;
 public class StockDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private String id;
+    private Long detailsId;
 
     @Column(name = "stock_id")
     private Long stockId;

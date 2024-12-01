@@ -1,7 +1,6 @@
 import axios from 'axios';
 import config from "../config/config.ts";
 import { StockDetailsDTO } from "../model/dto/stockDetailsDTO.ts";
-import {StockDTO} from "../model/dto/stockDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
 

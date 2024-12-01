@@ -3,7 +3,7 @@ package mk.finki.ukim.mk.stocktopusbackend.model.dto;
 import java.util.Date;
 
 public record StockDetailsDTO(
-        String id,
+        Long detailsId,
         Long stockId,
         String stockName,
         Date date,
