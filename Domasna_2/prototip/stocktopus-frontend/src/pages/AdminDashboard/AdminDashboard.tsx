@@ -24,7 +24,7 @@ const adminDashboard: HistoricDataItem[] = [
     // Additional data items would be added here
 ];
 
-export const HistoricData: React.FC = () => {
+export const AdminDashboard: React.FC = () => {
     const handleSignOut = () => {
         // Handle sign out logic
     };
