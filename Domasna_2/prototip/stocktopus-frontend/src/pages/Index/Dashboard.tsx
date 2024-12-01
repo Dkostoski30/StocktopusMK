@@ -4,6 +4,8 @@ import { StockCard } from '../../components/StockCard';
 import { FavoriteItem } from '../../components/FavoriteItem';
 import { TransactionBar } from '../../components/TransactionBar';
 import { UserProfile } from '../../components/UserProfile';
+import {Sidebar} from "../../components/Sidebar.tsx";
+import Navigation from "../../components/navigation/Navigation.tsx";
 
 const stockData = [
     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
@@ -27,6 +29,12 @@ const transactionData = [
     { year: "2022", height: 36 },
     { year: "2023", height: 62 }
 ];
+const sidebarItems = [
+    { label: 'Dashboard', path: '/dashboard', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f9224e97de99c18d74abc9e62317cf1646b039cfd3846eeb8cbb04868775a31f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
+    { label: 'Historic Data', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
+    { label: 'Favorites', path: '/favorites', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e5e2117fd75d3701dbf88f7e792aa11874d249c73d02332b8a2aaed30bc7475c?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
+    { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
+];
 
 export const Dashboard: React.FC = () => {
     return (
@@ -38,7 +46,7 @@ export const Dashboard: React.FC = () => {
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
 
-                    <div className={styles.navItems}>
+                   {/* <div className={styles.navItems}>
                         <a href="/src/pages/Index/Dashboard/Dashboard" className={styles.navItemActive}>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9224e97de99c18d74abc9e62317cf1646b039cfd3846eeb8cbb04868775a31f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.navIcon} />
                             <span>Dashboard</span>
@@ -65,7 +73,8 @@ export const Dashboard: React.FC = () => {
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e1697d0b1c8ad5c8fcbd1adc4ecd8f67c488dca4dea605a87cd738dd7bdad002?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.navIcon} />
                             <span>Sign Out</span>
                         </button>
-                    </div>
+                    </div>*/}
+                    <Navigation items={sidebarItems}/>
                 </nav>
 
                 <div className={styles.mainContent}>

@@ -1,0 +1,27 @@
+.navItem,
+.navItemActive {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 24px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.navItem:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.navItemActive {
+    background: #5d5fef;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 20px 50px rgba(55, 69, 87, 0.1);
+}
+
+.navIcon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}

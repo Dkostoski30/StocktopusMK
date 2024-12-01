@@ -4,6 +4,7 @@ import { Sidebar } from '../../components/Sidebar';
 import { FilterForm } from '../../components//FilterForm';
 import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
+import Navigation from "../../components/navigation/Navigation.tsx";
 
 
 const sidebarItems: SidebarItem[] = [
@@ -64,7 +65,7 @@ export const AdminDashboard: React.FC = () => {
     return (
         <main className={styles.admin}>
             <div className={styles.container}>
-                <Sidebar items={sidebarItems} onSignOut={handleSignOut} />
+                <Navigation items={sidebarItems}/>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
                         <h2 className={styles.pageTitle}>Historic Data</h2>
