@@ -5,6 +5,7 @@ import java.util.Date;
 public record StockDetailsDTO(
         String id,
         Long stockId,
+        String stockName,
         Date date,
         String lastTransactionPrice,
         String maxPrice,

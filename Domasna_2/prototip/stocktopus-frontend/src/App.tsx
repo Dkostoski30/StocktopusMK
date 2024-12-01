@@ -1,61 +1,59 @@
 import './App.css';
-import { useEffect, useState } from "react";
-import { getItems } from "./service/stockService.ts";
-import { StockDTO } from "./model/dto/stockDTO.ts";
+import React, { useEffect, useState } from "react";
+import { getItems } from "./service/stockDetailsService.ts";
+import { TableRow } from "./components/TableRow.tsx";
+import { TablePagination } from "@mui/material";
+import {StockDetailsDTO} from "./model/dto/stockDetailsDTO.ts";
 
 function App() {
-    const [items, setItems] = useState<StockDTO[]>([]);
-    const [page, setPage] = useState(0); // Track the current page
-    const [size] = useState(10); // Number of items per page
-    const [loading, setLoading] = useState(false); // Track loading state
-    const [error, setError] = useState<string | null>(null); // Track error state
+    const [items, setItems] = useState<StockDetailsDTO[]>([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(25);
+
+    function handleChangePage(_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
+        setPage(newPage);
+    }
+
+    function handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
+        setSize(parseInt(event.target.value, 10));
+        setPage(0);
+    }
 
     useEffect(() => {
         loadItems();
-    }, [page, size]); // Trigger when page or size changes
+    }, [page, size]);
 
     const loadItems = async () => {
-        setLoading(true);
-        try {
-            const response = await getItems({ page, size });
-            setItems(response); // Update state with fetched items
-            setError(null); // Clear any previous errors
-        } catch (err) {
-            setError('Error fetching stocks.');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
+        const response = await getItems({ page, size });
+        setItems(response);
     };
 
-    const handleNextPage = () => {
-        setPage((prevPage) => prevPage + 1);
+    const handleEdit = () => {
+        // Handle edit logic
     };
 
-    const handlePreviousPage = () => {
-        setPage((prevPage) => Math.max(prevPage - 1, 0));
+    const handleDelete = () => {
+        // Handle delete logic
     };
 
     return (
         <div className="App">
-            <h1>Stock List</h1>
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            <ul>
-                {items.map(item => (
-                    <li key={item.stockId}>
-                        {item.stockName}
-                    </li>
-                ))}
-            </ul>
-            <div>
-                <button onClick={handlePreviousPage} disabled={page === 0}>
-                    Previous
-                </button>
-                <button onClick={handleNextPage}>
-                    Next
-                </button>
-            </div>
+            {items.map((item) => (
+                <TableRow
+                    key={`${item.id}`}
+                    item={item}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            ))}
+            <TablePagination
+                component="div"
+                count={100}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={size}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </div>
     );
 }

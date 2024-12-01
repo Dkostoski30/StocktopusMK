@@ -26,4 +26,9 @@ public class StockServiceImpl implements StockService {
     public Page<Stock> findAll(Pageable pageable) {
         return stockRepository.findAll(pageable);
     }
+
+    @Override
+    public Stock findById(Long id) {
+        return stockRepository.findById(id).get(); //TODO: add exception handling
+    }
 }

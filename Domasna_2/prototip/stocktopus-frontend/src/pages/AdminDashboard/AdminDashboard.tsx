@@ -71,6 +71,7 @@ export const HistoricData: React.FC = () => {
                                 onDelete={handleDelete}
                             />
                         ))}
+
                     </section>
                 </section>
             </div>

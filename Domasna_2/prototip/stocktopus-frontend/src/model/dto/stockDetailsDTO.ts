@@ -1,6 +1,7 @@
 export interface StockDetailsDTO {
     id: string;
     stockId: number;
+    stockName: string;
     date: Date;
     lastTransactionPrice: string;
     maxPrice: string;
