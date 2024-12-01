@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './HistoricData.module.css';
-import { Sidebar } from './Sidebar';
-import { FilterForm } from './FilterForm';
-import { TableRow } from './TableRow';
-import { HistoricDataItem, SidebarItem } from './types';
+import { Sidebar } from '../../components/Sidebar';
+import { FilterForm } from '../../components//FilterForm';
+import { TableRow } from '../../components/TableRow';
+import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
 
 const sidebarItems: SidebarItem[] = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic Data', isActive: true },
@@ -12,7 +12,7 @@ const sidebarItems: SidebarItem[] = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page' }
 ];
 
-const historicData: HistoricDataItem[] = [
+const adminDashboard: HistoricDataItem[] = [
     {
         ticker: 'KMB',
         date: '23/09/2022',
@@ -29,15 +29,15 @@ export const HistoricData: React.FC = () => {
         // Handle sign out logic
     };
 
-    const handleFilter = (filterData: { ticker: string; dateFrom: string; dateTo: string }) => {
+    const handleFilter = () => {
         // Handle filter logic
     };
 
-    const handleEdit = (item: HistoricDataItem) => {
+    const handleEdit = () => {
         // Handle edit logic
     };
 
-    const handleDelete = (item: HistoricDataItem) => {
+    const handleDelete = () => {
         // Handle delete logic
     };
 
@@ -63,7 +63,7 @@ export const HistoricData: React.FC = () => {
                             <span>Price of last transaction</span>
                         </header>
 
-                        {historicData.map((item, index) => (
+                        {adminDashboard.map((item, index) => (
                             <TableRow
                                 key={index}
                                 item={item}

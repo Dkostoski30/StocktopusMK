@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './Dashboard.module.css';
-import { StockCard } from './StockCard';
-import { FavoriteItem } from './FavoriteItem';
-import { TransactionBar } from './TransactionBar';
-import { UserProfile } from './UserProfile';
+import { StockCard } from '../../components/StockCard';
+import { FavoriteItem } from '../../components/FavoriteItem';
+import { TransactionBar } from '../../components/TransactionBar';
+import { UserProfile } from '../../components/UserProfile';
 
 const stockData = [
     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
