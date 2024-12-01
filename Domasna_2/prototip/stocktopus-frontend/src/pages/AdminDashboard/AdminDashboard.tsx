@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './HistoricData.module.css';
 import { Sidebar } from '../../components/Sidebar';
 import { FilterForm } from '../../components//FilterForm';
-import { TableRow } from '../../components/TableRow';
 import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 

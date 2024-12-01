@@ -164,4 +164,7 @@
         flex-direction: column;
         gap: 20px;
     }
+    #root > div > main > div > aside > header{
+        font-weight: 300;
+    }
 }
