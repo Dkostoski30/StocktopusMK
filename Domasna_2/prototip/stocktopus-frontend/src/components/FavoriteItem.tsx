@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Dashboard.module.css';
+import styles from '../pages/Index/Dashboard.module.css';
 import { FavoriteItemProps } from './types';
 
 export const FavoriteItem: React.FC<FavoriteItemProps> = ({ rank, symbol, maxPrice, avgPrice }) => {

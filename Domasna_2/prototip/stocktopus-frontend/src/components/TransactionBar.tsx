@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Dashboard.module.css';
+import styles from '../pages/Index/Dashboard.module.css';
 import { TransactionBarProps } from './types';
 
 export const TransactionBar: React.FC<TransactionBarProps> = ({ year, height }) => {

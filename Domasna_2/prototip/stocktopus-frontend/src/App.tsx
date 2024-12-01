@@ -1,6 +1,7 @@
 import './App.css';
-import {StockDetailsTable} from "./components/table-historic-data/StockDetailsTable.tsx";
 import {AdminDashboard} from "./pages/AdminDashboard/AdminDashboard.tsx";
+import {Route, Routes} from "react-router-dom";
+import {Dashboard} from "./pages/Index/Dashboard.tsx";
 
 function App() {
     /*const [items, setItems] = useState<StockDetailsDTO[]>([]);
@@ -51,7 +52,10 @@ function App() {
                 rowsPerPage={size}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />*/}
-            <AdminDashboard/>
+            <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/admin/*" element={<AdminDashboard />} />
+            </Routes>
         </div>
     );
 }
