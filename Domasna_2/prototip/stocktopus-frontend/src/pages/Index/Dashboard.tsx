@@ -44,7 +44,7 @@ export const Dashboard: React.FC = () => {
                             <span>Dashboard</span>
                         </a>
 
-                        <a href="/historic" className={styles.navItem}>
+                        <a href="/admin/stockdetails" className={styles.navItem}>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.navIcon} />
                             <span>Historic data</span>
                         </a>

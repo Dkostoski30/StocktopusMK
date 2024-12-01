@@ -5,13 +5,33 @@ import { FilterForm } from '../../components//FilterForm';
 import { HistoricDataItem, SidebarItem } from '../../model/dto/stockDetailsDTO.ts';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 
-const sidebarItems: SidebarItem[] = [
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic Data', isActive: true },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks' },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Users' },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page' }
-];
 
+const sidebarItems: SidebarItem[] = [
+    {
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        label: 'Historic Data',
+        path: '/admin/historic-data', // Path for Historic Data
+        isActive: true,
+    },
+    {
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        label: 'Stocks',
+        path: '/admin/stocks', // Path for Stocks
+        isActive: false,
+    },
+    {
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        label: 'Users',
+        path: '/admin/users', // Path for Users
+        isActive: false,
+    },
+    {
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        label: 'Back to Home Page',
+        path: '/', // Path to go back to Home Page
+        isActive: false,
+    },
+];
 const adminDashboard: HistoricDataItem[] = [
     {
         ticker: 'KMB',
@@ -45,7 +65,6 @@ export const AdminDashboard: React.FC = () => {
         <main className={styles.admin}>
             <div className={styles.container}>
                 <Sidebar items={sidebarItems} onSignOut={handleSignOut} />
-
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
                         <h2 className={styles.pageTitle}>Historic Data</h2>

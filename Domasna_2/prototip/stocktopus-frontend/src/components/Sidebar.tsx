@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../pages/AdminDashboard/HistoricData.module.css';
 import { SidebarItem } from './types';
+import {Link} from "react-router-dom";
 
 interface SidebarProps {
     items: SidebarItem[];
@@ -19,15 +20,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ items, onSignOut }) => {
 
             <nav className={styles.navigation} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2rem auto' }}>
                 {items.map((item, index) => (
-                    <a
+                    <Link
                         key={index}
-                        href="#"
-                        className={`${styles.navItem} ${item.isActive ? styles.active : ''}`}
-                        style={{margin: '0.3rem auto'}}
+                        to={item.path}
+                        className={`${styles.navItem} ${
+                            item.isActive ? styles.active : ''
+                        }`}
+                        style={{ margin: '0.3rem auto' }}
                     >
-                        <img src={item.icon} alt="" className={styles.navIcon} />
+                        <img
+                            src={item.icon}
+                            alt=""
+                            className={styles.navIcon}
+                        />
                         <span>{item.label}</span>
-                    </a>
+                    </Link>
                 ))}
             </nav>
 

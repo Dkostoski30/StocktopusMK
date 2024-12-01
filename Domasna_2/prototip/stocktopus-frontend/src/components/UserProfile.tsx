@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Dashboard.module.css';
+import styles from '../pages/Index/Dashboard.module.css';
 import { UserProfileProps } from './types';
 
 export const UserProfile: React.FC<UserProfileProps> = ({ name, role, imageUrl }) => {
