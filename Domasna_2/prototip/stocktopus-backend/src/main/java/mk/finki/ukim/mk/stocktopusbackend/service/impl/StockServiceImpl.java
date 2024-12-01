@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<Stock> findAll() {
-        return stockRepository.findAll();
+    public Page<Stock> findAll(Pageable pageable) {
+        return stockRepository.findAll(pageable);
     }
 }

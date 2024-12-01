@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockDetailsRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     private final StockDetailsRepository stockDetailsRepository;
 
     @Override
-    public List<StockDetails> findAll() {
-        return stockDetailsRepository.findAll();
+    public Page<StockDetails> findAll(Pageable pageable) {
+        return stockDetailsRepository.findAll(pageable);
     }
 }
