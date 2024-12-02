@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import {Dashboard} from "./pages/Index/Dashboard.tsx";
 import {LoginForm} from "./pages/Login/LoginForm.tsx";
 import {RegisterForm} from "./pages/Register/RegisterForm.tsx";
+import {AllStocks} from "./pages/Stocks/Stocks.tsx";
 
 function App() {
     /*const [items, setItems] = useState<StockDetailsDTO[]>([]);
@@ -39,7 +40,7 @@ function App() {
     return (
         <div className="App">
         {/*    {items.map((item) => (
-                <TableRow
+                <TableRowStocks
                     key={`${item.id}`}
                     item={item}
                     onEdit={handleEdit}
@@ -56,9 +57,10 @@ function App() {
             />*/}
             <Routes>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/admin/*" element={<AdminDashboard />} />
+                <Route path="/admin/historic-data" element={<AdminDashboard />} />
                 <Route path={"/login"} element={<LoginForm/>}></Route>
                 <Route path={"/register"} element={<RegisterForm/>}></Route>
+                <Route path={"/admin/stocks"} element={<AllStocks/>}></Route>
             </Routes>
         </div>
     );
