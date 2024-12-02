@@ -57,7 +57,7 @@ function App() {
             />*/}
             <Routes>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/admin/historic-data" element={<AdminDashboard />} />
+                <Route path="/admin/*" element={<AdminDashboard />} />
                 <Route path={"/login"} element={<LoginForm/>}></Route>
                 <Route path={"/register"} element={<RegisterForm/>}></Route>
                 <Route path={"/admin/stocks"} element={<AllStocks/>}></Route>

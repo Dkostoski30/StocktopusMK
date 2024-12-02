@@ -3,6 +3,7 @@ import styles from '../AdminDashboard/AdminDashboard.module.css';
 import { FilterForm } from '../../components//FilterForm';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {StocksTable} from "../../components/stocks-table/StocksTable.tsx";
+import logo from "../../assets/logo.png";
 
 interface SidebarItem {
     icon: string;
@@ -22,7 +23,7 @@ const sidebarItems: SidebarItem[] = [
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
         label: 'Stocks',
         path: '/admin/stocks', // Path for Stocks
-        isActive: false,
+        isActive: true,
     },
     {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
@@ -71,8 +72,11 @@ export const AllStocks: React.FC = () => {
     return (
         <main className={styles.admin}>
             <div className={styles.container}>
-                <div>
-                    <div className="_logo_1mr8b_39"><img src="/src/assets/logo.png" alt="Stocktopus logo" className="_logoImage_1mr8b_55"/><h1>Stocktopus</h1></div>
+                <div className={styles.navigation}>
+                    <div className={styles.logo}>
+                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
+                        <h1 className={styles.logoText}>Stocktopus</h1>
+                    </div>
                     <Navigation items={sidebarItems}/>
                 </div>
                 <section className={styles.content}>

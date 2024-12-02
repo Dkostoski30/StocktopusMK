@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
-import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
+import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
 
 interface TableRowProps {
     item: StockDetailsDTO;
@@ -9,20 +9,40 @@ interface TableRowProps {
 }
 
 export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) => {
+    // Format the date
+    const formatDate = (date: Date): string => {
+        const parsedDate = new Date(date);
+        const day = parsedDate.getDate().toString().padStart(2, '0');
+        const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+        const year = parsedDate.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
+    // Format nullable numeric values
+    const formatValue = (value: string ): string => {
+        return value !== null && value !== undefined && value !== "" ? value : '0,00';
+    };
+
     return (
         <div className={styles.tableRow}>
             <div className={styles.tickerCell}>
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>
+            <div className={styles.tickerCell}>
+                <span className={styles.dataCell}>{formatDate(item.date)}</span>
+            </div>
             <div className={styles.dataCell}>
-                <span>{item.maxPrice}</span>
+                <span>{formatValue(item.maxPrice)}</span>
             </div>
             <div className={styles.priceCell}>
-                <span>{item.minPrice}</span>
+                <span>{formatValue(item.minPrice)}</span>
+            </div>
+            <div className={styles.dataCell}>
+                <span className={styles.lastPrice}>{formatValue(item.lastTransactionPrice)}</span>
             </div>
             <div className={styles.actionCell}>
-                <span className={styles.lastPrice}>{item.lastTransactionPrice}</span>
-                <button
+
+            <button
                     className={styles.deleteButton}
                     onClick={() => onDelete(item)}
                     aria-label={`Delete ${item.detailsId} data`}

@@ -100,7 +100,6 @@
     padding: 15px 24px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 20px;
     border-bottom: 1px solid #eee;
 }
@@ -126,8 +125,8 @@
 .actionCell {
     display: flex;
     align-items: center;
-    gap: 12px;
-    /* margin-left: auto;*/
+    gap: 27px;
+   /* margin-left: auto;*/
 }
 
 .deleteButton {

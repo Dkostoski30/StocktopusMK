@@ -48,6 +48,7 @@ export const StockDetailsTable: React.FC = ({  }) => {
             <div className={styles.tableContainer}>
                 <div className={styles.tableHeader}>
                     <div className={styles.headerCell}>Stock Name</div>
+                    <div className={styles.headerCell}>Date</div>
                     <div className={styles.headerCell}>Max Price</div>
                     <div className={styles.headerCell}>Min Price</div>
                     <div className={styles.headerCell}>Last Transaction Price</div>

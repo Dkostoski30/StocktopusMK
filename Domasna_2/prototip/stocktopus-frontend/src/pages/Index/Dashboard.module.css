@@ -8,7 +8,10 @@
     display: flex;
     gap: 20px;
 }
-
+body{
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
 .sidebar {
     width: 18%;
     background: #fff;

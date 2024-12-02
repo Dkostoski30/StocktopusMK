@@ -3,6 +3,7 @@ import styles from './AdminDashboard.module.css';
 import { FilterForm } from '../../components//FilterForm';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 import Navigation from "../../components/navigation/Navigation.tsx";
+import logo from "../../assets/logo.png";
 
 interface SidebarItem {
     icon: string;
@@ -71,8 +72,11 @@ export const AdminDashboard: React.FC = () => {
     return (
         <main className={styles.admin}>
             <div className={styles.container}>
-                <div>
-                    <div className="_logo_1mr8b_39"><img src="/src/assets/logo.png" alt="Stocktopus logo" className="_logoImage_1mr8b_55"/><h1>Stocktopus</h1></div>
+                <div className={styles.navigation}>
+                    <div className={styles.logo}>
+                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
+                        <h1 className={styles.logoText}>Stocktopus</h1>
+                    </div>
                     <Navigation items={sidebarItems}/>
                 </div>
                 <section className={styles.content}>
