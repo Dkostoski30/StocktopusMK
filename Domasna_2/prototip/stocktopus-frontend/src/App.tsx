@@ -4,7 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import {Dashboard} from "./pages/Index/Dashboard.tsx";
 import {LoginForm} from "./pages/Login/LoginForm.tsx";
 import {RegisterForm} from "./pages/Register/RegisterForm.tsx";
-import {AllStocks} from "./pages/Stocks/Stocks.tsx";
+import {AllStocks} from "./pages/Stocks/AllStocks.tsx";
 
 function App() {
     /*const [items, setItems] = useState<StockDetailsDTO[]>([]);
