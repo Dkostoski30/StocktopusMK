@@ -113,7 +113,7 @@
     padding: 14px 24px;
     background: #f9fafb;
     border-radius: 16px;
-    min-width: 300px;
+    min-width: 600px;
 }
 
 .searchInput {
@@ -122,6 +122,7 @@
     color: #737791;
     font: inherit;
     width: 100%;
+    outline: none; /* Prevent focus outline */
 }
 
 .searchInput::placeholder {
@@ -349,5 +350,13 @@
     .favoriteRow {
         grid-template-columns: 1fr;
         gap: 10px;
+    }
+    .searchForm {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 24px;
+        background: #f9fafb;
+        border-radius: 16px;
     }
 }

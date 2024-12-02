@@ -10,7 +10,10 @@
     display: flex;
     gap: 20px;
 }
-
+body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 .imageSection {
     flex: 0.58;
     background: #feeedd;
@@ -112,14 +115,37 @@
 @media (max-width: 991px) {
     .contentWrapper {
         flex-direction: column;
+        width: 80%;
     }
+    .authContainer {
 
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f5f5;
+    }
+    .formSection {
+        width: 80%;
+        background: #fff;
+        padding: 287px 80px 75px;
+        font-family: 'Nunito Sans', sans-serif;
+    }
+    div > main > div > section._imageSection_14b5f_35{
+        display: none;
+    }
     .imageSection,
     .formSection {
-        width: 100%;
-        padding: 40px 20px;
+        width: 80%;
+        padding: 100px 20px;
     }
-
+    div > main > div > section._formSection_4xkh1_67{
+        width: 80%;
+    }
+    .imageSection{
+        display: none;
+    }
+    .registerPrompt {
+        margin-top: 40px;
+    }
     .formFooter {
         margin-top: 40px;
     }

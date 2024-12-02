@@ -56,7 +56,7 @@ export const RegisterForm: React.FC = () => {
                     placeholder="Repeat your password"
                     onChange={handleInputChange('repeatPassword')}
                 />
-                <button type="submit" className={styles.submitButton}>
+                <button type="submit" onClick={() => handleNavigation("/")} className={styles.submitButton}>
                     Register
                 </button>
             </form>

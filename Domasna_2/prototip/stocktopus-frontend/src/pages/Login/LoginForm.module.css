@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 .loginContainer {
     border-radius: 34px;
     background: #fff;
@@ -149,18 +153,40 @@
 @media (max-width: 991px) {
     .contentWrapper {
         flex-direction: column;
+        width: 80%;
+    }
+    .formSection {
+        width: 80%;
+        background: #fff;
+        padding: 287px 80px 75px;
+        font-family: 'Nunito Sans', sans-serif;
+    }
+    .authContainer {
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f5f5;
     }
 
+    div > main > div > section._imageSection_14b5f_35{
+        display: none;
+    }
+    body{
+        background-color: #f5f5f5;
+    }
     .imageSection,
     .formSection {
-        width: 100%;
+        width: 80%;
         padding: 100px 20px;
     }
-
+    .imageSection{
+        display: none;
+    }
     .registerPrompt {
         margin-top: 40px;
     }
 }
+
 .authContainer {
     display: flex;
     justify-content: center;

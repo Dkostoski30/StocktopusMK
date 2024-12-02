@@ -42,7 +42,7 @@ export const LoginForm: React.FC = () => {
                         Forgot Password?
                     </button>
                 </div>
-                <button type="submit" className={styles.loginButton}>
+                <button type="submit" onClick={() => handleNavigation("/")} className={styles.loginButton}>
                     Login
                 </button>
             </form>

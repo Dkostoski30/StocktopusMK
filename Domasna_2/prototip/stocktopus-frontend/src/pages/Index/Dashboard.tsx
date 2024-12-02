@@ -30,7 +30,7 @@ const transactionData = [
     { year: "2023", height: 62 }
 ];
 const sidebarItems = [
-    { label: 'Home Page', path: '/dashboard', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
+    { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'Favorites', path: '/favorites', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e5e2117fd75d3701dbf88f7e792aa11874d249c73d02332b8a2aaed30bc7475c?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
@@ -52,12 +52,12 @@ export const Dashboard: React.FC = () => {
 
                 <div className={styles.mainContent}>
                     <header className={styles.header}>
-                        <h1 className={styles.pageTitle}>Dashboard</h1>
+
 
                         <div className={styles.searchWrapper}>
                             <form className={styles.searchForm} role="search">
                                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.searchIcon} />
-                                <label htmlFor="search" className="visually-hidden">Search</label>
+                                {/*<label htmlFor="search" className="visually-hidden">Search</label>*/}
                                 <input
                                     id="search"
                                     type="search"
@@ -66,11 +66,11 @@ export const Dashboard: React.FC = () => {
                                 />
                             </form>
 
-                            <div className={styles.language}>
+                            {/*<div className={styles.language}>
                                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/09cb39a3457af96de902bd6884bfeb3762ec6198d43f45c770062ee7e5eb6e00?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.langIcon} />
                                 <span>Eng (US)</span>
                                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/9870da67962d92d40bdc46532f5a27ce8a7dfceb3d69ebf9ec337cfad4f19f5b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.dropdownIcon} />
-                            </div>
+                            </div>*/}
                         </div>
 
                         <UserProfile
