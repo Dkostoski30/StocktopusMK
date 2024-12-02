@@ -23,7 +23,7 @@
 
 .contentHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between !important;
     align-items: center;
     margin-bottom: 40px;
 }
@@ -79,6 +79,7 @@
     font: 600 16px Lato, sans-serif;
     color: #000;
     margin-bottom: 10px;
+    justify-content: space-between;
 }
 
 .tableRow {
@@ -93,7 +94,7 @@
     display: flex;
     align-items: center;
     gap: 24px;
-    color: #0b63f8;
+    /*color: #0b63f8;*/
 }
 
 .tickerIcon {
@@ -104,6 +105,7 @@
 .dataCell {
     display: flex;
     gap: 48px;
+    justify-content: space-between;
 }
 
 .actionCell {
@@ -167,4 +169,5 @@
     #root > div > main > div > aside > header{
         font-weight: 300;
     }
+
 }

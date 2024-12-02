@@ -14,9 +14,9 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
     {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Historic Data',
+        label: 'Admin Dashboard',
         path: '/admin/historic-data', // Path for Historic Data
-        isActive: true,
+        isActive: false,
     },
     {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
@@ -71,13 +71,15 @@ export const AdminDashboard: React.FC = () => {
     return (
         <main className={styles.admin}>
             <div className={styles.container}>
-                <Navigation items={sidebarItems}/>
+                <div>
+                    <div className="_logo_1mr8b_39"><img src="/src/assets/logo.png" alt="Stocktopus logo" className="_logoImage_1mr8b_55"/><h1>Stocktopus</h1></div>
+                    <Navigation items={sidebarItems}/>
+                </div>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Historic Data</h2>
+                        <h2 className={styles.pageTitle}>Admin dashboard</h2>
                         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/edd0cc2465c67fbbcb27e8435f6e07ee1d14bc6ec7c7c1067b36dbd60fb75071?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="User profile" className={styles.profileImage} />
                     </header>
-
                     <FilterForm onSubmit={handleFilter} />
                     <StockDetailsTable/>
                 </section>
