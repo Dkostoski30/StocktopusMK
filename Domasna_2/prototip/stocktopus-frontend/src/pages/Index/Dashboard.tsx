@@ -75,7 +75,7 @@ export const Dashboard: React.FC = () => {
                         </div>
 
                         <UserProfile
-                            name="Gordana"
+                            name="Daniela"
                             role="Admin"
                             imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                         />
@@ -101,13 +101,14 @@ export const Dashboard: React.FC = () => {
                     </section>
 
                     <section className={styles.favoritesSection}>
+                        <h2 className={styles.sectionTitle}>Favourites</h2>
                         <div className={styles.sectionHeader}>
-                            <h2 className={styles.sectionTitle}>Favourites</h2>
+
                             <div className={styles.columnHeaders}>
-                                <span>#</span>
-                                <span>Name</span>
-                                <span>Maximum price</span>
-                                <span>Avg. price</span>
+                                <div>#</div>
+                                <div style={{marginLeft:"-150px"}}>Name</div>
+                                <div style={{marginLeft:"280px"}}>Maximum price</div>
+                                <div style={{marginRight:"100px"}}>Avg. price</div>
                             </div>
                         </div>
 

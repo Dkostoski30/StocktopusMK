@@ -12,14 +12,13 @@
 .sidebar {
     background: #fff;
     width: 17%;
-    padding: 21px 30px 44px;
+    padding: 1px 30px 44px;
 }
 
 .content {
-    width: 83%;
+    width: 74%;
     /*margin-left: 20px;*/
-    margin-top: 37px;
-    margin-left: 20%;
+    /*margin-top: 37px;*/
 }
 
 .contentHeader {
@@ -186,6 +185,8 @@
     }
     .navigation{
         position: relative;
+        font-size: 18px;
+        font-weight: 600;
     }
     .content {
         width: 83%;
@@ -201,5 +202,14 @@ body{
 }
 .navigation{
     position: fixed;
+}
+.layout {
+    display: flex;
+    gap: 20px;
+}
+.dashboardDesign {
+//border: 1px solid var(#f9fafa, #3c75ad);
+    background: #fafbfc;
+    min-height: 100vh;
 }
 

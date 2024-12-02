@@ -187,9 +187,12 @@ body{
 }
 
 .sectionTitle {
+    display: block;
     color: #05004e;
     font-size: 20px;
     font-weight: 600;
+
+    text-align: start;
 }
 
 .sectionSubtitle {
@@ -216,7 +219,12 @@ body{
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
-
+.columnHeaders{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
 .stockCard {
     border-radius: 16px;
     padding: 20px;

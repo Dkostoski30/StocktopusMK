@@ -5,6 +5,7 @@ import {StockDetailsTable} from "../../components/table-historic-data/StockDetai
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from "../../assets/logo.png";
 import {Footer} from "../../components/footer/Footer.tsx";
+import {UserProfile} from "../../components/UserProfile.tsx";
 
 interface SidebarItem {
     icon: string;
@@ -16,7 +17,7 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
     {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Admin Dashboard',
+        label: 'Historic data',
         path: '/admin/historic-data', // Path for Historic Data
         isActive: true,
     },
@@ -71,21 +72,26 @@ export const AdminDashboard: React.FC = () => {
     };
 
     return (
-        <main className={styles.admin}>
-            <div className={styles.container}>
-                <div className={styles.navigation}>
+        <main className={styles.dashboardDesign}>
+            <div className={styles.layout}>
+                <nav className={styles.sidebar}>
                     <div className={styles.logo}>
                         <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
+
                     <Navigation items={sidebarItems}/>
-                </div>
+                </nav>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Admin dashboard</h2>
-                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/edd0cc2465c67fbbcb27e8435f6e07ee1d14bc6ec7c7c1067b36dbd60fb75071?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="User profile" className={styles.profileImage} />
+                        <h2 className={styles.pageTitle}>Historic data</h2>
+                        <UserProfile
+                            name="Daniela"
+                            role="Admin"
+                            imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                        />
                     </header>
-                    <FilterForm onSubmit={handleFilter} />
+                    <FilterForm onSubmit={handleFilter}/>
                     <StockDetailsTable/>
                 </section>
             </div>

@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from '../AdminDashboard/AdminDashboard.module.css';
-import { FilterForm } from '../../components//FilterForm';
+import { FilterFormStocks } from '../../components//FilterFormStocks';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {StocksTable} from "../../components/stocks-table/StocksTable.tsx";
 import logo from "../../assets/logo.png";
 import {Footer} from "../../components/footer/Footer.tsx";
+import {UserProfile} from "../../components/UserProfile.tsx";
 
 interface SidebarItem {
     icon: string;
@@ -71,21 +72,26 @@ export const AllStocks: React.FC = () => {
     };
 
     return (
-        <main className={styles.admin}>
-            <div className={styles.container}>
-                <div className={styles.navigation}>
+        <main className={styles.dashboardDesign}>
+            <div className={styles.layout}>
+                <nav className={styles.sidebar}>
                     <div className={styles.logo}>
                         <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
+
                     <Navigation items={sidebarItems}/>
-                </div>
+                </nav>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Stocks</h2>
-                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/edd0cc2465c67fbbcb27e8435f6e07ee1d14bc6ec7c7c1067b36dbd60fb75071?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="User profile" className={styles.profileImage} />
+                        <h2 className={styles.pageTitle}>Stocks </h2>
+                        <UserProfile
+                            name="Daniela"
+                            role="Admin"
+                            imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                        />
                     </header>
-                    <FilterForm onSubmit={handleFilter} />
+                    <FilterFormStocks onSubmit={handleFilter}/>
                     <StocksTable/>
                 </section>
             </div>

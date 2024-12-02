@@ -25,3 +25,36 @@
     height: 32px;
     object-fit: contain;
 }
+.navItem,
+.navItemActive {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 24px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 18px;
+    text-align: start;
+    text-wrap: unset;
+}
+
+.navItemActive {
+    background: rgb(191, 230, 245);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 20px 50px rgba(55, 69, 87, 0.1);
+}
+
+.navIcon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.navHeader {
+    color: #151d48;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 16px 0;
+}
