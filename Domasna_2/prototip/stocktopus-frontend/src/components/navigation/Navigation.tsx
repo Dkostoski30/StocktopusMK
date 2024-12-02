@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Navigation.module.css';
+
 // TODO integrate the logo
 // import logo from '../../assets/logo.png';
 
