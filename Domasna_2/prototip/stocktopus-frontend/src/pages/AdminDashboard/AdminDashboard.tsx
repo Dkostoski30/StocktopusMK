@@ -14,10 +14,10 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
     {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
         label: 'Admin Dashboard',
         path: '/admin/historic-data', // Path for Historic Data
-        isActive: false,
+        isActive: true,
     },
     {
         icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',

@@ -14,7 +14,7 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
     {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/ad57ba973d6234183fbe582f7b2ad112581cd54f80690691b147994e2370fcf6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
+        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
         label: 'Admin Dashboard',
         path: '/admin/historic-data', // Path for Historic Data
         isActive: false,
@@ -81,7 +81,7 @@ export const AllStocks: React.FC = () => {
                 </div>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Admin dashboard</h2>
+                        <h2 className={styles.pageTitle}>Stocks</h2>
                         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/edd0cc2465c67fbbcb27e8435f6e07ee1d14bc6ec7c7c1067b36dbd60fb75071?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="User profile" className={styles.profileImage} />
                     </header>
                     <FilterForm onSubmit={handleFilter} />

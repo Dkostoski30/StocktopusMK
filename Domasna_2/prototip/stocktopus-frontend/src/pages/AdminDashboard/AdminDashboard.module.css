@@ -12,7 +12,7 @@
 .sidebar {
     background: #fff;
     width: 17%;
-    padding: 19px 0 9px;
+    padding: 21px 30px 44px;
 }
 
 .content {
@@ -202,3 +202,4 @@ body{
 .navigation{
     position: fixed;
 }
+
