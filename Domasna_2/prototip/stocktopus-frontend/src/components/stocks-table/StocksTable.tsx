@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { TableRowStocks } from './TableRowStocks.tsx';
-import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
+import styles from '../../pages/Stocks/Stocks.module.css';
 import { StockDTO } from '../../model/dto/stockDTO.ts';
 import {getItems} from "../../service/stockService.ts";
 import {TablePagination} from "@mui/material";
@@ -50,6 +50,7 @@ export const StocksTable: React.FC = ({  }) => {
                 <div className={styles.tableHeader}>
                     <div className={styles.headerCell}>Stock ID</div>
                     <div className={styles.headerCell}>Stock Name</div>
+                    <div className={styles.headerCell} style={{marginLeft: '155px'}}>Actions</div>
                 </div>
                 {items.map((item) => (
                     <TableRowStocks
