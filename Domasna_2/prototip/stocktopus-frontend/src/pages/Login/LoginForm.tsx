@@ -4,6 +4,7 @@ import { InputField } from '../../components/InputField';
 // import { Checkbox } from '../../components/Checkbox';
 import { AuthLayout } from '../../components/AuthLayout';
 import {useNavigate} from "react-router-dom";
+import {Footer} from "../../components/footer/Footer.tsx";
 
 export const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -28,6 +29,7 @@ export const LoginForm: React.FC = () => {
                     value={email}
                     onChange={setEmail}
                     type="email"
+                    required
                     placeholder="mail@abc.com"
                 />
                 <InputField
@@ -35,12 +37,13 @@ export const LoginForm: React.FC = () => {
                     value={password}
                     onChange={setPassword}
                     type="password"
+                    required
                     placeholder="Enter your password"
                 />
                 <div className={styles.formOptions}>
-                    <button type="button" className={styles.forgotPassword}>
+                  {/*  <button type="button" className={styles.forgotPassword}>
                         Forgot Password?
-                    </button>
+                    </button>*/}
                 </div>
                 <button type="submit" onClick={() => handleNavigation("/")} className={styles.loginButton}>
                     Login
@@ -52,6 +55,8 @@ export const LoginForm: React.FC = () => {
                     Create an account
                 </button>
             </div>
+            <Footer/>
         </AuthLayout>
+
     );
 };

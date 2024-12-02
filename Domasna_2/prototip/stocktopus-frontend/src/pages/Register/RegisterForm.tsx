@@ -3,6 +3,7 @@ import styles from './RegisterForm.module.css';
 import { InputField } from '../../components/InputField';
 import { AuthLayout } from '../../components/AuthLayout';
 import {useNavigate} from "react-router-dom";
+import {Footer} from "../../components/footer/Footer.tsx";
 
 export const RegisterForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -41,6 +42,7 @@ export const RegisterForm: React.FC = () => {
                     value={formData.username}
                     placeholder="Username"
                     onChange={handleInputChange('username')}
+                    required
                 />
                 <InputField
                     label="Password"
@@ -48,12 +50,14 @@ export const RegisterForm: React.FC = () => {
                     type="password"
                     placeholder="Enter your password"
                     onChange={handleInputChange('password')}
+                    required
                 />
                 <InputField
                     label="Repeat Password"
                     value={formData.repeatPassword}
                     type="password"
                     placeholder="Repeat your password"
+                    required
                     onChange={handleInputChange('repeatPassword')}
                 />
                 <button type="submit" onClick={() => handleNavigation("/")} className={styles.submitButton}>
@@ -66,6 +70,7 @@ export const RegisterForm: React.FC = () => {
                     Login
                 </button>
             </div>
+            <Footer/>
         </AuthLayout>
     );
 };

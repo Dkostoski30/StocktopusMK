@@ -6,6 +6,7 @@ import { TransactionBar } from '../../components/TransactionBar';
 import { UserProfile } from '../../components/UserProfile';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
+import {Footer} from "../../components/footer/Footer.tsx";
 
 const stockData = [
     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
@@ -132,6 +133,7 @@ export const Dashboard: React.FC = () => {
                     </section>
                 </div>
             </div>
+            <Footer/>
         </main>
     );
 };

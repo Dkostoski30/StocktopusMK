@@ -11,7 +11,9 @@ interface PaginationParams {
 
 export const getItems = async ({ page, size }: PaginationParams) => {
     try {
-        const response = await axios.get<{ content: StockDTO[] }>(`${BASE_URL}/stocks`, {
+        const response = await axios.get<{
+            totalElements: SetStateAction<number>; content: StockDTO[]
+        }>(`${BASE_URL}/stocks`, {
             params: {
                 page: page,
                 size: size

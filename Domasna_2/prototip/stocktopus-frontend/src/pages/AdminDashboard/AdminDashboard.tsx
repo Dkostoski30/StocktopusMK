@@ -4,6 +4,7 @@ import { FilterForm } from '../../components//FilterForm';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from "../../assets/logo.png";
+import {Footer} from "../../components/footer/Footer.tsx";
 
 interface SidebarItem {
     icon: string;
@@ -88,6 +89,7 @@ export const AdminDashboard: React.FC = () => {
                     <StockDetailsTable/>
                 </section>
             </div>
+            <Footer/>
         </main>
     );
 };
