@@ -30,4 +30,9 @@ public class StockServiceImpl implements StockService {
     public Stock findById(Long id) {
         return stockRepository.findById(id).get(); //TODO: add exception handling
     }
+
+    @Override
+    public void deleteById(Long id) {
+        stockRepository.deleteById(id);
+    }
 }

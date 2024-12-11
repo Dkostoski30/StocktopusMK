@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { StockDTO } from "../model/dto/stockDTO.ts";
 import config from "../config/config.ts";
+import {SetStateAction} from "react";
 
 const BASE_URL = config.API_BASE_URL;
 
@@ -23,5 +24,13 @@ export const getItems = async ({ page, size }: PaginationParams) => {
     } catch (error) {
         console.error("Error fetching stocks:", error);
         throw error;
+    }
+};
+
+export const deleteItem = async (id: number) => {
+    try {
+        await axios.delete(`${BASE_URL}/stocks/${id}`);
+    } catch (error) {
+        console.error("Error deleting stock:", error);
     }
 };
