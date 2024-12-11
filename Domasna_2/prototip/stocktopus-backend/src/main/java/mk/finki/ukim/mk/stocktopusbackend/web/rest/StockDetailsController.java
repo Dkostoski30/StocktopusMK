@@ -6,11 +6,7 @@ import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/stock-details")
@@ -23,5 +19,10 @@ public class StockDetailsController {
     public Page<StockDetailsDTO> findAll(Pageable pageable) {
         return this.stockDetailsService.findAll(pageable)
                 .map(stockDetailsConverterService::convertToStockDetailsDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStock(@PathVariable Long id){
+        stockDetailsService.deleteById(id);
     }
 }

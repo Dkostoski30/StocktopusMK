@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface StockDetailsService {
     Page<StockDetails> findAll(Pageable pageable);
+
+    void deleteById(Long id);
 }

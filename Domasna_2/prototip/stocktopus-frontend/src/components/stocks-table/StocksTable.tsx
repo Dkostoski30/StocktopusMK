@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { TableRowStocks } from './TableRowStocks.tsx';
 import styles from '../../pages/Stocks/Stocks.module.css';
 import { StockDTO } from '../../model/dto/stockDTO.ts';
-import { getItems, deleteItem } from '../../service/stockService.ts'; // Add deleteItem to your service
+import { getItems,deleteItem } from "../../service/stockService.ts";
+import SuccessDialog from '../successDialog/SuccessDialog'; // Import SuccessDialog
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 export const StocksTable: React.FC = () => {
@@ -10,8 +11,9 @@ export const StocksTable: React.FC = () => {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
     const [totalCount, setTotalCount] = useState(0);
-    const [open, setOpen] = useState(false); // State to control popup visibility
-    const [selectedStockId, setSelectedStockId] = useState<number | null>(null); // Store the stockId to be deleted
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // State for delete confirmation dialog
+    const [openSuccessDialog, setOpenSuccessDialog] = useState(false); // State for success dialog
+    const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
 
     useEffect(() => {
         loadItems();
@@ -34,21 +36,33 @@ export const StocksTable: React.FC = () => {
 
     const handleDeleteClick = (stockId: number) => {
         setSelectedStockId(stockId);
-        setOpen(true); // Show the confirmation popup
+        setOpenDeleteDialog(true);
     };
 
     const confirmDelete = async () => {
         if (selectedStockId !== null) {
-            await deleteItem(selectedStockId); // Call the delete API
-            setOpen(false);
-            setSelectedStockId(null);
-            loadItems(); // Refresh the table
+            try {
+                await deleteItem(selectedStockId);
+                setOpenDeleteDialog(false);
+                setOpenSuccessDialog(true); // Show success dialog
+                setSelectedStockId(null);
+                loadItems();
+            } catch (error) {
+                console.error('Error during delete:', error);
+                setOpenDeleteDialog(false);
+            }
         }
     };
 
-    const handleClose = () => {
-        setOpen(false);
+
+
+    const handleCloseDeleteDialog = () => {
+        setOpenDeleteDialog(false);
         setSelectedStockId(null);
+    };
+
+    const handleCloseSuccessDialog = () => {
+        setOpenSuccessDialog(false);
     };
 
     return (
@@ -63,7 +77,7 @@ export const StocksTable: React.FC = () => {
                     <TableRowStocks
                         key={`${item.stockId}`}
                         item={item}
-                        onEdit={() => {}}
+                        onEdit={() => {}} // Add edit logic if needed
                         onDelete={() => handleDeleteClick(item.stockId)}
                     />
                 ))}
@@ -77,26 +91,31 @@ export const StocksTable: React.FC = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
 
-            {/* Confirmation Dialog */}
             <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+                open={openDeleteDialog}
+                onClose={handleCloseDeleteDialog}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+                <DialogTitle id="delete-dialog-title">{"Confirm Delete"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="delete-dialog-description">
                         Are you sure you want to delete this stock?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">Cancel</Button>
                     <Button onClick={confirmDelete} color="secondary" autoFocus>
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <SuccessDialog
+                open={openSuccessDialog}
+                message="The stock has been successfully deleted."
+                onClose={handleCloseSuccessDialog}
+            />
         </div>
     );
 };

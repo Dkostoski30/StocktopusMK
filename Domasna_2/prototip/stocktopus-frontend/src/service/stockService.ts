@@ -29,8 +29,12 @@ export const getItems = async ({ page, size }: PaginationParams) => {
 
 export const deleteItem = async (id: number) => {
     try {
-        await axios.delete(`${BASE_URL}/stocks/${id}`);
-    } catch (error) {
-        console.error("Error deleting stock:", error);
+        const response = await axios.delete(`${BASE_URL}/stocks/${id}`);
+        if (response.status !== 200) {
+            throw new Error('Failed to delete item');
+        }
+    }finally {
+        console.log()
     }
 };
+

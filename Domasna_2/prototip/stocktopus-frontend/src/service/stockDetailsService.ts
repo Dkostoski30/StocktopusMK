@@ -26,3 +26,11 @@ export const getItems = async ({page, size}: PaginationParams) => {
         throw error;
     }
 };
+
+export const deleteStockDetails = async (id: number) => {
+    try {
+        await axios.delete(`${BASE_URL}/stock-details/${id}`);
+    } catch (error) {
+        console.error("Error deleting stock details:", error);
+    }
+};

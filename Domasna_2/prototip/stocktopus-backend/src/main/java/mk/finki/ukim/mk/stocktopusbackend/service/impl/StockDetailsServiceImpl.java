@@ -20,4 +20,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     public Page<StockDetails> findAll(Pageable pageable) {
         return stockDetailsRepository.findAll(pageable);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        stockDetailsRepository.deleteById(id);
+    }
 }
