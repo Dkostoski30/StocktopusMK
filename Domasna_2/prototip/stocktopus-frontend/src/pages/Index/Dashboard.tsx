@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard';
 import { FavoriteItem } from '../../components/FavoriteItem';
@@ -7,6 +7,9 @@ import { UserProfile } from '../../components/UserProfile';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
 import {Footer} from "../../components/footer/Footer.tsx";
+import Chart from "../../components/chart/Chart.tsx";
+import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
+import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
 
 const stockData = [
     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
@@ -39,6 +42,17 @@ const sidebarItems = [
 ];
 
 export const Dashboard: React.FC = () => {
+    const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
+
+    useEffect(() => {
+        const fetchStockIndicators = async () => {
+            const data = await getAllStockIndicators();
+            setStockIndicatorsData(data);
+        };
+        fetchStockIndicators();
+        console.log(stockIndicatorsData);
+    }, []);
+
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
@@ -57,7 +71,9 @@ export const Dashboard: React.FC = () => {
 
                         <div className={styles.searchWrapper}>
                             <form className={styles.searchForm} role="search">
-                                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.searchIcon} />
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                                    alt="" className={styles.searchIcon}/>
                                 {/*<label htmlFor="search" className="visually-hidden">Search</label>*/}
                                 <input
                                     id="search"
@@ -88,7 +104,9 @@ export const Dashboard: React.FC = () => {
                                 <p className={styles.sectionSubtitle}>Summary</p>
                             </div>
                             <button className={styles.exportButton}>
-                                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" />
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                                    alt=""/>
                                 Export
                             </button>
                         </div>
@@ -106,9 +124,9 @@ export const Dashboard: React.FC = () => {
 
                             <div className={styles.columnHeaders}>
                                 <div>#</div>
-                                <div style={{marginLeft:"-150px"}}>Name</div>
-                                <div style={{marginLeft:"280px"}}>Maximum price</div>
-                                <div style={{marginRight:"100px"}}>Avg. price</div>
+                                <div style={{marginLeft: "-150px"}}>Name</div>
+                                <div style={{marginLeft: "280px"}}>Maximum price</div>
+                                <div style={{marginRight: "100px"}}>Avg. price</div>
                             </div>
                         </div>
 
@@ -127,11 +145,16 @@ export const Dashboard: React.FC = () => {
                             ))}
                         </div>
                         <div className={styles.transactionTotal}>
-                            <div className={styles.totalIndicator} />
+                            <div className={styles.totalIndicator}/>
                             <span className={styles.totalLabel}>Num. of transactions</span>
                             <span className={styles.totalValue}>7.560</span>
                         </div>
                     </section>
+
+                    <div>
+                        <h1>Stock Indicators Chart</h1>
+                        <Chart data={stockIndicatorsData}/>
+                    </div>
                 </div>
             </div>
             <Footer/>
