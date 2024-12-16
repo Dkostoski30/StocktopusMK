@@ -38,3 +38,8 @@ export const deleteItem = async (id: number) => {
     }
 };
 
+export const editItem = async (id: number, data: StockDTO) => {
+    await axios.post(`${BASE_URL}/stocks/edit/${id}`, data);
+
+}
+

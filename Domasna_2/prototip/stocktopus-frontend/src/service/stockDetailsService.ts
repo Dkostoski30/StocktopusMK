@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from "../config/config.ts";
 import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
 import {SetStateAction} from "react";
+import {StockDetailsEditDTO} from "../model/dto/stockDetailsEditDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
 
@@ -34,3 +35,8 @@ export const deleteStockDetails = async (id: number) => {
         console.error("Error deleting stock details:", error);
     }
 };
+
+export const editStockDetails = async (id: number, data: StockDetailsEditDTO) => {
+    await axios.post(`${BASE_URL}/stock-details/edit/${id}`, data);
+
+}

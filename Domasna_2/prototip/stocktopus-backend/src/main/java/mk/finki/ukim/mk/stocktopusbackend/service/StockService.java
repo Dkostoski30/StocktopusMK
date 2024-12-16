@@ -1,6 +1,7 @@
 package mk.finki.ukim.mk.stocktopusbackend.service;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,4 +12,6 @@ public interface StockService {
     Page<Stock> findAll(Pageable pageable);
     Stock findById(Long id);
     void deleteById(Long id);
+
+    Stock editStockById(Long id, StockDTO stockDTO);
 }
