@@ -2,27 +2,53 @@ import React, { useEffect, useState } from 'react';
 import { TableRowStocks } from './TableRowStocks.tsx';
 import styles from '../../pages/Stocks/Stocks.module.css';
 import { StockDTO } from '../../model/dto/stockDTO.ts';
-import { getItems,deleteItem } from "../../service/stockService.ts";
-import SuccessDialog from '../successDialog/SuccessDialog'; // Import SuccessDialog
+import { getItems, deleteItem, editItem } from "../../service/stockService.ts";
+import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import Modal from "../modal/Modal.tsx";
 
 export const StocksTable: React.FC = () => {
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
     const [totalCount, setTotalCount] = useState(0);
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // State for delete confirmation dialog
-    const [openSuccessDialog, setOpenSuccessDialog] = useState(false); // State for success dialog
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+    const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [formData, setFormData] = useState<StockDTO>({
+        stockId: -1,
+        stockName: "",
+    });
+
+    const handleSave = async () => {
+        try {
+            if (formData.stockId !== -1) {
+                await editItem(formData.stockId, formData);
+                loadItems();
+                setModalOpen(false);
+                setOpenSuccessDialog(true);
+            }
+        } catch (error) {
+            console.error("Error editing item:", error);
+            setOpenErrorDialog(true);
+        }
+    };
 
     useEffect(() => {
         loadItems();
     }, [page, size]);
 
     const loadItems = async () => {
-        const response = await getItems({ page, size });
-        setItems(response.content);
-        setTotalCount(response.totalElements);
+        try {
+            const response = await getItems({ page, size });
+            setItems(response.content);
+            setTotalCount(response.totalElements);
+        } catch (error) {
+            console.error("Error fetching items:", error);
+        }
     };
 
     const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -54,8 +80,6 @@ export const StocksTable: React.FC = () => {
         }
     };
 
-
-
     const handleCloseDeleteDialog = () => {
         setOpenDeleteDialog(false);
         setSelectedStockId(null);
@@ -63,6 +87,10 @@ export const StocksTable: React.FC = () => {
 
     const handleCloseSuccessDialog = () => {
         setOpenSuccessDialog(false);
+    };
+
+    const handleCloseErrorDialog = () => {
+        setOpenErrorDialog(false);
     };
 
     return (
@@ -77,7 +105,13 @@ export const StocksTable: React.FC = () => {
                     <TableRowStocks
                         key={`${item.stockId}`}
                         item={item}
-                        onEdit={() => {}} // Add edit logic if needed
+                        onEdit={() => {
+                            setFormData({
+                                stockId: item.stockId,
+                                stockName: item.stockName,
+                            });
+                            setModalOpen(true);
+                        }}
                         onDelete={() => handleDeleteClick(item.stockId)}
                     />
                 ))}
@@ -113,9 +147,53 @@ export const StocksTable: React.FC = () => {
 
             <SuccessDialog
                 open={openSuccessDialog}
-                message="The stock has been successfully deleted."
+                message="The operation was successful."
                 onClose={handleCloseSuccessDialog}
             />
+
+            <Dialog
+                open={openErrorDialog}
+                onClose={handleCloseErrorDialog}
+                aria-labelledby="error-dialog-title"
+                aria-describedby="error-dialog-description"
+            >
+                <DialogTitle id="error-dialog-title">{"Error"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="error-dialog-description">
+                        There was an error processing your request.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseErrorDialog} color="primary">Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Modal
+                isOpen={isModalOpen}
+                title="Edit Item"
+                onClose={() => setModalOpen(false)}
+                onSave={handleSave}
+            >
+                <form>
+                    <div>
+                        <label htmlFor="stock_id">Stock ID:</label>
+                        <input
+                            id="stock_id"
+                            type="text"
+                            value={formData.stockId}
+                            disabled
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="stock_name">Stock Name:</label>
+                        <textarea
+                            id="stock_name"
+                            value={formData.stockName}
+                            onChange={(e) => setFormData({ ...formData, stockName: e.target.value })}
+                        />
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };
