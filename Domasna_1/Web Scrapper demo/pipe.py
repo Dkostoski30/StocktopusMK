@@ -1,4 +1,6 @@
 import time
+
+import datetime
 import psycopg2
 import filter_one
 import filter_two
@@ -60,7 +62,7 @@ if __name__ == '__main__':
     conn.close()
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
-
+    print([entry for entry in latest_data if entry[1] != datetime.date(2024, 12, 16)])
     filter_three.init(latest_data)
 
     end_time = time.time()
