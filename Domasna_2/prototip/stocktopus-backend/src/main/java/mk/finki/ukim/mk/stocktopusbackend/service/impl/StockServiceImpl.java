@@ -2,6 +2,7 @@ package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
@@ -40,10 +41,8 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockPercentageDTO> findBestFour() {
-        // Fetch raw data from the repository
         List<Object[]> rawResults = stockRepository.getBestFour();
 
-        // Map raw results to StockPercentageDTO
         return rawResults.stream()
                 .map(record -> new StockPercentageDTO(
                         ((Number) record[0]).longValue(), // stockId
@@ -51,5 +50,12 @@ public class StockServiceImpl implements StockService {
                         ((Number) record[2]).doubleValue() // stockPercentage
                 ))
                 .toList();
+    }
+
+    @Override
+    public Stock editStockById(Long id, StockDTO stockDTO) {
+        Stock stock = stockRepository.findById(id).orElseThrow(RuntimeException::new); // TODO add exception handling
+        stock.setStockName(stockDTO.stockName());
+        return stockRepository.save(stock);
     }
 }
