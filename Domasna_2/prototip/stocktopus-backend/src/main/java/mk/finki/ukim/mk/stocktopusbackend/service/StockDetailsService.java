@@ -1,13 +1,13 @@
 package mk.finki.ukim.mk.stocktopusbackend.service;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface StockDetailsService {
-    Page<StockDetails> findAll(Pageable pageable);
+    Page<StockDetails> findAll(Pageable pageable, StockDetailsFilter stockDetailsFilter);
 
     void deleteById(Long id);
 

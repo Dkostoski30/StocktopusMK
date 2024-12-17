@@ -41,15 +41,16 @@
 
 .filterForm {
     display: flex;
-    gap: 100px;
-    margin-bottom: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
 }
 
 .filterGroup {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    min-width: 240px;
+    margin-right: 10px;
 }
 
 .filterLabel {
@@ -213,3 +214,23 @@ body{
     min-height: 100vh;
 }
 
+.submitButton {
+    background-color: #75c5f6;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    margin-top: 13px;
+    width: 100px;
+}
+
+
+.filterInput[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}

@@ -8,7 +8,11 @@ import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentTex
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from '../modal/Modal.tsx';
 
-export const StockDetailsTable: React.FC = () => {
+interface StockDetailsTableProps {
+    filterData: { stockName: string; dateFrom: string; dateTo: string };
+}
+
+export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData }) => {
     const [items, setItems] = useState<StockDetailsDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
@@ -32,10 +36,10 @@ export const StockDetailsTable: React.FC = () => {
 
     useEffect(() => {
         loadItems();
-    }, [page, size]);
+    }, [page, size,filterData]);
 
     const loadItems = async () => {
-        const response = await getItems({ page, size });
+        const response = await getItems({ page, size, ...filterData });
         setItems(response.content);
         setTotalCount(response.totalElements);
     };
