@@ -2,6 +2,7 @@ package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockConverterService;
@@ -19,8 +20,9 @@ public class StockController {
     private final StockConverterService stockConverterService;
 
     @GetMapping
-    public Page<StockDTO> findAll(Pageable pageable) {
-        return this.stockService.findAll(pageable)
+    public Page<StockDTO> findAll(Pageable pageable, @RequestParam (required = false) String stockName) {
+        StockFilter stockFilter = new StockFilter(stockName);
+        return this.stockService.findAll(pageable, stockFilter)
                 .map(stockConverterService::convertToStockDTO);
     }
     @GetMapping("/getBestFour")

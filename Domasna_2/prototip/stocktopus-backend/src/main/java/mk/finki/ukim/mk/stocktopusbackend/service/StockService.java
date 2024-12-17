@@ -2,6 +2,7 @@ package mk.finki.ukim.mk.stocktopusbackend.service;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 public interface StockService {
     Optional<Stock> findByStockName(String stockName);
-    Page<Stock> findAll(Pageable pageable);
+    Page<Stock> findAll(Pageable pageable, StockFilter stockFilter);
     Stock findById(Long id);
     void deleteById(Long id);
     List<StockPercentageDTO> findBestFour();

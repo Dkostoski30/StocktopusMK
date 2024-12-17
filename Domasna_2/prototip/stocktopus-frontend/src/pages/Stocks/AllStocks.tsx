@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from '../AdminDashboard/AdminDashboard.module.css';
 import { FilterFormStocks } from '../../components//FilterFormStocks';
 import Navigation from "../../components/navigation/Navigation.tsx";
@@ -54,21 +54,10 @@ const sidebarItems: SidebarItem[] = [
 
 export const AllStocks: React.FC = () => {
 
-    // TODO: Implement the following functions
-    // const handleSignOut = () => {
-    //     // Handle sign out logic
-    // };
-    //
-    // const handleEdit = () => {
-    //     // Handle edit logic
-    // };
-    //
-    // const handleDelete = () => {
-    //     // Handle delete logic
-    // };
+    const [filterData, setFilterData] = useState({ stockName: ''});
 
-    const handleFilter = () => {
-        // TODO Handle filter logic
+    const handleFilter = (data: { stockName: string}) => {
+        setFilterData(data);
     };
 
     return (
@@ -92,7 +81,7 @@ export const AllStocks: React.FC = () => {
                         />
                     </header>
                     <FilterFormStocks onSubmit={handleFilter}/>
-                    <StocksTable/>
+                    <StocksTable filterData={filterData}/>
                 </section>
             </div>
             <Footer/>

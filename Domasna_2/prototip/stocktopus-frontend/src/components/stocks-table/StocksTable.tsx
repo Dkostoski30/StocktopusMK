@@ -7,7 +7,11 @@ import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import Modal from "../modal/Modal.tsx";
 
-export const StocksTable: React.FC = () => {
+interface StocksTableProps {
+    filterData: { stockName: string };
+}
+
+export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
@@ -39,15 +43,15 @@ export const StocksTable: React.FC = () => {
 
     useEffect(() => {
         loadItems();
-    }, [page, size]);
+    }, [page, size, filterData]);
 
     const loadItems = async () => {
         try {
-            const response = await getItems({ page, size });
+            const response = await getItems({ page, size, ...filterData });
             setItems(response.content);
             setTotalCount(response.totalElements);
         } catch (error) {
-            console.error("Error fetching items:", error);
+            console.error("Error loading stocks:", error);
         }
     };
 

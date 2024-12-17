@@ -54,19 +54,6 @@ const sidebarItems: SidebarItem[] = [
 
 export const AdminDashboard: React.FC = () => {
 
-    // TODO: Implement the following functions
-    // const handleSignOut = () => {
-    //     // Handle sign out logic
-    // };
-    //
-    // const handleEdit = () => {
-    //     // Handle edit logic
-    // };
-    //
-    // const handleDelete = () => {
-    //     // Handle delete logic
-    // };
-
     const [filterData, setFilterData] = useState({ stockName: '', dateFrom: '', dateTo: '' });
 
     const handleFilter = (data: { stockName: string; dateFrom: string; dateTo: string }) => {

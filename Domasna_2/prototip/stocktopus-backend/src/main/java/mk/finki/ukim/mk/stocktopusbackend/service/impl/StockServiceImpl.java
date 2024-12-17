@@ -3,6 +3,7 @@ package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
@@ -25,8 +26,8 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public Page<Stock> findAll(Pageable pageable) {
-        return stockRepository.findAll(pageable);
+    public Page<Stock> findAll(Pageable pageable, StockFilter stockFilter) {
+        return stockRepository.findAll(pageable, stockFilter);
     }
 
     @Override
