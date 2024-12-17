@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard';
 import { FavoriteItem } from '../../components/FavoriteItem';
@@ -10,13 +11,13 @@ import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
-
-const stockData = [
-    { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
-    { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
-    { rank: "3", symbol: "ALK", percentage: "+1,2% from yesterday" },
-    { rank: "4", symbol: "ADIN", percentage: "0,5% from yesterday" }
-];
+//
+// const stockData = [
+//     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
+//     { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
+//     { rank: "3", symbol: "ALK", percentage: "+1,2% from yesterday" },
+//     { rank: "4", symbol: "ADIN", percentage: "0,5% from yesterday" }
+// ];
 
 const favoriteData = [
     { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
@@ -43,15 +44,30 @@ const sidebarItems = [
 
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
-
+    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
     useEffect(() => {
         const fetchStockIndicators = async () => {
             const data = await getAllStockIndicators();
             setStockIndicatorsData(data);
         };
         fetchStockIndicators();
-        console.log(stockIndicatorsData);
-    }, []);
+
+        const fetchStockData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/stocks/getBestFour');
+                const formattedData = response.data.map((item: StockPercentageDTO, index: number) => ({
+                    rank: (index + 1).toString(),
+                    symbol: item.stockName,
+                    percentage: `${item.stockPercentage}% from yesterday`,
+                }));
+                setStockData(formattedData);
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+            }
+        };
+        fetchStockData();
+
+    }, []);;
 
     return (
         <main className={styles.dashboardDesign}>

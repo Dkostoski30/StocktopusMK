@@ -2,12 +2,14 @@ package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +36,20 @@ public class StockServiceImpl implements StockService {
     @Override
     public void deleteById(Long id) {
         stockRepository.deleteById(id);
+    }
+
+    @Override
+    public List<StockPercentageDTO> findBestFour() {
+        // Fetch raw data from the repository
+        List<Object[]> rawResults = stockRepository.getBestFour();
+
+        // Map raw results to StockPercentageDTO
+        return rawResults.stream()
+                .map(record -> new StockPercentageDTO(
+                        ((Number) record[0]).longValue(), // stockId
+                        (String) record[1],               // stockName
+                        ((Number) record[2]).doubleValue() // stockPercentage
+                ))
+                .toList();
     }
 }
