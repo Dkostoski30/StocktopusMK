@@ -6,8 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface StockDetailsRepository extends JpaRepository<StockDetails,Long> {
+
+
     @Query("""
             select sd from StockDetails sd
             join Stock s on sd.stockId = s.stockId
@@ -18,4 +24,13 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
             order by sd.date desc
             """)
     Page<StockDetails> findAll(Pageable pageable, StockDetailsFilter stockDetailsFilter);
+    @Query("""
+    SELECT sd
+    FROM StockDetails sd
+    JOIN Stock s ON sd.stockId = s.stockId
+    WHERE sd.date = :yesterday
+    ORDER BY sd.tradeVolume DESC
+    LIMIT 10
+""")
+    List<StockDetails> getMostTraded(@Param("yesterday") java.sql.Date yesterday);
 }

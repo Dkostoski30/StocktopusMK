@@ -1,0 +1,38 @@
+.tableCard {
+    margin: 20px 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.stockTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stockTable th, .stockTable td {
+    text-align: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.stockTable th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.stockTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.stockTable tr:hover {
+    background-color: #f1f5f9;
+}

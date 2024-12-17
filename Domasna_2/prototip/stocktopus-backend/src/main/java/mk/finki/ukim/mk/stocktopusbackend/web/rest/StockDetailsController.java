@@ -10,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/stock-details")
 @RequiredArgsConstructor
@@ -35,5 +38,12 @@ public class StockDetailsController {
     @PostMapping("/edit/{id}")
     public StockDetailsEditDTO editStock(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
         return stockDetailsConverterService.convertToStockDetailsEditDTO(stockDetailsService.editStockDetails(id, stockDetailsEditDTO));
+    }
+    @GetMapping("/getMostTraded")
+    public List<StockDetailsDTO> getMostTraded(){
+        return stockDetailsService.getMostTraded()
+                .stream()
+                .map(stockDetailsConverterService::convertToStockDetailsDTO)
+                .toList();
     }
 }

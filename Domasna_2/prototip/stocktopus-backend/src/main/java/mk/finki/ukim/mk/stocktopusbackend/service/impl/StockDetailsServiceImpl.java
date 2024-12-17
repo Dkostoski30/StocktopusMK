@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class StockDetailsServiceImpl implements StockDetailsService {
@@ -24,6 +28,13 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     @Override
     public void deleteById(Long id) {
         stockDetailsRepository.deleteById(id);
+    }
+
+    @Override
+    public List<StockDetails> getMostTraded() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        Date sqlYesterday = Date.valueOf(yesterday);
+        return stockDetailsRepository.getMostTraded(sqlYesterday);
     }
 
     @Override
