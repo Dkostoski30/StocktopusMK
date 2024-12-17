@@ -53,7 +53,6 @@ def clean_and_convert_row(row):
     return {key: clean_value(val) for key, val in row.items()}
 
 def get_ticker_data(stock_id):
-
     query = """
     SELECT date, last_transaction_price, max_price, min_price, 
            average_price, percentage_change, quantity, trade_volume, total_volume
@@ -66,20 +65,26 @@ def get_ticker_data(stock_id):
             with conn.cursor(cursor_factory=RealDictCursor) as cursor:
                 cursor.execute(query, (stock_id,))
                 results = cursor.fetchall()
-                return pd.DataFrame([clean_and_convert_row(row) for row in results])
+                df = pd.DataFrame([clean_and_convert_row(row) for row in results])
+                if not df.empty:
+                    df['date'] = pd.to_datetime(df['date'])
+                return df
     except psycopg2.Error as e:
         logging.error(f"Database error: {e}")
         return pd.DataFrame()
 
-def calculate_indicators(df, timeframe='daily'):
 
+def calculate_indicators(df, timeframe='daily'):
     if df.empty:
         logging.warning("No data available to calculate indicators.")
         return pd.DataFrame()
 
+    if not isinstance(df.index, pd.DatetimeIndex):
+        logging.error("DataFrame index must be a DatetimeIndex for resampling.")
+        return pd.DataFrame()
+
     df.fillna(0, inplace=True)
     df.replace(0, 1e-10, inplace=True)
-
 
     if timeframe == 'weekly':
         df = df.resample('W').mean()
@@ -90,12 +95,10 @@ def calculate_indicators(df, timeframe='daily'):
         logging.error("Missing 'last_transaction_price' column for indicator calculations.")
         return pd.DataFrame()
 
-
     df['SMA_50'] = df['last_transaction_price'].rolling(window=50).mean()
     df['EMA_50'] = df['last_transaction_price'].ewm(span=50, adjust=False).mean()
     df['SMA_200'] = df['last_transaction_price'].rolling(window=200).mean()
     df['EMA_200'] = df['last_transaction_price'].ewm(span=200, adjust=False).mean()
-
 
     df['RSI'] = ta.momentum.RSIIndicator(df['last_transaction_price'], window=14).rsi()
     df['MACD'] = ta.trend.MACD(df['last_transaction_price']).macd()
@@ -114,6 +117,7 @@ def calculate_indicators(df, timeframe='daily'):
     df['Bollinger Low'] = bb.bollinger_lband()
 
     return df
+
 
 def generate_signals(df):
     if df.empty:

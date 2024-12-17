@@ -32,4 +32,9 @@ public class StockController {
     public void deleteStock(@PathVariable Long id){
         stockService.deleteById(id);
     }
+
+    @PostMapping("/edit/{id}")
+    public StockDTO editStock(@PathVariable Long id, @RequestBody StockDTO stockDTO){
+        return stockConverterService.convertToStockDTO(stockService.editStockById(id, stockDTO));
+    }
 }

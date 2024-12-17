@@ -2,6 +2,7 @@ package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.data.domain.Page;
@@ -24,5 +25,10 @@ public class StockDetailsController {
     @DeleteMapping("/{id}")
     public void deleteStock(@PathVariable Long id){
         stockDetailsService.deleteById(id);
+    }
+
+    @PostMapping("/edit/{id}")
+    public StockDetailsEditDTO editStock(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
+        return stockDetailsConverterService.convertToStockDetailsEditDTO(stockDetailsService.editStockDetails(id, stockDetailsEditDTO));
     }
 }

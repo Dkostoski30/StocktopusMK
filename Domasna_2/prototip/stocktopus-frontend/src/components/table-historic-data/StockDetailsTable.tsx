@@ -2,18 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { TableRow } from './TableRow';
 import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
 import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
-import { getItems, deleteStockDetails } from '../../service/stockDetailsService.ts';
+import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
+import { getItems, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
-import SuccessDialog from '../successDialog/SuccessDialog'; // Import SuccessDialog
+import SuccessDialog from '../successDialog/SuccessDialog';
+import Modal from '../modal/Modal.tsx';
 
 export const StockDetailsTable: React.FC = () => {
     const [items, setItems] = useState<StockDetailsDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
     const [totalCount, setTotalCount] = useState(0);
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // State for delete confirmation dialog
-    const [openSuccessDialog, setOpenSuccessDialog] = useState(false); // State for success dialog
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+    const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedDetailsId, setSelectedDetailsId] = useState<number | null>(null);
+
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [formData, setFormData] = useState<StockDetailsEditDTO>({
+        lastTransactionPrice: '',
+        maxPrice: '',
+        minPrice: '',
+        averagePrice: '',
+        percentageChange: '',
+        quantity: '',
+        tradeVolume: '',
+        totalVolume: '',
+    });
 
     useEffect(() => {
         loadItems();
@@ -43,7 +58,7 @@ export const StockDetailsTable: React.FC = () => {
         if (selectedDetailsId !== null) {
             await deleteStockDetails(selectedDetailsId);
             setOpenDeleteDialog(false);
-            setOpenSuccessDialog(true); // Show success dialog
+            setOpenSuccessDialog(true);
             setSelectedDetailsId(null);
             loadItems();
         }
@@ -56,6 +71,24 @@ export const StockDetailsTable: React.FC = () => {
 
     const handleCloseSuccessDialog = () => {
         setOpenSuccessDialog(false);
+    };
+
+    const handleCloseErrorDialog = () => {
+        setOpenErrorDialog(false);
+    };
+
+    const handleSave = async () => {
+        try {
+            if (selectedDetailsId !== null) {
+                await editStockDetails(selectedDetailsId, formData);
+                loadItems();
+                setModalOpen(false);
+                setOpenSuccessDialog(true);
+            }
+        } catch (error) {
+            console.error("Error editing stock details:", error);
+            setOpenErrorDialog(true);
+        }
     };
 
     return (
@@ -73,7 +106,20 @@ export const StockDetailsTable: React.FC = () => {
                     <TableRow
                         key={`${item.detailsId}`}
                         item={item}
-                        onEdit={() => {}} // Add edit logic if needed
+                        onEdit={() => {
+                            setSelectedDetailsId(item.detailsId);
+                            setFormData({
+                                lastTransactionPrice: item.lastTransactionPrice,
+                                maxPrice: item.maxPrice,
+                                minPrice: item.minPrice,
+                                averagePrice: item.averagePrice,
+                                percentageChange: item.percentageChange,
+                                quantity: item.quantity,
+                                tradeVolume: item.tradeVolume,
+                                totalVolume: item.totalVolume,
+                            });
+                            setModalOpen(true);
+                        }}
                         onDelete={() => handleDeleteClick(item.detailsId)}
                     />
                 ))}
@@ -87,7 +133,6 @@ export const StockDetailsTable: React.FC = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
 
-            {/* Delete Confirmation Dialog */}
             <Dialog
                 open={openDeleteDialog}
                 onClose={handleCloseDeleteDialog}
@@ -110,9 +155,108 @@ export const StockDetailsTable: React.FC = () => {
 
             <SuccessDialog
                 open={openSuccessDialog}
-                message="The stock detail has been successfully deleted."
+                message="The stock detail has been successfully edited."
                 onClose={handleCloseSuccessDialog}
             />
+
+            <Dialog
+                open={openErrorDialog}
+                onClose={handleCloseErrorDialog}
+                aria-labelledby="error-dialog-title"
+                aria-describedby="error-dialog-description"
+            >
+                <DialogTitle id="error-dialog-title">{"Error"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="error-dialog-description">
+                        There was an error processing your request.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseErrorDialog} color="primary">Close</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Modal
+                isOpen={isModalOpen}
+                title="Edit Stock Details"
+                onClose={() => setModalOpen(false)}
+                onSave={handleSave}
+            >
+                <form>
+                    <div>
+                        <label htmlFor="last_transaction_price">Last Transaction Price:</label>
+                        <input
+                            id="last_transaction_price"
+                            type="text"
+                            value={formData.lastTransactionPrice}
+                            onChange={(e) => setFormData({ ...formData, lastTransactionPrice: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="max_price">Max Price:</label>
+                        <input
+                            id="max_price"
+                            type="text"
+                            value={formData.maxPrice}
+                            onChange={(e) => setFormData({ ...formData, maxPrice: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="min_price">Min Price:</label>
+                        <input
+                            id="min_price"
+                            type="text"
+                            value={formData.minPrice}
+                            onChange={(e) => setFormData({ ...formData, minPrice: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="average_price">Average Price:</label>
+                        <input
+                            id="average_price"
+                            type="text"
+                            value={formData.averagePrice}
+                            onChange={(e) => setFormData({ ...formData, averagePrice: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="percentage_change">Percentage Change:</label>
+                        <input
+                            id="percentage_change"
+                            type="text"
+                            value={formData.percentageChange}
+                            onChange={(e) => setFormData({ ...formData, percentageChange: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="quantity">Quantity:</label>
+                        <input
+                            id="quantity"
+                            type="text"
+                            value={formData.quantity}
+                            onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="trade_volume">Trade Volume:</label>
+                        <input
+                            id="trade_volume"
+                            type="text"
+                            value={formData.tradeVolume}
+                            onChange={(e) => setFormData({ ...formData, tradeVolume: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="total_volume">Total Volume:</label>
+                        <input
+                            id="total_volume"
+                            type="text"
+                            value={formData.totalVolume}
+                            onChange={(e) => setFormData({ ...formData, totalVolume: e.target.value })}
+                        />
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };

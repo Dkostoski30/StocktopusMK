@@ -165,14 +165,17 @@ def get_latestdata():
         port=os.getenv("DB_PORT")
     )
     cursor = conn.cursor()
-    query = """SELECT stock_id, MAX(date) AS latest_date
-                FROM stockdetails
-                GROUP BY stock_id;
-        """
-    cursor.execute(query)
-    results = cursor.fetchall()
-    cursor.close()
+    try:
+        query = """SELECT stock_id, MAX(date) AS latest_date
+                   FROM stockdetails
+                   GROUP BY stock_id;"""
+        cursor.execute(query)
+        results = cursor.fetchall()
+    finally:
+        cursor.close()
+        conn.close()
     return results
+
 
 
 def check_table(table_name, conn):
