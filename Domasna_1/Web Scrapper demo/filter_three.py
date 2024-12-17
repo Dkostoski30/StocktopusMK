@@ -13,7 +13,7 @@ import json
 load_dotenv()
 
 MAX_WORKERS = 200
-BATCH_SIZE = 100  # For efficient inserts
+BATCH_SIZE = 100
 
 def normalize_numeric_string(value):
     """Convert a numeric string with commas to a format Python can interpret."""
@@ -46,21 +46,21 @@ def ensure_table_exists(conn_pool):
     try:
         with conn.cursor() as cursor:
             create_table_sql = """
-                CREATE TABLE IF NOT EXISTS stockdetails (
-                    stock_id int NOT NULL,
-                    date DATE NOT NULL,
-                    last_transaction_price FLOAT,
-                    max_price FLOAT,
-                    min_price FLOAT,
-                    average_price FLOAT,
-                    percentage_change FLOAT,
-                    quantity BIGINT,
-                    trade_volume BIGINT,
-                    total_volume BIGINT,
-                    PRIMARY KEY (stock_id, date),
-                    FOREIGN KEY (stock_id) REFERENCES stocks(stock_id)
-                );
-            """
+                   CREATE TABLE IF NOT EXISTS stockdetails (
+                           stock_id int NOT NULL,
+                           date DATE NOT NULL,
+                           last_transaction_price VARCHAR(255),
+                           max_price VARCHAR(255),
+                           min_price VARCHAR(255),
+                           average_price VARCHAR(255),
+                           percentage_change VARCHAR(255),
+                           quantity VARCHAR(255),
+                           trade_volume VARCHAR(255),
+                           total_volume VARCHAR(255),
+                           PRIMARY KEY (stock_id, date),
+                           FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
+                       );
+               """
             cursor.execute(create_table_sql)
             conn.commit()
         print("Stock details table verified/created.")
@@ -155,7 +155,7 @@ def batch_insert_data(ticker, data, conn_pool):
 
 
 # Process individual stock entry
-def process_stock_entry(entry, conn_pool, session):
+def process_stock_entry(entry, conn_pool, session, retry_list):
     stock_id, latest_date = entry
     yesterday = date.today() - timedelta(days=1)
 
@@ -164,33 +164,43 @@ def process_stock_entry(entry, conn_pool, session):
         try:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT stock_name FROM stocks WHERE stock_id = %s;", (stock_id,))
-                stock_name = cursor.fetchone()[0]
+                stock_name = cursor.fetchone()
                 if stock_name:
-                    data = fetch_historic_data_bs4(stock_name, latest_date, session)
-                    batch_insert_data(stock_name, data, conn_pool)
+                    stock_name = stock_name[0]
+                    try:
+                        data = fetch_historic_data_bs4(stock_name, latest_date, session)
+                        batch_insert_data(stock_name, data, conn_pool)
+                    except Exception as e:
+                        print(f"Error processing {stock_name}: {e}")
+                        retry_list.append(entry)  # Log entry for retry
         finally:
             conn_pool.putconn(conn)
 
-def fetch_all_tickers_and_missing(latest_data):
-    with psycopg2.connect(
-        dbname=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-    ) as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT stock_id, stock_name FROM stocks;")
-        all_tickers = cursor.fetchall()
+def retry_unprocessed_tickers(unprocessed_entries, conn_pool, session, max_retries=3):
+    for attempt in range(max_retries):
+        if not unprocessed_entries:
+            break  # Exit if no tickers are left
+        print(f"Retrying {len(unprocessed_entries)} unprocessed tickers (Attempt {attempt + 1}/{max_retries})...")
+        retry_list = []
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            executor.map(lambda entry: process_stock_entry(entry, conn_pool, session, retry_list), unprocessed_entries)
+        unprocessed_entries = retry_list  # Update with remaining failures
 
-        missing_tickers = [
-            (ticker_id, date.today() - timedelta(days=3650))
-            for ticker_id, _ in all_tickers if ticker_id not in {entry[0] for entry in latest_data}
-        ]
+def fetch_all_tickers_and_missing(latest_data, conn_pool):
+    conn = conn_pool.getconn()
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT stock_id, stock_name FROM stocks;")
+            all_tickers = cursor.fetchall()
 
-        cursor.close()
-        print(f'Missing tickers: {missing_tickers}')
-        return latest_data + missing_tickers
+            missing_tickers = [
+                (ticker_id, date.today() - timedelta(days=3650))
+                for ticker_id, _ in all_tickers if ticker_id not in {entry[0] for entry in latest_data}
+            ]
+            print(f'Missing tickers: {len(missing_tickers)}')
+            return latest_data + missing_tickers
+    finally:
+        conn_pool.putconn(conn)
 
 # Main initialization
 def init(latest_data):
@@ -198,17 +208,20 @@ def init(latest_data):
     ensure_table_exists(conn_pool)
 
     # Combine missing and available tickers
-    combined_data = fetch_all_tickers_and_missing(latest_data)
+    combined_data = fetch_all_tickers_and_missing(latest_data, conn_pool)
 
     # Setup requests session with retries
     session = requests.Session()
     adapter = HTTPAdapter(max_retries=3)
     session.mount("https://", adapter)
-    session.mount("http://", adapter)
 
-    # Multithreading
+    # Process data
+    retry_list = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        executor.map(lambda entry: process_stock_entry(entry, conn_pool, session), combined_data)
+        executor.map(lambda entry: process_stock_entry(entry, conn_pool, session, retry_list), combined_data)
+
+    # Retry unprocessed tickers
+    retry_unprocessed_tickers(retry_list, conn_pool, session)
 
     conn_pool.closeall()
     print("Data initialization complete.")
