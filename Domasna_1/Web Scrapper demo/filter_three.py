@@ -1,5 +1,5 @@
 import os
-import time
+
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, date
 from psycopg2 import pool
@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
-import json
+
 
 load_dotenv()
 
@@ -16,15 +16,14 @@ MAX_WORKERS = 200
 BATCH_SIZE = 100
 
 def normalize_numeric_string(value):
-    """Convert a numeric string with commas to a format Python can interpret."""
+
     return value.replace('.', '').replace(',', '.')
 
-# Helper function for consistent date conversion
+
 def convert_date(date_str):
     return datetime.strptime(date_str, "%d.%m.%Y").strftime("%Y-%m-%d")
 
 
-# Database connection pool initialization
 def init_db_connection_pool():
     try:
         return psycopg2.pool.SimpleConnectionPool(
@@ -40,7 +39,7 @@ def init_db_connection_pool():
         raise
 
 
-# Create stockdetails table if it doesn't exist
+
 def ensure_table_exists(conn_pool):
     conn = conn_pool.getconn()
     try:
@@ -71,7 +70,7 @@ def ensure_table_exists(conn_pool):
         conn_pool.putconn(conn)
 
 
-# Fetch historic data for a ticker using BeautifulSoup
+
 def fetch_historic_data_bs4(ticker, start_date, session):
     base_url = f"https://www.mse.mk/mk/stats/symbolhistory/{ticker}"
     historic_data = []
@@ -94,19 +93,19 @@ def fetch_historic_data_bs4(ticker, start_date, session):
                 rows = table.find_all('tr')
                 for row in rows:
                     data_row = [cell.text.strip() for cell in row.find_all('td')]
-                    if len(data_row) == 9:  # Ensure valid row format
+                    if len(data_row) == 9:
                         historic_data.append(data_row)
 
             date_to = date_from - timedelta(days=1)
 
         except Exception as e:
             print(f"Error fetching data for {ticker}: {e}")
-            break  # Exit loop if there's a repeated failure
+            break
 
     return historic_data
 
 
-# Insert data into database using batch insert
+
 def batch_insert_data(ticker, data, conn_pool):
     insert_sql = """
         INSERT INTO stockdetails (stock_id, date, last_transaction_price, max_price, min_price, 
@@ -154,11 +153,12 @@ def batch_insert_data(ticker, data, conn_pool):
         conn_pool.putconn(conn)
 
 
-# Process individual stock entry
+
 def process_stock_entry(entry, conn_pool, session, retry_list):
     stock_id, latest_date = entry
     yesterday = date.today() - timedelta(days=1)
-
+    if isinstance(latest_date, datetime):
+        latest_date = latest_date.date()
     if latest_date != yesterday:
         conn = conn_pool.getconn()
         try:
@@ -172,19 +172,19 @@ def process_stock_entry(entry, conn_pool, session, retry_list):
                         batch_insert_data(stock_name, data, conn_pool)
                     except Exception as e:
                         print(f"Error processing {stock_name}: {e}")
-                        retry_list.append(entry)  # Log entry for retry
+                        retry_list.append(entry)
         finally:
             conn_pool.putconn(conn)
 
 def retry_unprocessed_tickers(unprocessed_entries, conn_pool, session, max_retries=3):
     for attempt in range(max_retries):
         if not unprocessed_entries:
-            break  # Exit if no tickers are left
+            break
         print(f"Retrying {len(unprocessed_entries)} unprocessed tickers (Attempt {attempt + 1}/{max_retries})...")
         retry_list = []
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             executor.map(lambda entry: process_stock_entry(entry, conn_pool, session, retry_list), unprocessed_entries)
-        unprocessed_entries = retry_list  # Update with remaining failures
+        unprocessed_entries = retry_list
 
 def fetch_all_tickers_and_missing(latest_data, conn_pool):
     conn = conn_pool.getconn()
@@ -202,25 +202,24 @@ def fetch_all_tickers_and_missing(latest_data, conn_pool):
     finally:
         conn_pool.putconn(conn)
 
-# Main initialization
 def init(latest_data):
     conn_pool = init_db_connection_pool()
     ensure_table_exists(conn_pool)
 
-    # Combine missing and available tickers
+
     combined_data = fetch_all_tickers_and_missing(latest_data, conn_pool)
 
-    # Setup requests session with retries
+
     session = requests.Session()
     adapter = HTTPAdapter(max_retries=3)
     session.mount("https://", adapter)
 
-    # Process data
+
     retry_list = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         executor.map(lambda entry: process_stock_entry(entry, conn_pool, session, retry_list), combined_data)
 
-    # Retry unprocessed tickers
+
     retry_unprocessed_tickers(retry_list, conn_pool, session)
 
     conn_pool.closeall()
