@@ -11,7 +11,6 @@ interface MostTradedTableProps {
 
 export const MostTradedTable: React.FC<MostTradedTableProps> = ({ data }) => {
     const parsePrice = (priceString: string): number => {
-        // Remove potential currency symbols or whitespace and parse as a number
         return parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
     };
 
@@ -29,7 +28,6 @@ export const MostTradedTable: React.FC<MostTradedTableProps> = ({ data }) => {
         return <RadioButtonUncheckedIcon className={styles.blueIcon} />;
     };
 
-
     return (
         <div className={styles.MostTradedTable}>
             <h2 className={styles.title}>Market Summary</h2>
@@ -44,7 +42,7 @@ export const MostTradedTable: React.FC<MostTradedTableProps> = ({ data }) => {
                 </thead>
                 <tbody>
                 {data.map((row, index) => (
-                    <tr key={index} className={getRowStyle(row.percentageChange)}>
+                    <tr key={index} className={`${getRowStyle(row.percentageChange)} ${styles.stockTableRow}`}>
                         <td>
                             {getIndicator(row.percentageChange)} {row.stockName}
                         </td>

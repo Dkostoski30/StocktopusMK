@@ -1,90 +1,142 @@
+/* Table Card */
 .tableCard {
     margin: 20px 0;
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
+.tableCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
 .title {
-    font-size: 20px;
+    font-size: 26px;
     font-weight: 600;
-    margin-bottom: 12px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
 }
 
+/* Stock Table */
 .stockTable {
     width: 100%;
     border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    transition: all 0.3s ease;
 }
 
-.stockTable th, .stockTable td {
+.stockTable th,
+.stockTable td {
     text-align: center;
-    padding: 8px 12px;
+    padding: 14px 18px;
     border-bottom: 1px solid #e0e0e0;
+    font-size: 16px;
+    color: #555;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .stockTable th {
-    background-color: #f8f9fa;
+    background-color: #f4f4f4;
     font-weight: bold;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.stockTable tr:nth-child(even) {
-    background-color: #f2f2f2;
+.stockTable tr:nth-child(even):not(.positive):not(.negative):not(.zero) {
+    background-color: #f9f9f9;
 }
 
 .stockTable tr:hover {
-    background-color: #f1f5f9;
+    background-color: #f0f8ff;
+}
+
+.stockTable tr:last-child td {
+    border-bottom: none;
 }
 
 /* Row-specific styles */
 .positive {
-    background-color: #e6f9ed; /* Light green for positive change */
-    color: #2e7d32; /* Dark green text */
+    background-color: #d4f7e7 !important; /* Light mint green */
+    color: #388e3c; /* Dark green */
+    transform: scale(1.03);
 }
 
 .negative {
-    background-color: #fbecec; /* Light red for negative change */
-    color: #d32f2f; /* Dark red text */
+    background-color: #fddde0 !important; /* Light blush pink */
+    color: #d32f2f; /* Dark red */
+    transform: scale(1.03);
 }
 
 .zero {
+    background-color: #e0f7fa !important; /* Light cyan */
+    color: #0288d1; /* Dark cyan */
+    transform: scale(1.03);
+}
 
-    color: #1976d2; /* Blue text */
+/* Hover effect on rows */
+.stockTable tr:hover.positive {
+    background-color: #b8e9d6;
+}
+
+.stockTable tr:hover.negative {
+    background-color: #f5c6cb;
+}
+
+.stockTable tr:hover.zero {
+    background-color: #b3e5fc;
 }
 
 /* Indicator-specific styles */
 .greenIcon {
-    color: #2e7d32; /* Green icon color */
+    color: #388e3c; /* Green icon */
+    font-size: 22px;
+    transition: color 0.2s ease;
 }
 
 .redIcon {
-    color: #d32f2f; /* Red icon color */
+    color: #d32f2f; /* Red icon */
+    font-size: 22px;
+    transition: color 0.2s ease;
 }
 
 .blueIcon {
-    color: #1976d2; /* Blue icon color */
-}
-.stockTable tr:nth-child(even):not(.positive):not(.negative):not(.zero) {
-    background-color: #f2f2f2;
-}
-
-.stockTable tr:hover {
-    background-color: #f1f5f9;
+    color: #0288d1; /* Blue icon */
+    font-size: 22px;
+    transition: color 0.2s ease;
 }
 
-/* Row-specific styles */
-.positive {
-    background-color: #e6f9ed !important; /* Light green for positive change */
-    color: #2e7d32; /* Dark green text */
+.greenIcon:hover,
+.redIcon:hover,
+.blueIcon:hover {
+    transform: scale(1.2);
 }
 
-.negative {
-    background-color: #fbecec !important; /* Light red for negative change */
-    color: #d32f2f; /* Dark red text */
-}
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .tableCard {
+        padding: 15px;
+    }
 
-.zero {
-    background-color: #e8f1fb !important; /* Light blue for no change */
-    color: #1976d2; /* Blue text */
+    .title {
+        font-size: 22px;
+    }
+
+    .stockTable th,
+    .stockTable td {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
 }

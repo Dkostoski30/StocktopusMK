@@ -96,6 +96,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     };
 
     return (
+
         <div>
             <div className={styles.tableContainer}>
                 <div className={styles.tableHeader}>

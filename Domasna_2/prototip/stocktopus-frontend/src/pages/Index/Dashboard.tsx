@@ -14,6 +14,7 @@ import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
 import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
+import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 //
 // const stockData = [
 //     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
@@ -135,12 +136,7 @@ export const Dashboard: React.FC = () => {
                                 <h2 className={styles.sectionTitle}>Today's Top</h2>
                                 <p className={styles.sectionSubtitle}>Summary</p>
                             </div>
-                            <button className={styles.exportButton}>
-                                <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt=""/>
-                                Export
-                            </button>
+
                         </div>
 
                         <div className={styles.stockGrid}>
@@ -149,48 +145,25 @@ export const Dashboard: React.FC = () => {
                             ))}
                         </div>
                     </section>
+                    <section className={styles.tableFavoritesSection}>
+                        <section className={styles.stockSection}>
+                            <button className={styles.exportButton}>
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                                    alt=""/>
+                                Export
+                            </button>
+                            <MostTradedTable data={mostTradedData}/>
+                        </section>
 
-                    <section className={styles.favoritesSection}>
-                        <h2 className={styles.sectionTitle}>Favourites</h2>
-                        <div className={styles.sectionHeader}>
-
-                            <div className={styles.columnHeaders}>
-                                <div>#</div>
-                                <div style={{marginLeft: "-150px"}}>Name</div>
-                                <div style={{marginLeft: "280px"}}>Maximum price</div>
-                                <div style={{marginRight: "100px"}}>Avg. price</div>
-                            </div>
-                        </div>
-
-                        <div className={styles.favoritesList}>
-                            {favoriteData.map((favorite) => (
-                                <FavoriteItem key={favorite.rank} {...favorite} />
-                            ))}
-                        </div>
+                        <section className={styles.favoritesSection}>
+                            <FavoritesSection favoriteData={favoriteData} />
+                        </section>
                     </section>
-
-                    <section className={styles.transactionsSection}>
-                        <h2 className={styles.sectionTitle}>Number of transactions</h2>
-                        <div className={styles.transactionBars}>
-                            {transactionData.map((transaction) => (
-                                <TransactionBar key={transaction.year} {...transaction} />
-                            ))}
-                        </div>
-                        <div className={styles.transactionTotal}>
-                            <div className={styles.totalIndicator}/>
-                            <span className={styles.totalLabel}>Num. of transactions</span>
-                            <span className={styles.totalValue}>7.560</span>
-                        </div>
-                    </section>
-
                     <div>
                         <h1>Stock Indicators Chart</h1>
                         <Chart data={stockIndicatorsData}/>
                     </div>
-                    <section className={styles.tableSection}>
-                        <h2 className={styles.sectionTitle}>Market Summary</h2>
-                        <MostTradedTable data={mostTradedData} />
-                    </section>
                 </div>
             </div>
             <Footer/>
