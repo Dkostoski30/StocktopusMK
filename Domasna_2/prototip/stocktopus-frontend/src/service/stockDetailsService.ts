@@ -1,7 +1,6 @@
 import axios from 'axios';
 import config from "../config/config.ts";
 import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
-import {SetStateAction} from "react";
 import {StockDetailsEditDTO} from "../model/dto/stockDetailsEditDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
@@ -11,19 +10,27 @@ interface PaginationParams {
     size: number;
 }
 
-export const getItems = async ({page, size}: PaginationParams) => {
+export const getItems = async ({ page, size, stockName, dateFrom, dateTo }: PaginationParams & {
+    stockName?: string;
+    dateFrom?: string;
+    dateTo?: string;
+}) => {
     try {
         const response = await axios.get<{
-            totalElements: SetStateAction<number>; content: StockDetailsDTO[]
+            totalElements: number;
+            content: StockDetailsDTO[];
         }>(`${BASE_URL}/stock-details`, {
             params: {
-                page: page,
-                size: size
-            }
+                page,
+                size,
+                stockName,
+                dateFrom,
+                dateTo,
+            },
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching stock details:", error);
+        console.error('Error fetching stock details:', error);
         throw error;
     }
 };

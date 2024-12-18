@@ -19,9 +19,8 @@ public class StockIndicatorsController {
 
     @GetMapping
     public List<StockIndicatorsDTO> findAll() {
-        List<StockIndicatorsDTO> list = this.stockIndicatorsService.findAll()
+        return this.stockIndicatorsService.findAll()
                 .stream().map(stockIndicatorsConverterService::convertToStockIndicatorsDTO)
                 .toList();
-        return list;
     }
 }

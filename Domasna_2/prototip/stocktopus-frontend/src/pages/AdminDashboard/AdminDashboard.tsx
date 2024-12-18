@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './AdminDashboard.module.css';
 import { FilterForm } from '../../components//FilterForm';
 import {StockDetailsTable} from "../../components/table-historic-data/StockDetailsTable";
@@ -54,21 +54,10 @@ const sidebarItems: SidebarItem[] = [
 
 export const AdminDashboard: React.FC = () => {
 
-    // TODO: Implement the following functions
-    // const handleSignOut = () => {
-    //     // Handle sign out logic
-    // };
-    //
-    // const handleEdit = () => {
-    //     // Handle edit logic
-    // };
-    //
-    // const handleDelete = () => {
-    //     // Handle delete logic
-    // };
+    const [filterData, setFilterData] = useState({ stockName: '', dateFrom: '', dateTo: '' });
 
-    const handleFilter = () => {
-        // TODO Handle filter logic
+    const handleFilter = (data: { stockName: string; dateFrom: string; dateTo: string }) => {
+        setFilterData(data);
     };
 
     return (
@@ -92,7 +81,7 @@ export const AdminDashboard: React.FC = () => {
                         />
                     </header>
                     <FilterForm onSubmit={handleFilter}/>
-                    <StockDetailsTable/>
+                    <StockDetailsTable filterData={filterData} />
                 </section>
             </div>
             <Footer/>
