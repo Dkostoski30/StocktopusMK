@@ -12,7 +12,7 @@ import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
-import {StockPercentageDTO} from "../../model/dto/stockPercentageDTO.ts";
+import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 //
 // const stockData = [
@@ -47,7 +47,7 @@ const sidebarItems = [
 
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
-    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
+    const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
 
     useEffect(() => {
@@ -57,51 +57,28 @@ export const Dashboard: React.FC = () => {
         };
         fetchStockIndicators();
 
-        const fetchStockData = async () => {
+        const fetchBestFour = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/stocks/getBestFour');
-                // @ts-ignore
-                // @ts-ignore
-                const formattedData = response.data.map((item: StockPercentageDTO, index: number) => ({
+                const data = await getBestFourStocks();
+                const formattedData = data.map((item, index) => ({
                     rank: (index + 1).toString(),
                     symbol: item.stockName,
                     percentage: `${item.stockPercentage}% from yesterday`,
                 }));
-                setStockData(formattedData);
+                setBestFour(formattedData);
             } catch (error) {
-                console.error("Error fetching stock data:", error);
+                console.error("Error fetching best four stocks:", error);
             }
         };
-        fetchStockData();
+        fetchBestFour();
 
         const fetchMostTradedData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/stock-details/getMostTraded');
-
-                if (Array.isArray(response.data)) {
-                    const formattedData: StockDetailsDTO[] = response.data.map((stock: any) => ({
-                        detailsId: stock.detailsId || 0,
-                        stockId: stock.stockId || 0,
-                        stockName: stock.stockName || "N/A",
-                        date: stock.date ? new Date(stock.date) : new Date(),
-                        lastTransactionPrice: stock.lastTransactionPrice?.toString() || "0",
-                        maxPrice: stock.maxPrice?.toString() || "0",
-                        minPrice: stock.minPrice?.toString() || "0",
-                        averagePrice: stock.averagePrice?.toString() || "0",
-                        percentageChange: stock.percentageChange?.toString() || "0%",
-                        quantity: stock.quantity?.toString() || "0",
-                        tradeVolume: stock.tradeVolume?.toString() || "0",
-                        totalVolume: stock.totalVolume?.toString() || "0",
-                    }));
-
-                    setMostTradedData(formattedData);
-                } else {
-                    console.error("Invalid data format received:", response.data);
-                    setMostTradedData([]); // Empty fallback
-                }
+                const data = await getMostTradedStocks();
+                setMostTradedData(data);
             } catch (error) {
-                console.error("Error fetching most traded stocks:", error);
-                setMostTradedData([]); // Prevent component from breaking
+                console.error('Error setting most traded data:', error);
+                setMostTradedData([]);
             }
         };
 
@@ -167,7 +144,7 @@ export const Dashboard: React.FC = () => {
                         </div>
 
                         <div className={styles.stockGrid}>
-                            {stockData.map((stock) => (
+                            {bestFour.map((stock) => (
                                 <StockCard key={stock.rank} {...stock} />
                             ))}
                         </div>
