@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard';
-import { FavoriteItem } from '../../components/FavoriteItem';
-import { TransactionBar } from '../../components/TransactionBar';
 import { UserProfile } from '../../components/UserProfile';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {MostTradedTable} from '../MostTradedTable/MostTradedTable.tsx'
@@ -12,14 +10,11 @@ import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.ts";
-import {StockPercentageDTO} from "../../model/dto/stockPercentageDTO.ts";
-import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
 import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
-import {getBestFourStocks} from "../../service/stockService.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
-//
+// TODO unused, remove
 // const stockData = [
 //     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
 //     { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
@@ -34,14 +29,15 @@ const favoriteData = [
     { rank: "04", symbol: "TTK", maxPrice: "25.218,05", avgPrice: "25.218,05" }
 ];
 
-const transactionData = [
-    { year: "2018", height: 79 },
-    { year: "2019", height: 89 },
-    { year: "2020", height: 36 },
-    { year: "2021", height: 41 },
-    { year: "2022", height: 36 },
-    { year: "2023", height: 62 }
-];
+// TODO unused, remove
+// const transactionData = [
+//     { year: "2018", height: 79 },
+//     { year: "2019", height: 89 },
+//     { year: "2020", height: 36 },
+//     { year: "2021", height: 41 },
+//     { year: "2022", height: 36 },
+//     { year: "2023", height: 62 }
+// ];
 const sidebarItems = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
     { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
@@ -61,13 +57,14 @@ export const Dashboard: React.FC = () => {
         const fetchBestFour = async () => {
             try {
                 const data = await getBestFourStocks();
-                const formattedData = data.map((item, index) => ({
+                const formattedData = data.map((item: { stockName: string; stockPercentage: number; stockId: number; }, index: number) => ({
                     rank: (index + 1).toString(),
                     symbol: item.stockName,
                     percentage: `${item.stockPercentage}% from yesterday`,
                     id: item.stockId
                 }));
                 setBestFour(formattedData);
+                setStockData(formattedData); // TODO adapt this with bestfour
             } catch (error) {
                 console.error("Error fetching best four stocks:", error);
             }
@@ -81,7 +78,7 @@ export const Dashboard: React.FC = () => {
                 const response = await axios.get('http://localhost:8080/api/stock-details/getMostTraded');
 
                 if (Array.isArray(response.data)) {
-                    const formattedData: StockDetailsDTO[] = response.data.map((stock: any) => ({
+                    const formattedData: StockDetailsDTO[] = response.data.map((stock: StockDetailsDTO) => ({
                         detailsId: stock.detailsId || 0,
                         stockId: stock.stockId || 0,
                         stockName: stock.stockName || "N/A",
@@ -159,7 +156,7 @@ export const Dashboard: React.FC = () => {
                                     className={styles.searchInput}
                                 />
                             </form>
-
+                            // TODO unused, remove
                             {/*<div className={styles.language}>
                                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/09cb39a3457af96de902bd6884bfeb3762ec6198d43f45c770062ee7e5eb6e00?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.langIcon} />
                                 <span>Eng (US)</span>
