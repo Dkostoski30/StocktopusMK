@@ -11,16 +11,11 @@ import logo from '../../assets/logo.png';
 import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
-import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
+import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.ts";
 import {StockPercentageDTO} from "../../model/dto/stockPercentageDTO.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
-//
-// const stockData = [
-//     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
-//     { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
-//     { rank: "3", symbol: "ALK", percentage: "+1,2% from yesterday" },
-//     { rank: "4", symbol: "ADIN", percentage: "0,5% from yesterday" }
-// ];
+import {getBestFourStocks} from "../../service/stockService.ts";
+
 
 const favoriteData = [
     { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
@@ -47,15 +42,10 @@ const sidebarItems = [
 
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
-    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
+    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id : number }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
 
     useEffect(() => {
-        const fetchStockIndicators = async () => {
-            const data = await getAllStockIndicators();
-            setStockIndicatorsData(data);
-        };
-        fetchStockIndicators();
 
         const fetchStockData = async () => {
             try {
@@ -66,6 +56,7 @@ export const Dashboard: React.FC = () => {
                     rank: (index + 1).toString(),
                     symbol: item.stockName,
                     percentage: `${item.stockPercentage}% from yesterday`,
+                    id: item.stockId
                 }));
                 setStockData(formattedData);
             } catch (error) {
@@ -97,16 +88,34 @@ export const Dashboard: React.FC = () => {
                     setMostTradedData(formattedData);
                 } else {
                     console.error("Invalid data format received:", response.data);
-                    setMostTradedData([]); // Empty fallback
+                    setMostTradedData([]);
                 }
             } catch (error) {
                 console.error("Error fetching most traded stocks:", error);
-                setMostTradedData([]); // Prevent component from breaking
+                setMostTradedData([]);
             }
         };
 
         fetchMostTradedData();
     }, []);
+
+    useEffect(() => {
+        const fetchIndicatorsById = async () => {
+            try {
+                if (stockData.length > 0) {
+                    const allStockIndicators = await Promise.all(
+                        stockData.map(stock => getStockIndicatorsByStockId(stock.id))
+                    );
+                    const combinedIndicators = allStockIndicators.flat();
+                    setStockIndicatorsData(combinedIndicators);
+                }
+            } catch (error) {
+                console.error("Error fetching stock indicators by ID:", error);
+            }
+        };
+
+        fetchIndicatorsById();
+    }, [stockData]);
 
     return (
         <main className={styles.dashboardDesign}>

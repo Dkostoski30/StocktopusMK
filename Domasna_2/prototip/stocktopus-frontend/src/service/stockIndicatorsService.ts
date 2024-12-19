@@ -13,3 +13,13 @@ export const getAllStockIndicators = async () : Promise<StockIndicatorsDTO[]> =>
         throw error;
     }
 };
+
+export const getStockIndicatorsByStockId = async (id: number): Promise<StockIndicatorsDTO[]> => {
+    try {
+        const response = await axios.get(`${BASE_URL}/stock-indicators/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching stock indicators for stock ID ${id}:`, error);
+        throw error;
+    }
+};

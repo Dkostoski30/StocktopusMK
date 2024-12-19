@@ -47,9 +47,19 @@ export const editItem = async (id: number, data: StockDTO) => {
 export const getBestFourStocks = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/stocks/getBestFour`);
-        return response.data; // This will contain the list of StockPercentageDTO
+        return response.data;
     } catch (error) {
         console.error("Error fetching the best four stocks:", error);
-        throw error; // Optionally re-throw the error to handle it elsewhere
+        throw error;
+    }
+};
+
+export const getStockById = async (id: number): Promise<StockDTO> => {
+    try {
+        const response = await axios.get<StockDTO>(`${BASE_URL}/stocks/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching stock with ID ${id}:`, error);
+        throw error;
     }
 };

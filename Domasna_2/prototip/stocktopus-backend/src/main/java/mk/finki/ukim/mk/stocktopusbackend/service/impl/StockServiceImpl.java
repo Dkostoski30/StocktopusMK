@@ -59,4 +59,11 @@ public class StockServiceImpl implements StockService {
         stock.setStockName(stockDTO.stockName());
         return stockRepository.save(stock);
     }
+
+    @Override
+    public StockDTO findStockDTOById(Long id) {
+        return stockRepository.findById(id)
+                .map(stock -> new StockDTO(stock.getStockId(), stock.getStockName()))
+                .orElseThrow(RuntimeException::new); // TODO add exception handling
+    }
 }

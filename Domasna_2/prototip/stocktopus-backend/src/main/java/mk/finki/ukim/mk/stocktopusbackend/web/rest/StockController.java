@@ -39,4 +39,9 @@ public class StockController {
     public StockDTO editStock(@PathVariable Long id, @RequestBody StockDTO stockDTO){
         return stockConverterService.convertToStockDTO(stockService.editStockById(id, stockDTO));
     }
+
+    @GetMapping("/{id}")
+    public StockDTO getStockDTOById(@PathVariable Long id){
+        return stockService.findStockDTOById(id);
+    }
 }
