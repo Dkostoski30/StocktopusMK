@@ -13,9 +13,19 @@ import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.ts";
 import {StockPercentageDTO} from "../../model/dto/stockPercentageDTO.ts";
+import {getAllStockIndicators} from "../../service/stockIndicatorsService.ts";
+import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 import {getBestFourStocks} from "../../service/stockService.ts";
 
+import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
+//
+// const stockData = [
+//     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
+//     { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
+//     { rank: "3", symbol: "ALK", percentage: "+1,2% from yesterday" },
+//     { rank: "4", symbol: "ADIN", percentage: "0,5% from yesterday" }
+// ];
 
 const favoriteData = [
     { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
@@ -42,31 +52,32 @@ const sidebarItems = [
 
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
+    const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
     const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id : number }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
 
     useEffect(() => {
 
-        const fetchStockData = async () => {
+        const fetchBestFour = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/stocks/getBestFour');
-                // @ts-ignore
-                // @ts-ignore
-                const formattedData = response.data.map((item: StockPercentageDTO, index: number) => ({
+                const data = await getBestFourStocks();
+                const formattedData = data.map((item, index) => ({
                     rank: (index + 1).toString(),
                     symbol: item.stockName,
                     percentage: `${item.stockPercentage}% from yesterday`,
                     id: item.stockId
                 }));
-                setStockData(formattedData);
+                setBestFour(formattedData);
             } catch (error) {
-                console.error("Error fetching stock data:", error);
+                console.error("Error fetching best four stocks:", error);
             }
         };
-        fetchStockData();
+        fetchBestFour();
 
         const fetchMostTradedData = async () => {
             try {
+                const data = await getMostTradedStocks();
+                setMostTradedData(data);
                 const response = await axios.get('http://localhost:8080/api/stock-details/getMostTraded');
 
                 if (Array.isArray(response.data)) {
@@ -91,6 +102,8 @@ export const Dashboard: React.FC = () => {
                     setMostTradedData([]);
                 }
             } catch (error) {
+                console.error('Error setting most traded data:', error);
+                setMostTradedData([]);
                 console.error("Error fetching most traded stocks:", error);
                 setMostTradedData([]);
             }
@@ -167,62 +180,34 @@ export const Dashboard: React.FC = () => {
                                 <h2 className={styles.sectionTitle}>Today's Top</h2>
                                 <p className={styles.sectionSubtitle}>Summary</p>
                             </div>
+
+                        </div>
+
+                        <div className={styles.stockGrid}>
+                            {bestFour.map((stock) => (
+                                <StockCard key={stock.rank} {...stock} />
+                            ))}
+                        </div>
+                    </section>
+                    <section className={styles.tableFavoritesSection}>
+                        <section className={styles.stockSection}>
                             <button className={styles.exportButton}>
                                 <img
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                                     alt=""/>
                                 Export
                             </button>
-                        </div>
+                            <MostTradedTable data={mostTradedData}/>
+                        </section>
 
-                        <div className={styles.stockGrid}>
-                            {stockData.map((stock) => (
-                                <StockCard key={stock.rank} {...stock} />
-                            ))}
-                        </div>
+                        <section className={styles.favoritesSection}>
+                            <FavoritesSection favoriteData={favoriteData} />
+                        </section>
                     </section>
-
-                    <section className={styles.favoritesSection}>
-                        <h2 className={styles.sectionTitle}>Favourites</h2>
-                        <div className={styles.sectionHeader}>
-
-                            <div className={styles.columnHeaders}>
-                                <div>#</div>
-                                <div style={{marginLeft: "-150px"}}>Name</div>
-                                <div style={{marginLeft: "280px"}}>Maximum price</div>
-                                <div style={{marginRight: "100px"}}>Avg. price</div>
-                            </div>
-                        </div>
-
-                        <div className={styles.favoritesList}>
-                            {favoriteData.map((favorite) => (
-                                <FavoriteItem key={favorite.rank} {...favorite} />
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className={styles.transactionsSection}>
-                        <h2 className={styles.sectionTitle}>Number of transactions</h2>
-                        <div className={styles.transactionBars}>
-                            {transactionData.map((transaction) => (
-                                <TransactionBar key={transaction.year} {...transaction} />
-                            ))}
-                        </div>
-                        <div className={styles.transactionTotal}>
-                            <div className={styles.totalIndicator}/>
-                            <span className={styles.totalLabel}>Num. of transactions</span>
-                            <span className={styles.totalValue}>7.560</span>
-                        </div>
-                    </section>
-
                     <div>
                         <h1>Stock Indicators Chart</h1>
                         <Chart data={stockIndicatorsData}/>
                     </div>
-                    <section className={styles.tableSection}>
-                        <h2 className={styles.sectionTitle}>Market Summary</h2>
-                        <MostTradedTable data={mostTradedData} />
-                    </section>
                 </div>
             </div>
             <Footer/>

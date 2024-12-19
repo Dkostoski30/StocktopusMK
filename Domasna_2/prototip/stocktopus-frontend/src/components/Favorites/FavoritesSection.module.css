@@ -1,0 +1,98 @@
+/* Favorites Section */
+.favoritesSection {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(238, 238, 238, 0.3);
+    border: 1px solid #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.favoritesSection:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(238, 238, 238, 0.4);
+}
+
+/* Section Title */
+.sectionTitle {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+/* Favorites Table */
+.favoritesTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.favoritesTable th,
+.favoritesTable td {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 16px;
+    color: #555;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.favoritesTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.favoritesTable tr:nth-child(even):not(.positive):not(.negative):not(.zero) {
+    background-color: #f9f9f9;
+}
+
+.favoritesTable tr:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+.favoritesTable tr:last-child td {
+    border-bottom: none;
+}
+
+/* Row-specific styles for visual feedback */
+.favoritesTable tr:hover.positive {
+    background-color: #d4f7e7; /* Light mint green */
+}
+
+.favoritesTable tr:hover.negative {
+    background-color: #fddde0; /* Light blush pink */
+}
+
+.favoritesTable tr:hover.zero {
+    background-color: #e0f7fa; /* Light cyan */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .favoritesSection {
+        padding: 20px;
+    }
+
+    .sectionTitle {
+        font-size: 22px;
+    }
+
+    .favoritesTable th,
+    .favoritesTable td {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+}

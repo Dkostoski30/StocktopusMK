@@ -371,3 +371,28 @@ body{
         border-radius: 16px;
     }
 }
+.tableFavoritesSection {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+
+    gap: 20px; /* Adjust as needed */
+}
+
+.stockSection {
+    flex: 0 0 53%; /* 60% of the available space */
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(238, 238, 238, 0.5);
+    border: 1px solid #f8f9fa;
+}
+
+.favoritesSection {
+    flex: 0 0 30%; /* 40% of the available space */
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(238, 238, 238, 0.5);
+    border: 1px solid #f8f9fa;
+}
