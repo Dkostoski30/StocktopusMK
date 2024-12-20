@@ -1,6 +1,8 @@
 package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
+import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
+import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsFilter;
@@ -9,6 +11,12 @@ import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverte
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,5 +53,9 @@ public class StockDetailsController {
                 .stream()
                 .map(stockDetailsConverterService::convertToStockDetailsDTO)
                 .toList();
+    }
+    @GetMapping("/{stockId}")
+    public Page<StockDetails> findByStockId(@PathVariable Long stockId, Pageable pageable) {
+        return stockDetailsService.findByStockId(stockId, pageable);
     }
 }

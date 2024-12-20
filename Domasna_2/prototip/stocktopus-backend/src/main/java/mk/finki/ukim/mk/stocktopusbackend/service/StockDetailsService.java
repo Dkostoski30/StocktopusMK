@@ -15,4 +15,6 @@ public interface StockDetailsService {
 
     StockDetails editStockDetails(Long id, StockDetailsEditDTO stockDetailsDTO);
     List<StockDetails> getMostTraded();
+
+    Page<StockDetails> findByStockId(Long stockId, Pageable pageable);
 }

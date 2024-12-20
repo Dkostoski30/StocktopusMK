@@ -7,6 +7,7 @@ import { getItems, deleteStockDetails, editStockDetails } from '../../service/st
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from '../modal/Modal.tsx';
+import {useNavigate} from "react-router-dom";
 
 interface StockDetailsTableProps {
     filterData: { stockName: string; dateFrom: string; dateTo: string };
@@ -21,6 +22,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedDetailsId, setSelectedDetailsId] = useState<number | null>(null);
+    const navigate = useNavigate(); // Hook for navigation
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState<StockDetailsEditDTO>({
@@ -108,25 +110,31 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                     <div className={styles.headerCell}>Actions</div>
                 </div>
                 {items.map((item) => (
-                    <TableRow
-                        key={`${item.detailsId}`}
-                        item={item}
-                        onEdit={() => {
-                            setSelectedDetailsId(item.detailsId);
-                            setFormData({
-                                lastTransactionPrice: item.lastTransactionPrice,
-                                maxPrice: item.maxPrice,
-                                minPrice: item.minPrice,
-                                averagePrice: item.averagePrice,
-                                percentageChange: item.percentageChange,
-                                quantity: item.quantity,
-                                tradeVolume: item.tradeVolume,
-                                totalVolume: item.totalVolume,
-                            });
-                            setModalOpen(true);
-                        }}
-                        onDelete={() => handleDeleteClick(item.detailsId)}
-                    />
+                    <div
+                        key={`${item.stockId}`}
+                        onClick={() => navigate(`/stock-details/${item.stockId}`)} // Navigate on click
+                        style={{ cursor: 'pointer'}}
+                    >
+                        <TableRow
+                            key={`${item.detailsId}`}
+                            item={item}
+                            onEdit={() => {
+                                setSelectedDetailsId(item.detailsId);
+                                setFormData({
+                                    lastTransactionPrice: item.lastTransactionPrice,
+                                    maxPrice: item.maxPrice,
+                                    minPrice: item.minPrice,
+                                    averagePrice: item.averagePrice,
+                                    percentageChange: item.percentageChange,
+                                    quantity: item.quantity,
+                                    tradeVolume: item.tradeVolume,
+                                    totalVolume: item.totalVolume,
+                                });
+                                setModalOpen(true);
+                            }}
+                            onDelete={() => handleDeleteClick(item.detailsId)}
+                        />
+                    </div>
                 ))}
             </div>
             <TablePagination

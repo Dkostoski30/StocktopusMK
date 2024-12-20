@@ -6,6 +6,7 @@ import { getItems, deleteItem, editItem } from "../../service/stockService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import Modal from "../modal/Modal.tsx";
+import { useNavigate } from 'react-router-dom';
 
 interface StocksTableProps {
     filterData: { stockName: string };
@@ -20,6 +21,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
+    const navigate = useNavigate(); // Use navigate hook
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState<StockDTO>({
@@ -106,18 +108,24 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                     <div className={styles.headerCell} style={{ marginLeft: '155px' }}>Actions</div>
                 </div>
                 {items.map((item) => (
-                    <TableRowStocks
-                        key={`${item.stockId}`}
-                        item={item}
-                        onEdit={() => {
-                            setFormData({
-                                stockId: item.stockId,
-                                stockName: item.stockName,
-                            });
-                            setModalOpen(true);
-                        }}
-                        onDelete={() => handleDeleteClick(item.stockId)}
-                    />
+                    <div
+                        key={item.stockId}
+                        onClick={() => navigate(`/stock-details/${item.stockName}`)} // Navigate on click
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <TableRowStocks
+                            key={item.stockId}
+                            item={item}
+                            onEdit={() => {
+                                setFormData({
+                                    stockId: item.stockId,
+                                    stockName: item.stockName,
+                                });
+                                setModalOpen(true);
+                            }}
+                            onDelete={() => handleDeleteClick(item.stockId)}
+                        />
+                    </div>
                 ))}
             </div>
             <TablePagination

@@ -35,6 +35,18 @@ export const getItems = async ({ page, size, stockName, dateFrom, dateTo }: Pagi
     }
 };
 
+export const getStockDetailsByTicker = async (ticker: number) => {
+    try {
+        const response = await axios.get<StockDetailsDTO>(
+            `${BASE_URL}/stock-details/${ticker}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching stock details by ticker:', error);
+        throw error;
+    }
+};
+
 export const deleteStockDetails = async (id: number) => {
     try {
         await axios.delete(`${BASE_URL}/stock-details/${id}`);
@@ -47,3 +59,5 @@ export const editStockDetails = async (id: number, data: StockDetailsEditDTO) =>
     await axios.post(`${BASE_URL}/stock-details/edit/${id}`, data);
 
 }
+
+

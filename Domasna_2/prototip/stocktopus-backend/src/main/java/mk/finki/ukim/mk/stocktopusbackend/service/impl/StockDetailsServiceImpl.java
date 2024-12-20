@@ -38,6 +38,11 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     }
 
     @Override
+    public Page<StockDetails> findByStockId(Long stockId, Pageable pageable) {
+        return stockDetailsRepository.findAllByStockId(stockId,pageable);
+    }
+
+    @Override
     public StockDetails editStockDetails(Long id, StockDetailsEditDTO stockDetailsDTO) {
         StockDetails stockDetails = stockDetailsRepository.findById(id).orElseThrow(RuntimeException::new); // TODO: add exception handling
         stockDetails.setLastTransactionPrice(stockDetailsDTO.lastTransactionPrice());
@@ -50,4 +55,9 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         stockDetails.setTotalVolume(stockDetailsDTO.totalVolume());
         return stockDetailsRepository.save(stockDetails);
     }
+
+//    @Override
+//    public Page<StockDetails> findByStockId(Long stockId, Pageable pageable) {
+//        return stockDetailsRepository.findAllByStockId(stockId,pageable);
+//    }
 }

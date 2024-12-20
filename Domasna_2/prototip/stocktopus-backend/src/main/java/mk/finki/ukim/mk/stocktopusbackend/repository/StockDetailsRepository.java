@@ -33,4 +33,6 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
     LIMIT 10
 """)
     List<StockDetails> getMostTraded(@Param("yesterday") java.sql.Date yesterday);
+
+    Page<StockDetails> findAllByStockId(Long stockId, Pageable pageable);
 }

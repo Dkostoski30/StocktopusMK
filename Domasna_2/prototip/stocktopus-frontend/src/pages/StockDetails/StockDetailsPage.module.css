@@ -1,0 +1,236 @@
+.admin {
+    background: #f8f8f8;
+    padding: 0 40px 112px 0;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    background: #fff;
+    width: 17%;
+    padding: 1px 30px 44px;
+}
+
+.content {
+    width: 74%;
+    /*margin-left: 20px;*/
+    /*margin-top: 37px;*/
+}
+
+.contentHeader {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.pageTitle {
+    font: 500 48px Poppins, sans-serif;
+    color: #000;
+}
+
+.profileImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.filterForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 30px;
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.filterLabel {
+    font: 400 16px Poppins, sans-serif;
+    color: #000;
+}
+
+.filterInput {
+    border: 1px solid rgba(19, 19, 19, 0.25);
+    border-radius: 3px;
+    padding: 13px 24px;
+    font: 300 16px Poppins, sans-serif;
+    color: rgba(19, 19, 19, 0.6);
+    background: #fff;
+}
+
+.tableContainer {
+    background: #fff;
+    border-radius: 3px;
+    padding: 19px 0;
+}
+.logo {
+    margin: 2rem 0 0 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+    color: #151d48;
+    font-weight: 600;
+}
+.logoImage {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.tableHeader {
+    display: flex;
+    padding: 0 72px;
+    gap: 20px;
+    font: 600 16px Lato, sans-serif;
+    color: #000;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.tableRow {
+    padding: 15px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.tickerCell {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    /*color: #0b63f8;*/
+}
+
+.tickerIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.dataCell {
+    display: flex;
+    gap: 48px;
+    /*justify-content: space-between;*/
+}
+
+.actionCell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* margin-left: auto;*/
+}
+
+.deleteButton {
+    background: #ff4000;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 10px 24px;
+    cursor: pointer;
+}
+
+.editButton {
+    background: #feeddd;
+    color: #faaa8d;
+    border: none;
+    border-radius: 16px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.editIcon {
+    width: 24px;
+    height: 24px;
+}
+*{
+    color: gray;
+}
+@media (max-width: 991px) {
+    .admin {
+        padding: 0 20px 100px 0;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar,
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .pageTitle {
+        font-size: 40px;
+    }
+
+    .filterForm {
+        flex-direction: column;
+        gap: 20px;
+    }
+    #root > div > main > div > aside > header{
+        font-weight: 300;
+    }
+    .navigation{
+        position: relative;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .content {
+        width: 83%;
+        margin-left: 20px;
+        margin-top: 37px;
+        /*margin-left: 20%;*/
+    }
+}
+
+body{
+    overflow-x: auto;
+    overflow-y: auto;
+}
+.navigation{
+    position: fixed;
+}
+.layout {
+    display: flex;
+    gap: 20px;
+}
+.dashboardDesign {
+//border: 1px solid var(#f9fafa, #3c75ad);
+    background: #fafbfc;
+    min-height: 100vh;
+}
+
+.submitButton {
+    background-color: #75c5f6;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    margin-top: 13px;
+    width: 100px;
+}
+
+
+.filterInput[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
