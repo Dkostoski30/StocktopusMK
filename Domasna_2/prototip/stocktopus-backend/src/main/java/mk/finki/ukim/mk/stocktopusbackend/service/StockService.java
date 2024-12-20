@@ -18,4 +18,6 @@ public interface StockService {
     List<StockPercentageDTO> findBestFour();
 
     Stock editStockById(Long id, StockDTO stockDTO);
+
+    StockDTO findStockDTOById(Long id);
 }
