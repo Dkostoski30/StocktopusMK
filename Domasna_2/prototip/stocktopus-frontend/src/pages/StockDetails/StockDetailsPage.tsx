@@ -5,8 +5,7 @@ import Navigation from "../../components/navigation/Navigation.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
 import logo from "../../assets/logo.png";
 import { UserProfile } from "../../components/UserProfile.tsx";
-import { StockDetailsDTO } from "../../model/dto/StockDetailsDTO.ts";
-import { getStockDetailsByTicker } from "../../service/stockDetailsService.ts";
+import {getStockById} from "../../service/stockService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -43,40 +42,20 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 export const StockDetailsPage: React.FC = () => {
-    const { ticker } = useParams<{ ticker: number }>();
-    const [stockDetails, setStockDetails] = useState<StockDetailsDTO[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [stockName, setStockName] = useState(null);
+    const { ticker } = useParams<{ ticker: string }>();
+    // const [stockDetails, setStockDetails] = useState<StockDetailsDTO[]>([]);
+    const [stockName, setStockName] = useState<string>("");
 
     useEffect(() => {
         const fetchStockDetails = async () => {
-            try {
-                if (ticker) {
-                    const details = await getStockDetailsByTicker(Number(ticker)); // Convert ticker to a number
-                    console.log("Fetched stock details:", details); // Debug the response
-                    setStockDetails(details); // Set the response to state
-                }
-            } catch (err) {
-                console.error('Error fetching stock details:', err.message);
-                setError('Failed to load stock details');
-            } finally {
-                setIsLoading(false); // Ensure loading is turned off
+            if(ticker){
+                const stockDTO = await getStockById(parseInt(ticker));
+                setStockName(stockDTO.stockName);
             }
         };
 
         fetchStockDetails();
-    }, [ticker]); // Only re-run when the `ticker` changes
-
-
-
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <p>{error}</p>;
-    }
+    }, [ticker]);
 
     return (
         <main className={styles.dashboardDesign}>
@@ -97,24 +76,24 @@ export const StockDetailsPage: React.FC = () => {
                             imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                         />
                     </header>
-                    <div className={styles.gridContainer}>
-                        {stockDetails ? (
-                            <div className={styles.card}>
-                                <h3>Stock Details</h3>
-                                <p>Last Transaction Price: {stockDetails?.lastTransactionPrice}</p>
-                                <p>Max Price: {stockDetails?.maxPrice}</p>
-                                <p>Min Price: {stockDetails?.minPrice}</p>
-                                <p>Average Price: {stockDetails?.averagePrice}</p>
-                                <p>Percentage Change: {stockDetails?.percentageChange}</p>
-                                <p>Quantity: {stockDetails?.quantity}</p>
-                                <p>Trade Volume: {stockDetails?.tradeVolume}</p>
-                                <p>Total Volume: {stockDetails?.totalVolume}</p>
-                            </div>
+                    {/*<div className={styles.gridContainer}>*/}
+                    {/*    {stockDetails ? (*/}
+                    {/*        <div className={styles.card}>*/}
+                    {/*            <h3>Stock Details</h3>*/}
+                    {/*            <p>Last Transaction Price: {stockDetails?.lastTransactionPrice}</p>*/}
+                    {/*            <p>Max Price: {stockDetails?.maxPrice}</p>*/}
+                    {/*            <p>Min Price: {stockDetails?.minPrice}</p>*/}
+                    {/*            <p>Average Price: {stockDetails?.averagePrice}</p>*/}
+                    {/*            <p>Percentage Change: {stockDetails?.percentageChange}</p>*/}
+                    {/*            <p>Quantity: {stockDetails?.quantity}</p>*/}
+                    {/*            <p>Trade Volume: {stockDetails?.tradeVolume}</p>*/}
+                    {/*            <p>Total Volume: {stockDetails?.totalVolume}</p>*/}
+                    {/*        </div>*/}
 
-                        ) : (
-                            <p>No stock details available</p>
-                        )}
-                    </div>
+                    {/*    ) : (*/}
+                    {/*        <p>No stock details available</p>*/}
+                    {/*    )}*/}
+                    {/*</div>*/}
                 </section>
             </div>
             <Footer />
