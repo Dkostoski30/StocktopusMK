@@ -36,7 +36,7 @@ def fetch_links_by_category(conn_pool, categories):
 
 
 def main():
-    download_dir = "documents"
+    download_dir = ""
     os.makedirs(download_dir, exist_ok=True)
 
     conn_pool = psycopg2.pool.SimpleConnectionPool(1, MAX_WORKERS,
