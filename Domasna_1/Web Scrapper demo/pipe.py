@@ -57,8 +57,7 @@ if __name__ == '__main__':
     """
     cursor.execute(create_table_sql)
     conn.commit()
-
-    tickers = filter_one.init(conn)
+    tickers = filter_one.init()
     conn.close()
     print('Creating stockdetails table and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
