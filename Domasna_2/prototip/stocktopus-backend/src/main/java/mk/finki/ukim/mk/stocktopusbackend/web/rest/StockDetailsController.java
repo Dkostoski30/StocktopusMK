@@ -58,4 +58,12 @@ public class StockDetailsController {
     public Page<StockDetails> findByStockId(@PathVariable Long stockId, Pageable pageable) {
         return stockDetailsService.findByStockId(stockId, pageable);
     }
+
+    @GetMapping("/latest/{stockId}")
+    public List<StockDetailsDTO> findLatestByStockId(@PathVariable Long stockId) {
+        return stockDetailsService.findLatestByStockId(stockId)
+                .stream()
+                .map(stockDetailsConverterService::convertToStockDetailsDTO)
+                .toList();
+    }
 }

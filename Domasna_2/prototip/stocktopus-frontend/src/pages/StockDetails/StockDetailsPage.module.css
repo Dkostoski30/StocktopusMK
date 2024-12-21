@@ -234,3 +234,29 @@ body{
     filter: invert(1);
     cursor: pointer;
 }
+.gridContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+.logoText {
+    font-size: 24px;
+    font-weight: bold;
+}

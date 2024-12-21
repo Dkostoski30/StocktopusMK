@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface StockDetailsRepository extends JpaRepository<StockDetails,Long> {
@@ -34,4 +36,8 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
     List<StockDetails> getMostTraded(@Param("yesterday") java.sql.Date yesterday);
 
     Page<StockDetails> findAllByStockId(Long stockId, Pageable pageable);
+
+    @Query("SELECT sd FROM StockDetails sd WHERE sd.stockId = :stockId AND sd.date >= :dateAfter")
+    List<StockDetails> findByStockIdAndDateAfter(@Param("stockId") Long stockId, @Param("dateAfter") Date dateAfter);
+
 }

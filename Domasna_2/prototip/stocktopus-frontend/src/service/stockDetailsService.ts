@@ -60,4 +60,15 @@ export const editStockDetails = async (id: number, data: StockDetailsEditDTO) =>
 
 }
 
+export const findLatestByStockId = async (stockId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/stock-details/latest/${stockId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching the latest stock details for stockId ${stockId}:`, error);
+        throw error;
+    }
+};
+
+
 
