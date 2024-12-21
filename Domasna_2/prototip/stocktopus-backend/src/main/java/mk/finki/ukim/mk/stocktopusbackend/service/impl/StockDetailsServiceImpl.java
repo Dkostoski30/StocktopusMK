@@ -57,7 +57,7 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     }
 
     public List<StockDetails> findLatestByStockId(Long stockId) {
-        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(15);
         Date sqlDay = Date.valueOf(sevenDaysAgo);
         return stockDetailsRepository.findByStockIdAndDateAfter(stockId, sqlDay);
     }

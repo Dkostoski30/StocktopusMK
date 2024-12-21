@@ -37,7 +37,7 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
 
     Page<StockDetails> findAllByStockId(Long stockId, Pageable pageable);
 
-    @Query("SELECT sd FROM StockDetails sd WHERE sd.stockId = :stockId AND sd.date >= :dateAfter")
+    @Query("SELECT sd FROM StockDetails sd WHERE sd.stockId = :stockId AND sd.date >= :dateAfter order by sd.date")
     List<StockDetails> findByStockIdAndDateAfter(@Param("stockId") Long stockId, @Param("dateAfter") Date dateAfter);
 
 }

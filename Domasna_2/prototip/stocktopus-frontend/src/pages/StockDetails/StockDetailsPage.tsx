@@ -56,25 +56,33 @@ export const StockDetailsPage: React.FC = () => {
 
                 const latestDetails = await findLatestByStockId(parseInt(ticker));
                 setStockDetails(latestDetails);
+                console.log(latestDetails)
             }
         };
 
         fetchStockDetails().catch(error => console.error('Error fetching stock details:', error));
     }, [ticker]);
 
-    // Chart data configuration
+    const validDetails = stockDetails.filter(detail => detail.lastTransactionPrice && detail.date);
+
+    const parsePrice = (price) => {
+        return parseFloat(price.replace(/\./g, '').replace(',', '.'));
+    };
+
     const chartData = {
-        labels: stockDetails.map(detail => detail.date),
+        labels: validDetails.map(detail => new Date(detail.date).toLocaleDateString()),
         datasets: [
             {
                 label: 'Stock Price',
-                data: stockDetails.map(detail => detail.lastTransactionPrice),
+                data: validDetails.map(detail => parsePrice(detail.lastTransactionPrice)),
                 borderColor: 'rgba(75,192,192,1)',
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 tension: 0.4,
             },
         ],
     };
+
+
 
     return (
         <main className={styles.dashboardDesign}>
