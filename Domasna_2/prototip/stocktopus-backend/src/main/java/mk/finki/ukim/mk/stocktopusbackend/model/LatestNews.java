@@ -20,7 +20,7 @@ public class LatestNews {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "text")
+    @Column(name = "text", columnDefinition = "TEXT")
     private String text;
 
     @Column(name = "sentiment")

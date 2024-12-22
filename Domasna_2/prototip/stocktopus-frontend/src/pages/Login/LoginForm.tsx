@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import styles from './LoginForm.module.css';
 import { InputField } from '../../components/InputField';
-// import { Checkbox } from '../../components/Checkbox';
 import { AuthLayout } from '../../components/AuthLayout';
-import {useNavigate} from "react-router-dom";
-import {Footer} from "../../components/footer/Footer.tsx";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../../components/footer/Footer.tsx";
+import { login } from '../../service/userService.ts';
+import { UserLoginDTO } from '../../model/dto/UserLoginDTO.ts';
 
 export const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [rememberMe, setRememberMe] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const userLoginDTO: UserLoginDTO = {
+            email: email,
+            password: password
+        };
+        try {
+            await login(userLoginDTO);
+            handleNavigation("/");
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
     };
 
     const navigate = useNavigate();
@@ -41,11 +51,8 @@ export const LoginForm: React.FC = () => {
                     placeholder="Enter your password"
                 />
                 <div className={styles.formOptions}>
-                  {/*  <button type="button" className={styles.forgotPassword}>
-                        Forgot Password?
-                    </button>*/}
                 </div>
-                <button type="submit" onClick={() => handleNavigation("/")} className={styles.loginButton}>
+                <button type="submit" className={styles.loginButton}>
                     Login
                 </button>
             </form>
@@ -55,8 +62,7 @@ export const LoginForm: React.FC = () => {
                     Create an account
                 </button>
             </div>
-            <Footer/>
+            <Footer />
         </AuthLayout>
-
     );
 };
