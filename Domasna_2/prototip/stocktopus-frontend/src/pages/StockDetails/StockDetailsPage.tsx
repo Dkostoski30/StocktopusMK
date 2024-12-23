@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './StockDetailsPage.module.css';
-import Navigation from "../../components/navigation/Navigation.tsx";
-import { Footer } from "../../components/footer/Footer.tsx";
+import Navigation from "../../components/navigation/Navigation";
+import { Footer } from "../../components/footer/Footer";
 import logo from "../../assets/logo.png";
-import { UserProfile } from "../../components/UserProfile.tsx";
+import { UserProfile } from "../../components/UserProfile";
+import { findLatestByStockId } from '../../service/stockDetailsService';
+import { Line } from 'react-chartjs-2';
 import {getStockById} from "../../service/stockService.ts";
 
 interface SidebarItem {
@@ -43,19 +45,44 @@ const sidebarItems: SidebarItem[] = [
 
 export const StockDetailsPage: React.FC = () => {
     const { ticker } = useParams<{ ticker: string }>();
-    // const [stockDetails, setStockDetails] = useState<StockDetailsDTO[]>([]);
     const [stockName, setStockName] = useState<string>("");
+    const [stockDetails, setStockDetails] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchStockDetails = async () => {
-            if(ticker){
+            if (ticker) {
                 const stockDTO = await getStockById(parseInt(ticker));
                 setStockName(stockDTO.stockName);
+
+                const latestDetails = await findLatestByStockId(parseInt(ticker));
+                setStockDetails(latestDetails);
+                console.log(latestDetails)
             }
         };
 
-        fetchStockDetails();
+        fetchStockDetails().catch(error => console.error('Error fetching stock details:', error));
     }, [ticker]);
+
+    const validDetails = stockDetails.filter(detail => detail.lastTransactionPrice && detail.date);
+
+    const parsePrice = (price) => {
+        return parseFloat(price.replace(/\./g, '').replace(',', '.'));
+    };
+
+    const chartData = {
+        labels: validDetails.map(detail => new Date(detail.date).toLocaleDateString()),
+        datasets: [
+            {
+                label: 'Stock Price',
+                data: validDetails.map(detail => parsePrice(detail.lastTransactionPrice)),
+                borderColor: 'rgba(75,192,192,1)',
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                tension: 0.4,
+            },
+        ],
+    };
+
+
 
     return (
         <main className={styles.dashboardDesign}>
@@ -76,24 +103,13 @@ export const StockDetailsPage: React.FC = () => {
                             imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                         />
                     </header>
-                    {/*<div className={styles.gridContainer}>*/}
-                    {/*    {stockDetails ? (*/}
-                    {/*        <div className={styles.card}>*/}
-                    {/*            <h3>Stock Details</h3>*/}
-                    {/*            <p>Last Transaction Price: {stockDetails?.lastTransactionPrice}</p>*/}
-                    {/*            <p>Max Price: {stockDetails?.maxPrice}</p>*/}
-                    {/*            <p>Min Price: {stockDetails?.minPrice}</p>*/}
-                    {/*            <p>Average Price: {stockDetails?.averagePrice}</p>*/}
-                    {/*            <p>Percentage Change: {stockDetails?.percentageChange}</p>*/}
-                    {/*            <p>Quantity: {stockDetails?.quantity}</p>*/}
-                    {/*            <p>Trade Volume: {stockDetails?.tradeVolume}</p>*/}
-                    {/*            <p>Total Volume: {stockDetails?.totalVolume}</p>*/}
-                    {/*        </div>*/}
-
-                    {/*    ) : (*/}
-                    {/*        <p>No stock details available</p>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+                    <div className={styles.gridContainer}>
+                        {stockDetails.length > 0 ? (
+                            <Line data={chartData} />
+                        ) : (
+                            <p>No stock details available for the last 7 days</p>
+                        )}
+                    </div>
                 </section>
             </div>
             <Footer />

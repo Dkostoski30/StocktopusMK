@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,5 +24,8 @@ public class Stock {
 
     @Column(name = "date_deleted")
     private LocalDateTime dateDeleted;
+
+    @OneToMany(mappedBy = "stockId")
+    private List<NewsAndStocks> newsAndStocks;
 }
 

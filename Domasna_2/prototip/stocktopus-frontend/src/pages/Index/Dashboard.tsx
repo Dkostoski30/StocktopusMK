@@ -14,13 +14,16 @@ import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
-// TODO unused, remove
-// const stockData = [
-//     { rank: "1", symbol: "KMB", percentage: "+8% from yesterday" },
-//     { rank: "2", symbol: "GTC", percentage: "+5% from yesterday" },
-//     { rank: "3", symbol: "ALK", percentage: "+1,2% from yesterday" },
-//     { rank: "4", symbol: "ADIN", percentage: "0,5% from yesterday" }
-// ];
+import { logout } from '../../service/userService.ts';
+import { useNavigate } from "react-router-dom";
+
+const handleSignOut = async () => {
+    try {
+        await logout();
+    } catch (error) {
+        console.error("Logout failed:", error);
+    }
+};
 
 const favoriteData = [
     { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
@@ -29,21 +32,12 @@ const favoriteData = [
     { rank: "04", symbol: "TTK", maxPrice: "25.218,05", avgPrice: "25.218,05" }
 ];
 
-// TODO unused, remove
-// const transactionData = [
-//     { year: "2018", height: 79 },
-//     { year: "2019", height: 89 },
-//     { year: "2020", height: 36 },
-//     { year: "2021", height: 41 },
-//     { year: "2022", height: 36 },
-//     { year: "2023", height: 62 }
-// ];
 const sidebarItems = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
     { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'Favorites', path: '/favorites', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e5e2117fd75d3701dbf88f7e792aa11874d249c73d02332b8a2aaed30bc7475c?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
-    { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false },
+    { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false, onClick: handleSignOut()},
 ];
 
 export const Dashboard: React.FC = () => {
@@ -51,7 +45,6 @@ export const Dashboard: React.FC = () => {
     const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
     const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id : number }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
-
     useEffect(() => {
 
         const fetchBestFour = async () => {
@@ -156,12 +149,6 @@ export const Dashboard: React.FC = () => {
                                     className={styles.searchInput}
                                 />
                             </form>
-                            // TODO unused, remove
-                            {/*<div className={styles.language}>
-                                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/09cb39a3457af96de902bd6884bfeb3762ec6198d43f45c770062ee7e5eb6e00?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.langIcon} />
-                                <span>Eng (US)</span>
-                                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/9870da67962d92d40bdc46532f5a27ce8a7dfceb3d69ebf9ec337cfad4f19f5b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078" alt="" className={styles.dropdownIcon} />
-                            </div>*/}
                         </div>
 
                         <UserProfile
