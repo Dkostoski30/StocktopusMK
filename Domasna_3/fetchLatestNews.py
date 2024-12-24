@@ -74,7 +74,7 @@ def fetch_latest_news(conn):
     stocks = fetch_stocks(conn)
     latest_date = get_latest_news_date(conn)
 
-    for page_num in range(1, 340):
+    for page_num in range(1, 6):
         page_url = f"{base_url}/mk/news/latest/{page_num}"
         print(f"Fetching page {page_num}...")
 
