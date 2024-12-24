@@ -6,8 +6,9 @@ import numpy as np
 import pandas as pd
 import psycopg2
 from dotenv import load_dotenv
+from matplotlib import pyplot as plt
 from psycopg2.extras import RealDictCursor
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import MinMaxScaler
 from tf_keras import Sequential
 from tf_keras.src.layers import LSTM, Dropout, Dense
@@ -76,16 +77,21 @@ def get_ticker_data(stock_id):
         return pd.DataFrame()
 
 def prepare_lstm_data(df, feature_column='last_transaction_price', look_back=60):
+
     data = df[feature_column].values.reshape(-1, 1)
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(data)
 
-    x, y = [], []
+    lagged_data = []
     for i in range(look_back, len(scaled_data)):
-        x.append(scaled_data[i - look_back:i, 0])
-        y.append(scaled_data[i, 0])
+        lagged_features = scaled_data[i - look_back:i].flatten()
+        target_value = scaled_data[i, 0]
+        lagged_data.append((lagged_features, target_value))
 
-    x, y = np.array(x), np.array(y)
+    lagged_data = np.array(lagged_data, dtype=object)
+    x = np.stack(lagged_data[:, 0])
+    y = np.array(lagged_data[:, 1], dtype=np.float64)
+
     return x, y, scaler
 
 def split_data(x, y, train_ratio=0.7):
@@ -124,49 +130,81 @@ def predict_prices(model, x, scaler):
 
 # Evaluate model performance
 def evaluate_model(y_true, y_pred):
-    """Calculate evaluation metrics."""
+
     mse = mean_squared_error(y_true, y_pred)
     rmse = np.sqrt(mse)
-    return mse, rmse
+    r2 = r2_score(y_true, y_pred)
+    return mse, rmse, r2
+
+def get_all_tickers():
+
+    query_all = "SELECT stock_id FROM stocks"
+    try:
+        with get_database_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query_all)
+                return [row[0] for row in cursor.fetchall()]
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e}")
+        return []
 
 if __name__ == '__main__':
-    stock_id = 62
-    logging.info(f"Fetching data for stock ID {stock_id}...")
+    look_back = 60  # Number of past days used for prediction
+    tickers = get_all_tickers()  # Fetch all ticker IDs
+    logging.info(f"Tickers fetched: {tickers}")
 
-    data = get_ticker_data(stock_id)
-    data = data.dropna(subset=['last_transaction_price'])  # Remove rows with missing prices
+    models = {}  # Dictionary to store models for each ticker
 
-    # Prepare data
-    look_back = 60
-    x, y, scaler = prepare_lstm_data(data, feature_column='last_transaction_price', look_back=look_back)
-    x = x.reshape((x.shape[0], x.shape[1], 1))  # Reshape for LSTM
+    for ticker_id in tickers:
+        logging.info(f"Processing stock ID {ticker_id}...")
 
-    # Split into training and validation sets
-    x_train, y_train, x_val, y_val = split_data(x, y)
+        # Fetch data for the current ticker
+        data = get_ticker_data(ticker_id)
 
-    # Build and train LSTM model
-    model = build_lstm(input_shape=(x_train.shape[1], 1))
-    history = train_model(model, x_train, y_train, x_val, y_val, epochs=50, batch_size=32)
+        # Drop rows with missing values in the feature column
+        data = data.dropna(subset=['last_transaction_price'])
 
-    # Predictions and evaluation
-    y_train_pred = predict_prices(model, x_train, scaler)
-    y_val_pred = predict_prices(model, x_val, scaler)
-    y_actual = scaler.inverse_transform(y_val.reshape(-1, 1))
+        # Check if there is enough data to train the model
+        if len(data) <= look_back:
+            logging.warning(f"Not enough data for stock ID {ticker_id}. Skipping...")
+            continue
 
-    mse, rmse = evaluate_model(y_actual, y_val_pred)
-    logging.info(f"Model Evaluation - MSE: {mse}, RMSE: {rmse}")
+        try:
+            # Prepare LSTM data
+            x, y, scaler = prepare_lstm_data(data, feature_column='last_transaction_price', look_back=look_back)
+            x = x.reshape((x.shape[0], x.shape[1], 1))  # Reshape for LSTM input
 
-    # Plot results
-    import matplotlib.pyplot as plt
+            # Split the data into training and validation sets
+            x_train, y_train, x_val, y_val = split_data(x, y)
 
-    plt.figure(figsize=(12, 6))
-    plt.plot(y_actual, label='Actual Prices')
-    plt.plot(y_val_pred, label='Predicted Prices')
-    plt.title('LSTM Stock Price Prediction')
-    plt.xlabel('Time')
-    plt.ylabel('Price')
-    plt.legend()
-    plt.show()
+            # Build and train the model
+            model = build_lstm(input_shape=(x_train.shape[1], 1))
+            history = train_model(model, x_train, y_train, x_val, y_val, epochs=50, batch_size=32)
+
+            # Evaluate the model
+            y_train_pred = predict_prices(model, x_train, scaler)
+            y_val_pred = predict_prices(model, x_val, scaler)
+            y_actual = scaler.inverse_transform(y_val.reshape(-1, 1))
+
+            mse, rmse, r2 = evaluate_model(y_actual, y_val_pred)
+            logging.info(f"Model Evaluation for Stock ID {ticker_id} - MSE: {mse}, RMSE: {rmse}, R^2: {r2}")
+
+            # Save the trained model for the ticker
+            models[ticker_id] = model
+
+            # Plot results for the current ticker
+            plt.figure(figsize=(12, 6))
+            plt.plot(y_actual, label='Actual Prices')
+            plt.plot(y_val_pred, label='Predicted Prices')
+            plt.title(f'LSTM Stock Price Prediction for Stock ID {ticker_id}')
+            plt.xlabel('Time')
+            plt.ylabel('Price')
+            plt.legend()
+            plt.show()
+
+        except Exception as e:
+            logging.error(f"Error while processing stock ID {ticker_id}: {e}")
+
 
 
 
