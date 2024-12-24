@@ -39,7 +39,7 @@ const sidebarItems = [
     { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false, onClick: handleSignOut()},
 ];
-
+const colors = ['rgba(104,75,192,0.51)', 'rgba(187,124,72,0.5)', 'rgba(54,162,235,0.5)', 'rgba(255,206,86,0.5)'];
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
     const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
@@ -168,8 +168,12 @@ export const Dashboard: React.FC = () => {
                         </div>
 
                         <div className={styles.stockGrid}>
-                            {bestFour.map((stock) => (
-                                <StockCard key={stock.rank} {...stock} />
+                            {bestFour.map((stock, index) => (
+                                <StockCard
+                                    key={stock.rank}
+                                    {...stock}
+                                    color={colors[index % colors.length]} // Assign colors cyclically
+                                />
                             ))}
                         </div>
                     </section>
