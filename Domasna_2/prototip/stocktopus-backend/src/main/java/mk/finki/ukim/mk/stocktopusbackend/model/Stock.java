@@ -22,6 +22,9 @@ public class Stock {
     @Column(name = "stock_name")
     private String stockName;
 
+    @Column(name = "full_name")
+    private String fullName;
+
     @Column(name = "date_deleted")
     private LocalDateTime dateDeleted;
 

@@ -6,6 +6,7 @@ import { LoginForm } from "./pages/Login/LoginForm";
 import { RegisterForm } from "./pages/Register/RegisterForm";
 import { AllStocks } from "./pages/Stocks/AllStocks";
 import { StockDetailsPage } from "./pages/StockDetails/StockDetailsPage";
+import {Predictor} from "./pages/Predictor/PredictorPage.tsx";
 
 function App() {
     /*const [items, setItems] = useState<StockDetailsDTO[]>([]);
@@ -63,6 +64,7 @@ function App() {
                 <Route path={"/register"} element={<RegisterForm/>}></Route>
                 <Route path={"/admin/stocks"} element={<AllStocks/>}></Route>
                 <Route path="/stock-details/:ticker" element={<StockDetailsPage />} />
+                <Route path={"/predictor"} element={<Predictor/>}></Route>
             </Routes>
         </div>
     );

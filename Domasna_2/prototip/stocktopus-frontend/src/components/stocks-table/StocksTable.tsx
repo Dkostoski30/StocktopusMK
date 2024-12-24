@@ -27,6 +27,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [formData, setFormData] = useState<StockDTO>({
         stockId: -1,
         stockName: "",
+        fullName: "",
     });
 
     const handleSave = async () => {
@@ -120,6 +121,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                                 setFormData({
                                     stockId: item.stockId,
                                     stockName: item.stockName,
+                                    fullName: item.fullName,
                                 });
                                 setModalOpen(true);
                             }}
