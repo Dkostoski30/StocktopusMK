@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styles from './PredictorPage.module.css';
+import React from "react";
+import styles from './PredictorByStockPage.module.css';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
 import { UserProfile } from "../../components/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
-import { Link as RouterLink } from "react-router-dom";
-import { getItems } from "../../service/stockService.ts";
-import { StockDTO } from "../../model/dto/stockDTO.ts";
 
 const sidebarItems = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
@@ -16,35 +13,7 @@ const sidebarItems = [
     { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false },
 ];
 
-const ITEMS_PER_PAGE = 12;
-
-export const Predictor: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState(0);
-    const [stocks, setStocks] = useState<StockDTO[]>([]);
-    const [totalCount, setTotalCount] = useState(0);
-    const [filterData, setFilterData] = useState({ stockName: '' });
-
-
-    const fetchStocks = async () => {
-
-        try {
-            const response = await getItems({ page: currentPage, size: ITEMS_PER_PAGE, ...filterData });
-            setTotalCount(response.totalElements);
-            setStocks(response.content);
-        } catch (error) {
-            console.error("Error loading stocks:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchStocks();
-    }, [currentPage, filterData]);
-
-    const totalPages = Math.floor(totalCount / ITEMS_PER_PAGE);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
+export const PredictorByStockPage: React.FC = () => {
 
     return (
         <main className={styles.dashboardDesign}>
@@ -70,7 +39,7 @@ export const Predictor: React.FC = () => {
                                     type="search"
                                     placeholder="Search here..."
                                     className={styles.searchInput}
-                                    onChange={(e) => setFilterData({ stockName: e.target.value })}
+                                    // onChange={(e) => setFilterData({ stockName: e.target.value })}
                                 />
                             </form>
                         </div>
@@ -81,27 +50,6 @@ export const Predictor: React.FC = () => {
                             imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                         />
                     </header>
-                    <div className={styles.cardGrid}>
-                        {stocks.map(stock => (
-                            <div key={stock.stockId} className={styles.card}>
-                                <h2>{stock.fullName}</h2>
-                                <p>Model Accuracy: test</p>
-                                <RouterLink to={`/predictor/${stock.stockId}`}>View Details</RouterLink>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className={styles.pagination}>
-                        {Array.from({ length: totalPages }, (_, i) => (
-                            <button
-                                key={i}
-                                className={i + 1 === currentPage ? styles.activePage : ''}
-                                onClick={() => handlePageChange(i + 1)}
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                    </div>
                 </div>
             </div>
             <Footer />

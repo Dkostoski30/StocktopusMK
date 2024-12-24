@@ -56,7 +56,6 @@ export const StockDetailsPage: React.FC = () => {
 
                 const latestDetails = await findLatestByStockId(parseInt(ticker));
                 setStockDetails(latestDetails);
-                console.log(latestDetails)
             }
         };
 

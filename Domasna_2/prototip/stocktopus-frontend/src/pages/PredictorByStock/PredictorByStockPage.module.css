@@ -1,0 +1,124 @@
+.dashboardDesign {
+    background: #fafbfc;
+    min-height: 100vh;
+}
+
+.layout {
+    display: flex;
+    gap: 20px;
+}
+
+.sidebar {
+    width: 18%;
+    background: #fff;
+    padding: 21px 30px 44px;
+    color: #737791;
+    font: 400 18px Poppins, sans-serif;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+    color: #151d48;
+    font-weight: 600;
+}
+
+.logoImage {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.mainContent {
+    flex: 1;
+    padding: 29px 53px;
+    background: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.searchWrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: #f9fafb;
+    border-radius: 16px;
+    min-width: 600px;
+}
+
+.searchInput {
+    border: none;
+    background: none;
+    color: #737791;
+    font: inherit;
+    width: 100%;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: #737791;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.userAvatar {
+    width: 66px;
+    height: 54px;
+    border-radius: 9999px;
+    object-fit: cover;
+}
+
+.userName {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #151d48;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.userRole {
+    color: #737791;
+    font-size: 14px;
+}
+
+@media (max-width: 991px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .mainContent {
+        padding: 20px;
+    }
+
+    .searchForm {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 24px;
+        background: #f9fafb;
+        border-radius: 16px;
+    }
+}
