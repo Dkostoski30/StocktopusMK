@@ -127,6 +127,8 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                         />
                     </div>
                 ))}
+
+
             </div>
             <TablePagination
                 component="div"
@@ -136,7 +138,6 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                 rowsPerPage={size}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-
             <Dialog
                 open={openDeleteDialog}
                 onClose={handleCloseDeleteDialog}

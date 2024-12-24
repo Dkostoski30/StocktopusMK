@@ -82,8 +82,6 @@ export const StockDetailsPage: React.FC = () => {
         ],
     };
 
-
-
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
