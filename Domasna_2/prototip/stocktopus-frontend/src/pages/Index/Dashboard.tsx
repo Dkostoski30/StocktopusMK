@@ -15,7 +15,6 @@ import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 import { logout } from '../../service/userService.ts';
-import { useNavigate } from "react-router-dom";
 
 const handleSignOut = async () => {
     try {

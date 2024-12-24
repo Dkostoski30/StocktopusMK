@@ -56,7 +56,7 @@ def update_company_name_in_db(stock_id, company_name):
         conn = db_pool.getconn()
         with conn.cursor() as cursor:
             cursor.execute(
-                "UPDATE stocks SET company_name = %s WHERE stock_id = %s;",
+                "UPDATE stocks SET full_name = %s WHERE stock_id = %s;",
                 (company_name, stock_id)
             )
         conn.commit()
@@ -74,7 +74,7 @@ def main():
     try:
         conn = db_pool.getconn()
         with conn.cursor() as cursor:
-            cursor.execute("SELECT stock_id, stock_name FROM stocks WHERE company_name IS NULL;")
+            cursor.execute("SELECT stock_id, stock_name FROM stocks WHERE stocks.full_name IS NULL;")
             stocks = cursor.fetchall()
 
         for stock_id, stock_name in stocks:

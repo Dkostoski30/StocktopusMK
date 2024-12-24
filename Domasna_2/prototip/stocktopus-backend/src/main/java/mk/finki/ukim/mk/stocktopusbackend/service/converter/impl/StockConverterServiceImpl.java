@@ -10,6 +10,6 @@ public class StockConverterServiceImpl implements StockConverterService {
 
     @Override
     public StockDTO convertToStockDTO(Stock stock) {
-        return new StockDTO(stock.getStockId(), stock.getStockName());
+        return new StockDTO(stock.getStockId(), stock.getStockName(), stock.getFullName());
     }
 }
