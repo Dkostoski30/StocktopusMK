@@ -48,7 +48,7 @@ const Chart: React.FC<Props> = ({ data }) => {
         fetchStockNames();
     }, [data]);
 
-    const colors = ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'];
+    const colors = ['rgba(104,75,192)', 'rgba(187,124,72)', 'rgba(54,162,235)', 'rgba(255,206,86)'];
     const backgroundColors = ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'];
 
     const bestStocks = Array.from(new Set(data.map((item) => item.stockId)))

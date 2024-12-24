@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styles from './RegisterForm.module.css';
 import { InputField } from '../../components/InputField';
 import { AuthLayout } from '../../components/AuthLayout';
-import {useNavigate} from "react-router-dom";
-import {Footer} from "../../components/footer/Footer.tsx";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../../components/footer/Footer.tsx";
+import { register } from '../../service/userService.ts';
+import { UserDTO } from '../../model/dto/UserDTO.ts';
 
 export const RegisterForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -17,8 +19,20 @@ export const RegisterForm: React.FC = () => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const userDTO: UserDTO = {
+            email: formData.email,
+            username: formData.username,
+            password: formData.password,
+            repeatedPassword: formData.repeatPassword
+        };
+        try {
+            await register(userDTO);
+            handleNavigation("/");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
     };
 
     const navigate = useNavigate();
@@ -60,7 +74,7 @@ export const RegisterForm: React.FC = () => {
                     required
                     onChange={handleInputChange('repeatPassword')}
                 />
-                <button type="submit" onClick={() => handleNavigation("/")} className={styles.submitButton}>
+                <button type="submit" className={styles.submitButton}>
                     Register
                 </button>
             </form>
@@ -70,7 +84,7 @@ export const RegisterForm: React.FC = () => {
                     Login
                 </button>
             </div>
-            <Footer/>
+            <Footer />
         </AuthLayout>
     );
 };

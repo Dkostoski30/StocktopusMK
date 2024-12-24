@@ -63,7 +63,7 @@ public class StockServiceImpl implements StockService {
     @Override
     public StockDTO findStockDTOById(Long id) {
         return stockRepository.findById(id)
-                .map(stock -> new StockDTO(stock.getStockId(), stock.getStockName()))
+                .map(stock -> new StockDTO(stock.getStockId(), stock.getStockName(), stock.getFullName()))
                 .orElseThrow(RuntimeException::new); // TODO add exception handling
     }
 }
