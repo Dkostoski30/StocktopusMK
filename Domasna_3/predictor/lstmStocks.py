@@ -1,16 +1,17 @@
-import pandas as pd
-import psycopg2
-from psycopg2.extras import RealDictCursor
-from dotenv import load_dotenv
-import os
 import datetime
 import logging
+import os
+
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.model_selection import train_test_split
+import pandas as pd
+import psycopg2
+from dotenv import load_dotenv
+from psycopg2.extras import RealDictCursor
 from sklearn.metrics import mean_squared_error
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
+from sklearn.preprocessing import MinMaxScaler
+from tf_keras import Sequential
+from tf_keras.src.layers import LSTM, Dropout, Dense
+
 load_dotenv()
 
 
@@ -55,8 +56,7 @@ def clean_and_convert_row(row):
 def get_ticker_data(stock_id):
 
     query = """
-    SELECT date, last_transaction_price, max_price, min_price, 
-           average_price, percentage_change, quantity, trade_volume, total_volume
+    SELECT date, last_transaction_price
     FROM stockdetails
     WHERE stock_id = %s
     ORDER BY date DESC;
