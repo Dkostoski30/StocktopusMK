@@ -11,6 +11,7 @@ load_dotenv()
 
 base_url = "https://www.mse.mk"
 
+
 def fetch_soup(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -18,6 +19,7 @@ def fetch_soup(url):
     else:
         print(f"Failed to fetch URL: {url} (Status code: {response.status_code})")
         return None
+
 
 def fetch_stocks(conn):
     try:
@@ -28,6 +30,7 @@ def fetch_stocks(conn):
     finally:
         cursor.close()
 
+
 def get_latest_news_date(conn):
     try:
         cursor = conn.cursor()
@@ -36,6 +39,7 @@ def get_latest_news_date(conn):
         return latest_date
     finally:
         cursor.close()
+
 
 def insert_news_data(conn, date, text):
     try:
@@ -56,6 +60,7 @@ def insert_news_data(conn, date, text):
     finally:
         cursor.close()
 
+
 def insert_news_and_stocks(conn, stock_id, news_id):
     try:
         cursor = conn.cursor()
@@ -71,6 +76,7 @@ def insert_news_and_stocks(conn, stock_id, news_id):
         print(f"Failed to insert news and stocks data: {e}")
     finally:
         cursor.close()
+
 
 def fetch_latest_news(conn):
     stocks = fetch_stocks(conn)
@@ -114,6 +120,7 @@ def fetch_latest_news(conn):
                                         if stock_name in text or full_name in text:
                                             insert_news_and_stocks(conn, stock_id, news_id)
 
+
 def init():
     print("Fetching latest news...")
 
@@ -145,8 +152,14 @@ def init():
                     FOREIGN KEY (latest_news_id) REFERENCES latest_news(id)
                 );
             """
+            sql3 = """
+                ALTER TABLE latest_news
+                ALTER COLUMN date TYPE DATE
+                USING date::DATE;
+            """
             cursor.execute(create_table_sql1)
             cursor.execute(create_table_sql2)
+            cursor.execute(sql3)
             conn.commit()
             print('latest_news and news_and_stocks tables created.')
         finally:
@@ -156,6 +169,7 @@ def init():
 
     finally:
         conn.close()
+
 
 if __name__ == "__main__":
     init()
