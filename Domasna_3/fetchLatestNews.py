@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from datetime import datetime
 
+from Domasna_3 import sentimentAnalysis
+
 load_dotenv()
 
 base_url = "https://www.mse.mk"
@@ -157,3 +159,4 @@ def init():
 
 if __name__ == "__main__":
     init()
+    sentimentAnalysis.init()
