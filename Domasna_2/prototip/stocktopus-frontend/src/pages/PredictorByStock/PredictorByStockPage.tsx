@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from './PredictorByStockPage.module.css';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
 import { UserProfile } from "../../components/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
+import { LatestNewsDTO } from "../../model/dto/latestNewsDTO.ts";
+import { getLatestNewsByStockId } from "../../service/latestNewsService.ts";
+import { useParams } from "react-router-dom";
+import {getStockById} from "../../service/stockService.ts";
 
 const sidebarItems = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
@@ -14,6 +18,36 @@ const sidebarItems = [
 ];
 
 export const PredictorByStockPage: React.FC = () => {
+    const [news, setNews] = useState<LatestNewsDTO[]>([]);
+    const [page, setPage] = useState(0);
+    const [size] = useState(2);
+    const [totalCount, setTotalCount] = useState(0);
+    const { stockId } = useParams<{ stockId: string }>();
+    const [stockName, setStockName] = useState<string>("");
+
+    useEffect(() => {
+        loadItems();
+        fetchStockName();
+    }, [page, size,stockId]);
+
+    const fetchStockName = async () => {
+        if (stockId) {
+            const stockDTO = await getStockById(parseInt(stockId));
+            setStockName(stockDTO.fullName);
+        }
+    };
+    const loadItems = async () => {
+        try {
+            const response = await getLatestNewsByStockId({ page, size, stockId: parseInt(stockId || '-1') });
+            setNews(response.content);
+            setTotalCount(response.totalElements);
+        } catch (error) {
+            console.error("Error loading stocks:", error);
+        }
+    };
+
+    const truncateText = (text: string, maxLength: number) =>
+        text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 
     return (
         <main className={styles.dashboardDesign}>
@@ -33,13 +67,12 @@ export const PredictorByStockPage: React.FC = () => {
                             <form className={styles.searchForm} role="search">
                                 <img
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt="" className={styles.searchIcon} />
+                                    alt="" className={styles.searchIcon}/>
                                 <input
                                     id="search"
                                     type="search"
                                     placeholder="Search here..."
                                     className={styles.searchInput}
-                                    // onChange={(e) => setFilterData({ stockName: e.target.value })}
                                 />
                             </form>
                         </div>
@@ -50,9 +83,59 @@ export const PredictorByStockPage: React.FC = () => {
                             imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                         />
                     </header>
+
+                    <h2 className={styles.pageTitle}>{stockName}</h2>
+                    {news.length === 0 ? (
+                            <div>
+                                <p className={styles.noNewsMessage}>No latest news for this stock</p>
+                            </div>
+                        ) : (
+                    <section className={styles.newsSection}>
+
+                            <>
+                                <div className={styles.newsGrid}>
+                                    {news.map((item, index) => {
+                                        const sentimentClass =
+                                            item.sentiment === "Positive"
+                                                ? styles.positive
+                                                : item.sentiment === "Negative"
+                                                    ? styles.negative
+                                                    : styles.neutral;
+
+                                        return (
+                                            <div key={index} className={`${styles.newsCard} ${sentimentClass}`}>
+                                                <p className={styles.newsText}>
+                                                    {truncateText(item.text, 250)}
+                                                </p>
+                                                <p className={styles.newsSentiment}>
+                                                    Sentiment: <strong>{item.sentiment}</strong>
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className={styles.pagination}>
+                                    <button
+                                        onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+                                        disabled={page === 0}
+                                        className={styles.paginationButton}>
+                                        Previous
+                                    </button>
+                                    <button
+                                        onClick={() => setPage((prev) => prev + 1)}
+                                        disabled={(page + 1) * size >= totalCount}
+                                        className={styles.paginationButton}>
+                                        Next
+                                    </button>
+                                </div>
+                            </>
+                    </section>
+                        )}
+
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </main>
     );
 };
