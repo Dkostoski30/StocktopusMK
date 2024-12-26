@@ -14,6 +14,9 @@ export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete
             <div className={styles.tickerCell}>
                 <span className={styles.tickerSymbol}>{item.stockId}</span>
             </div>
+            <div className={styles.fullName}>
+                <span className={styles.tickerSymbol}>{item.fullName}</span>
+            </div>
             <div className={styles.tickerCell}>
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>

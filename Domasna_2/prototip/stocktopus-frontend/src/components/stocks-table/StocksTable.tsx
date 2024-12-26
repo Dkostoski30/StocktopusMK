@@ -105,13 +105,14 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
             <div className={styles.tableContainer}>
                 <div className={styles.tableHeader}>
                     <div className={styles.headerCell}>Stock ID</div>
+                    <div className={styles.headerCell}>Company name</div>
                     <div className={styles.headerCell}>Stock Name</div>
-                    <div className={styles.headerCell} style={{ marginLeft: '155px' }}>Actions</div>
+                    <div className={styles.headerCell} style={{marginLeft: '155px'}}>Actions</div>
                 </div>
                 {items.map((item) => (
                     <div
                         key={item.stockId}
-                        onClick={() => navigate(`/stock-details/${item.stockId}`)} // Navigate on click
+                        onClick={() => navigate(`/stock-details/${item.stockId}`)}
                         style={{ cursor: 'pointer' }}
                     >
                         <TableRowStocks
