@@ -207,6 +207,7 @@ if __name__ == '__main__':
     look_back = 60
     tickers = get_all_tickers()
     print(tickers)
+    tickers = [62]
     logging.info(f"Tickers fetched: {tickers}")
 
     for ticker_id in tickers:
