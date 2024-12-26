@@ -15,6 +15,7 @@ import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 import { logout } from '../../service/userService.ts';
+import ExportTradedButton from "../../components/exportTradedButton/ExportTradedButton.tsx";
 
 const handleSignOut = async () => {
     try {
@@ -171,24 +172,19 @@ export const Dashboard: React.FC = () => {
                                 <StockCard
                                     key={stock.rank}
                                     {...stock}
-                                    color={colors[index % colors.length]} // Assign colors cyclically
+                                    color={colors[index % colors.length]}
                                 />
                             ))}
                         </div>
                     </section>
                     <section className={styles.tableFavoritesSection}>
                         <section className={styles.stockSection}>
-                            <button className={styles.exportButton}>
-                                <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/81a93e587ed429cf259b108714e158e446413fc36bc8019d880dc1a4b0c628d8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt=""/>
-                                Export
-                            </button>
+                            <ExportTradedButton/>
                             <MostTradedTable data={mostTradedData}/>
                         </section>
 
                         <section className={styles.favoritesSection}>
-                            <FavoritesSection favoriteData={favoriteData} />
+                            <FavoritesSection favoriteData={favoriteData}/>
                         </section>
                     </section>
                     <div>
