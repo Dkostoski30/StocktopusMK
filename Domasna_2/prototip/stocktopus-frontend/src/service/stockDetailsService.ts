@@ -4,7 +4,7 @@ import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
 import {StockDetailsEditDTO} from "../model/dto/stockDetailsEditDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
-
+const PYTHON_BASE_URL = config.PYTHON_BASE_URL;
 interface PaginationParams {
     page: number;
     size: number;
@@ -34,7 +34,24 @@ export const getItems = async ({ page, size, stockName, dateFrom, dateTo }: Pagi
         throw error;
     }
 };
+export const getPrediction = async (tickerId: number) => {
+    try {
+        const response = await axios.get(`${PYTHON_BASE_URL}/predict/${tickerId}`);
+        return {
+            success: true,
+            data: response.data, // Contains { id: tickerId, price_tomorrow: predictedPrice }
+        };
+    } catch (error) {
+        console.error(`Error fetching prediction for ticker ID ${tickerId}:`, error);
 
+        // Handle network errors or other unexpected issues
+        return {
+            success: false,
+            status: null,
+            message: "Unable to connect to the server",
+        };
+    }
+};
 export const getStockDetailsByTicker = async (ticker: number) => {
     try {
         const response = await axios.get<StockDetailsDTO>(
