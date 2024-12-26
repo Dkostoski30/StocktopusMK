@@ -1,6 +1,9 @@
 import React from 'react';
 import {StockDTO} from "../../model/dto/stockDTO.ts";
 import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
+import { useNavigate } from 'react-router-dom';
+
+
 
 interface TableRowProps {
     item: StockDTO;
@@ -9,15 +12,22 @@ interface TableRowProps {
 }
 
 export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) => {
+    const navigate = useNavigate();
     return (
         <div className={styles.tableRow}>
             <div className={styles.tickerCell}>
                 <span className={styles.tickerSymbol}>{item.stockId}</span>
             </div>
-            <div className={styles.fullName}>
+            <div className={styles.fullName}
+                 key={item.stockId}
+                 onClick={() => navigate(`/stock-details/${item.stockId}`)}
+                 style={{ cursor: 'pointer' }}>
                 <span className={styles.tickerSymbol}>{item.fullName}</span>
             </div>
-            <div className={styles.tickerCell}>
+            <div className={styles.tickerCell}
+                 key={item.stockId}
+                 onClick={() => navigate(`/stock-details/${item.stockId}`)}
+                 style={{ cursor: 'pointer' }}>
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>
             <div className={styles.actionCell}>
