@@ -9,6 +9,7 @@ import { StockDetailsPage } from "./pages/StockDetails/StockDetailsPage";
 import {Predictor} from "./pages/Predictor/PredictorPage.tsx";
 import {PredictorByStockPage} from "./pages/PredictorByStock/PredictorByStockPage.tsx";
 import {Favorites} from "./pages/Favorites/Favorites.tsx"
+import {Users} from "./pages/Users/Users.tsx"
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path={"/predictor"} element={<Predictor/>}></Route>
                 <Route path={"/predictor/:stockId"} element={<PredictorByStockPage/>}></Route>
                 <Route path={"/favorites"} element={<Favorites/>}></Route>
+                <Route path={"/admin/users"} element={<Users/>}></Route>
             </Routes>
         </div>
     );
