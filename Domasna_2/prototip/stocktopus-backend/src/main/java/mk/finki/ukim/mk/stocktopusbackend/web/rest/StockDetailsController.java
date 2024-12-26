@@ -9,6 +9,8 @@ import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,4 +64,37 @@ public class StockDetailsController {
                 .map(stockDetailsConverterService::convertToStockDetailsDTO)
                 .toList();
     }
+
+    @GetMapping("/exportMostTraded")
+    public ResponseEntity<byte[]> exportMostTraded() {
+        List<StockDetailsDTO> stockDetails = stockDetailsService.getMostTraded()
+                .stream()
+                .map(stockDetailsConverterService::convertToStockDetailsDTO)
+                .toList();
+
+        StringBuilder csvData = new StringBuilder();
+        csvData.append("DetailsId,StockId,StockName,Date,LastTransactionPrice,MaxPrice,MinPrice,AveragePrice,PercentageChange,Quantity,TradeVolume,TotalVolume\n");
+
+        stockDetails.forEach(stock -> {
+            csvData.append(stock.detailsId()).append(",")
+                    .append(stock.stockId()).append(",")
+                    .append(stock.stockName()).append(",")
+                    .append(stock.date()).append(",")
+                    .append(stock.lastTransactionPrice().replace(",", "")).append(",")
+                    .append(stock.maxPrice().replace(",", "")).append(",")
+                    .append(stock.minPrice().replace(",", "")).append(",")
+                    .append(stock.averagePrice().replace(",", "")).append(",")
+                    .append(stock.percentageChange().replace(",", ".")).append(",")
+                    .append(stock.quantity()).append(",")
+                    .append(stock.tradeVolume().replace(".", "")).append(",")
+                    .append(stock.totalVolume().replace(".", "")).append("\n");
+        });
+
+        byte[] csvBytes = csvData.toString().getBytes();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"most_traded_stocks.csv\"")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
+                .body(csvBytes);
+    }
+
 }
