@@ -8,7 +8,7 @@ import { LatestNewsDTO } from "../../model/dto/latestNewsDTO.ts";
 import { getLatestNewsByStockId } from "../../service/latestNewsService.ts";
 import { useParams } from "react-router-dom";
 import {getStockById} from "../../service/stockService.ts";
-
+import { getPrediction } from "../../service/stockDetailsService.ts";
 const sidebarItems = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
     { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
@@ -21,6 +21,7 @@ export const PredictorByStockPage: React.FC = () => {
     const [news, setNews] = useState<LatestNewsDTO[]>([]);
     const [page, setPage] = useState(0);
     const [size] = useState(2);
+    const [predictedPrice, setPredictedPrice] = useState<number | null>(null);
     const [totalCount, setTotalCount] = useState(0);
     const { stockId } = useParams<{ stockId: string }>();
     const [stockName, setStockName] = useState<string>("");
@@ -29,6 +30,7 @@ export const PredictorByStockPage: React.FC = () => {
     useEffect(() => {
         loadItems();
         fetchStockName();
+        fetchPrediction();
     }, [page, size,stockId]);
 
     const fetchStockName = async () => {
@@ -47,7 +49,17 @@ export const PredictorByStockPage: React.FC = () => {
             console.error("Error loading stocks:", error);
         }
     };
-
+    const fetchPrediction = async () => {
+        if (stockId) {
+            const predictionResponse = await getPrediction(parseInt(stockId));
+            if (predictionResponse.success) {
+                console.log("Prediction response:", predictionResponse.data);
+                setPredictedPrice(predictionResponse.data.price_tomorrow);  // Set the predicted price
+            } else {
+                console.error("Error fetching prediction:", predictionResponse.message);
+            }
+        }
+    };
     const truncateText = (text: string, maxLength: number) =>
         text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 
@@ -87,6 +99,11 @@ export const PredictorByStockPage: React.FC = () => {
                     </header>
 
                     <h2 className={styles.pageTitle}>{stockName}</h2>
+                    {predictedPrice !== null && (
+                        <div className={styles.predictionContainer}>
+                            <h3>Predicted Price Tomorrow: {predictedPrice.toFixed(2)} денари</h3>
+                        </div>
+                    )}
                     {news.length === 0 ? (
                             <div>
                                 <p className={styles.noNewsMessage}>No latest news for this stock</p>
