@@ -24,6 +24,7 @@ export const PredictorByStockPage: React.FC = () => {
     const [totalCount, setTotalCount] = useState(0);
     const { stockId } = useParams<{ stockId: string }>();
     const [stockName, setStockName] = useState<string>("");
+    const [stockImage, setStockImage] = useState<string>("");
 
     useEffect(() => {
         loadItems();
@@ -34,6 +35,7 @@ export const PredictorByStockPage: React.FC = () => {
         if (stockId) {
             const stockDTO = await getStockById(parseInt(stockId));
             setStockName(stockDTO.fullName);
+            setStockImage(`/src/assets/models/stock_${stockId}/stock_${stockId}_plot.png`);
         }
     };
     const loadItems = async () => {
@@ -132,7 +134,11 @@ export const PredictorByStockPage: React.FC = () => {
                             </>
                     </section>
                         )}
-
+                    {stockImage && (
+                        <div className={styles.stockImageContainer}>
+                            <img src={stockImage} alt={stockName} className={styles.stockImage} />
+                        </div>
+                    )}
                 </div>
             </div>
             <Footer/>

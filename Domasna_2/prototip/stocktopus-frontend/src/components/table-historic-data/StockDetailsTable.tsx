@@ -7,7 +7,7 @@ import { getItems, deleteStockDetails, editStockDetails } from '../../service/st
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from '../modal/Modal.tsx';
-import { useNavigate } from "react-router-dom";
+
 
 interface StockDetailsTableProps {
     filterData: { stockName: string; dateFrom: string; dateTo: string };
@@ -22,7 +22,6 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedDetailsId, setSelectedDetailsId] = useState<number | null>(null);
-    const navigate = useNavigate();
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState<StockDetailsEditDTO>({
@@ -38,16 +37,12 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
 
     useEffect(() => {
         loadItems();
-    }, [page, size, filterData]);
+    }, [page, size,filterData]);
 
     const loadItems = async () => {
-        try {
-            const response = await getItems({ page, size, ...filterData });
-            setItems(response.content);
-            setTotalCount(response.totalElements);
-        } catch (error) {
-            console.error("Error loading stock details:", error);
-        }
+        const response = await getItems({ page, size, ...filterData });
+        setItems(response.content);
+        setTotalCount(response.totalElements);
     };
 
     const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -66,16 +61,11 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
 
     const confirmDelete = async () => {
         if (selectedDetailsId !== null) {
-            try {
-                await deleteStockDetails(selectedDetailsId);
-                setOpenDeleteDialog(false);
-                setOpenSuccessDialog(true);
-                setSelectedDetailsId(null);
-                loadItems();
-            } catch (error) {
-                console.error("Error deleting stock details:", error);
-                setOpenErrorDialog(true);
-            }
+            await deleteStockDetails(selectedDetailsId);
+            setOpenDeleteDialog(false);
+            setOpenSuccessDialog(true);
+            setSelectedDetailsId(null);
+            loadItems();
         }
     };
 
@@ -107,6 +97,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     };
 
     return (
+
         <div>
             <div className={styles.tableContainer}>
                 <div className={styles.tableHeader}>
@@ -118,33 +109,25 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                     <div className={styles.headerCell}>Actions</div>
                 </div>
                 {items.map((item) => (
-                    <div key={`${item.detailsId}`} className={styles.tableRow}>
-                        <span
-                            className={styles.stockNameCell}
-                            onClick={() => navigate(`/stock-details/${item.stockId}`)} // Navigate on stock name click
-                            style={{ cursor: 'pointer' }}
-                        >
-                            {item.stockName}
-                        </span>
-                        <TableRow
-                            item={item}
-                            onEdit={() => {
-                                setSelectedDetailsId(item.detailsId);
-                                setFormData({
-                                    lastTransactionPrice: item.lastTransactionPrice,
-                                    maxPrice: item.maxPrice,
-                                    minPrice: item.minPrice,
-                                    averagePrice: item.averagePrice,
-                                    percentageChange: item.percentageChange,
-                                    quantity: item.quantity,
-                                    tradeVolume: item.tradeVolume,
-                                    totalVolume: item.totalVolume,
-                                });
-                                setModalOpen(true);
-                            }}
-                            onDelete={() => handleDeleteClick(item.detailsId)}
-                        />
-                    </div>
+                    <TableRow
+                        key={`${item.detailsId}`}
+                        item={item}
+                        onEdit={() => {
+                            setSelectedDetailsId(item.detailsId);
+                            setFormData({
+                                lastTransactionPrice: item.lastTransactionPrice,
+                                maxPrice: item.maxPrice,
+                                minPrice: item.minPrice,
+                                averagePrice: item.averagePrice,
+                                percentageChange: item.percentageChange,
+                                quantity: item.quantity,
+                                tradeVolume: item.tradeVolume,
+                                totalVolume: item.totalVolume,
+                            });
+                            setModalOpen(true);
+                        }}
+                        onDelete={() => handleDeleteClick(item.detailsId)}
+                    />
                 ))}
             </div>
             <TablePagination
@@ -156,15 +139,20 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
 
-            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-                <DialogTitle>{"Confirm Delete"}</DialogTitle>
+            <Dialog
+                open={openDeleteDialog}
+                onClose={handleCloseDeleteDialog}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
+            >
+                <DialogTitle id="delete-dialog-title">{"Confirm Delete"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText id="delete-dialog-description">
                         Are you sure you want to delete this stock detail?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">Cancel</Button>
                     <Button onClick={confirmDelete} color="secondary" autoFocus>
                         Delete
                     </Button>
@@ -173,19 +161,24 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
 
             <SuccessDialog
                 open={openSuccessDialog}
-                message="The operation was successful."
+                message="The stock detail has been successfully edited."
                 onClose={handleCloseSuccessDialog}
             />
 
-            <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
-                <DialogTitle>{"Error"}</DialogTitle>
+            <Dialog
+                open={openErrorDialog}
+                onClose={handleCloseErrorDialog}
+                aria-labelledby="error-dialog-title"
+                aria-describedby="error-dialog-description"
+            >
+                <DialogTitle id="error-dialog-title">{"Error"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText id="error-dialog-description">
                         There was an error processing your request.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseErrorDialog}>Close</Button>
+                    <Button onClick={handleCloseErrorDialog} color="primary">Close</Button>
                 </DialogActions>
             </Dialog>
 

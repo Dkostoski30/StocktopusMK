@@ -38,7 +38,7 @@ export const LoginForm: React.FC = () => {
                     label="Email"
                     value={email}
                     onChange={setEmail}
-                    type="email"
+                    type="text"
                     required
                     placeholder="mail@abc.com"
                 />

@@ -111,6 +111,12 @@
     gap: 24px;
     /*color: #0b63f8;*/
 }
+.fullName{
+    display: flex;
+    align-items: center;
+    width: 40%;
+    gap: 24px;
+}
 
 .tickerIcon {
     width: 24px;
