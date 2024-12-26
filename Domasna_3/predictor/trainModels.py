@@ -207,7 +207,7 @@ if __name__ == '__main__':
     look_back = 60
     tickers = get_all_tickers()
     print(tickers)
-    tickers = [62]
+    tickers = [62, 70, 55, 122]
     logging.info(f"Tickers fetched: {tickers}")
 
     for ticker_id in tickers:
@@ -245,7 +245,6 @@ if __name__ == '__main__':
             x = x.reshape((x.shape[0], x.shape[1], x.shape[2]))
 
             x_train, y_train, x_val, y_val = split_data(x, y)
-
             model = build_lstm(input_shape=(x_train.shape[1], x_train.shape[2]))
             train_model(model, x_train, y_train, x_val, y_val, epochs=30, batch_size=32)
 
