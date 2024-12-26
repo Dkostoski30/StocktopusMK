@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface LatestNewsRepository extends JpaRepository<LatestNews, Long> {
 
     @Query("""
-        SELECT lnews.id, SUBSTRING(lnews.text, 1, 500)
+        SELECT lnews
         FROM LatestNews lnews
         JOIN lnews.newsAndStocks nas
         WHERE nas.stockId = :stockId

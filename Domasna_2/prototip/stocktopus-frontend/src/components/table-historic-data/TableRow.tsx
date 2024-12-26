@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
 import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
+import { useNavigate } from 'react-router-dom';
 
 interface TableRowProps {
     item: StockDetailsDTO;
@@ -9,7 +10,7 @@ interface TableRowProps {
 }
 
 export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) => {
-    // Format the date
+    const navigate = useNavigate();
     const formatDate = (date: Date): string => {
         const parsedDate = new Date(date);
         const day = parsedDate.getDate().toString().padStart(2, '0');
@@ -18,14 +19,16 @@ export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) =>
         return `${day}-${month}-${year}`;
     };
 
-    // Format nullable numeric values
     const formatValue = (value: string ): string => {
         return value !== null && value !== undefined && value !== "" ? value : '0,00';
     };
 
     return (
         <div className={styles.tableRow}>
-            <div className={styles.tickerCell}>
+            <div className={styles.tickerCell}
+                 key={item.stockId}
+                 onClick={() => navigate(`/stock-details/${item.stockId}`)}
+                 style={{ cursor: 'pointer' }}>
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>
             <div className={styles.tickerCell}>

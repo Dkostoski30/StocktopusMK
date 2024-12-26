@@ -122,3 +122,93 @@
         border-radius: 16px;
     }
 }
+.newsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.newsCard {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    overflow: hidden;
+    transition: background-color 0.3s ease-in-out;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.newsTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.newsText {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.newsSentiment {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.paginationButton {
+    background-color: #FFA500;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.paginationButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+
+.newsCard.negative {
+    background: rgba(251, 94, 94, 0.65);
+}
+
+.newsCard.positive {
+    background: rgba(162, 234, 162, 0.89);
+}
+
+.newsCard.neutral {
+    background:	rgb(255,250,205)
+}
+.noNewsMessage {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    padding: 16px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: fit-content;
+    margin: 20px auto;
+}
+
