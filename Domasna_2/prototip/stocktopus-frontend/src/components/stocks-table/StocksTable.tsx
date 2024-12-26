@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 interface StocksTableProps {
     filterData: { stockName: string };
 }
-
 export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
@@ -111,9 +110,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                 </div>
                 {items.map((item) => (
                     <div
-                        key={item.stockId}
-                        onClick={() => navigate(`/stock-details/${item.stockId}`)}
-                        style={{ cursor: 'pointer' }}
+
                     >
                         <TableRowStocks
                             key={item.stockId}
