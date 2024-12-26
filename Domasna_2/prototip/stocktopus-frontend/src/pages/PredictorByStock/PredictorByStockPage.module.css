@@ -211,4 +211,15 @@
     width: fit-content;
     margin: 20px auto;
 }
+.stockImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stockImage {
+    width: 100%;
+    height: auto;
+    max-width: 1000px;
+    display: block;
+}
 
