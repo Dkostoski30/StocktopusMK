@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { TableRow } from './TableRow';
-import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
+import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
 import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
 import { getItems, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from '../modal/Modal.tsx';
+import {isAdmin} from "../../config/jwtToken.ts";
 
 
 interface StockDetailsTableProps {
@@ -106,7 +107,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                     <div className={styles.headerCell}>Max Price</div>
                     <div className={styles.headerCell}>Min Price</div>
                     <div className={styles.headerCell}>Last Transaction Price</div>
-                    <div className={styles.headerCell}>Actions</div>
+                    {isAdmin() ? (<div className={styles.headerCell}>Actions</div>) : null}
                 </div>
                 {items.map((item) => (
                     <TableRow

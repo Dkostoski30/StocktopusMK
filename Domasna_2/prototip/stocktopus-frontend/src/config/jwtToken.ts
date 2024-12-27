@@ -22,6 +22,20 @@ export const getRolesFromToken = (): string[] => {
     }
 };
 
+export const getUsernameFromToken = (): string => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return "";
+    }
+    try {
+        const decoded: DecodedToken = jwtDecode(token);
+        return decoded.sub;
+    } catch (error) {
+        console.error('Invalid token', error);
+        return "";
+    }
+};
+
 export const isUser = (): boolean => {
     const roles = getRolesFromToken();
     return roles.includes("ROLE_USER");

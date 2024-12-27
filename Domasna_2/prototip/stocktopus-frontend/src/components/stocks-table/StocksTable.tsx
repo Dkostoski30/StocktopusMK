@@ -6,7 +6,7 @@ import { getItems, deleteItem, editItem } from "../../service/stockService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import Modal from "../modal/Modal.tsx";
-import { useNavigate } from 'react-router-dom';
+import {isAdmin} from "../../config/jwtToken.ts";
 
 interface StocksTableProps {
     filterData: { stockName: string };
@@ -20,7 +20,6 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
-    const navigate = useNavigate(); // Use navigate hook
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState<StockDTO>({
@@ -106,7 +105,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                     <div className={styles.headerCell}>Stock ID</div>
                     <div className={styles.headerCell}>Company name</div>
                     <div className={styles.headerCell}>Stock Name</div>
-                    <div className={styles.headerCell} style={{marginLeft: '155px'}}>Actions</div>
+                    {isAdmin() ? (<div className={styles.headerCell} style={{marginLeft: '155px'}}>Actions</div> ) : null}
                 </div>
                 {items.map((item) => (
                     <div

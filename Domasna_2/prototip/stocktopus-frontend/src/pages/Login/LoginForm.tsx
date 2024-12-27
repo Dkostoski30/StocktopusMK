@@ -35,12 +35,12 @@ export const LoginForm: React.FC = () => {
         <AuthLayout title="Login to your Account">
             <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField
-                    label="Email"
+                    label="Username"
                     value={email}
                     onChange={setEmail}
                     type="text"
                     required
-                    placeholder="mail@abc.com"
+                    placeholder="your_username"
                 />
                 <InputField
                     label="Password"

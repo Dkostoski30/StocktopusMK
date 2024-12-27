@@ -1,5 +1,5 @@
 import './App.css';
-import { AdminDashboard } from "./pages/AdminDashboard/AdminDashboard";
+import { HistoricData } from "./pages/HistoricData/HistoricData.tsx";
 import { Route, Routes } from "react-router-dom";
 import { Dashboard } from "./pages/Index/Dashboard";
 import { LoginForm } from "./pages/Login/LoginForm";
@@ -17,11 +17,13 @@ function App() {
         <div className="App">
             <Routes>
                 <Route path="/" element={<AuthRouteUsers><Dashboard /></AuthRouteUsers>} />
-                <Route path="/admin/*" element={<AuthRouteAdmin><AdminDashboard /></AuthRouteAdmin>} />
+                <Route path="/admin/*" element={<AuthRouteAdmin><HistoricData /></AuthRouteAdmin>} />
+                <Route path="/user/*" element={<AuthRouteUsers><HistoricData /></AuthRouteUsers>} />
                 <Route path={"/login"} element={<LoginForm/>}></Route>
                 <Route path={"/register"} element={<RegisterForm/>}></Route>
                 <Route path={"/admin/stocks"} element={<AuthRouteAdmin><AllStocks/></AuthRouteAdmin>}></Route>
-                <Route path="/stock-details/:ticker" element={<AuthRouteAdmin><StockDetailsPage /></AuthRouteAdmin>} />
+                <Route path={"/user/stocks"} element={<AuthRouteUsers><AllStocks/></AuthRouteUsers>}></Route>
+                <Route path="/stock-details/:ticker" element={<AuthRouteUsers><StockDetailsPage /></AuthRouteUsers>} />
                 <Route path={"/predictor"} element={<AuthRouteUsers><Predictor/></AuthRouteUsers>}></Route>
                 <Route path={"/predictor/:stockId"} element={<AuthRouteUsers><PredictorByStockPage/></AuthRouteUsers>}></Route>
                 <Route path={"/favorites"} element={<AuthRouteUsers><Favorites/></AuthRouteUsers>}></Route>

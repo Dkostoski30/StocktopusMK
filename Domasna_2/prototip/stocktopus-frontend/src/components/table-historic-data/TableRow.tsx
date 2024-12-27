@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
+import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
 import { useNavigate } from 'react-router-dom';
+import {isAdmin} from "../../config/jwtToken.ts";
 
 interface TableRowProps {
     item: StockDetailsDTO;
@@ -43,6 +44,7 @@ export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) =>
             <div className={styles.dataCell}>
                 <span className={styles.lastPrice}>{formatValue(item.lastTransactionPrice)}</span>
             </div>
+            {isAdmin() ? (
             <div className={styles.actionCell}>
 
             <button
@@ -65,6 +67,7 @@ export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) =>
                     <span>Edit</span>
                 </button>
             </div>
+                ) : null}
         </div>
     );
 };

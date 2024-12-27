@@ -73,11 +73,7 @@ export const Users: React.FC = () => {
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
                         <h2 className={styles.pageTitle}>Users</h2>
-                        <UserProfile
-                            name="Daniela"
-                            role="Admin"
-                            imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                        />
+                        <UserProfile/>
                     </header>
                     <UserTable users={users} />
                 </section>

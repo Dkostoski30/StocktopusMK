@@ -1,7 +1,8 @@
 import React from 'react';
 import {StockDTO} from "../../model/dto/stockDTO.ts";
-import styles from '../../pages/AdminDashboard/AdminDashboard.module.css';
+import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { useNavigate } from 'react-router-dom';
+import {isAdmin} from "../../config/jwtToken.ts";
 
 
 
@@ -30,6 +31,7 @@ export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete
                  style={{ cursor: 'pointer' }}>
                 <span className={styles.tickerSymbol}>{item.stockName}</span>
             </div>
+            {isAdmin() ? (
             <div className={styles.actionCell}>
                 <button
                     className={styles.deleteButton}
@@ -51,6 +53,7 @@ export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete
                     <span>Edit</span>
                 </button>
             </div>
+            ) : null}
         </div>
     );
 };
