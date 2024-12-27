@@ -28,8 +28,6 @@ export const login = async (userLoginDTO: UserLoginDTO): Promise<string | null> 
         if (token) {
             localStorage.setItem('token', token);
             getRolesFromToken();
-        } else {
-            console.error('No token found in response headers.');
         }
     } catch (error) {
         console.error('Login failed:', error);
@@ -39,6 +37,7 @@ export const login = async (userLoginDTO: UserLoginDTO): Promise<string | null> 
 };
 
 
-export const logout = async () => {
-    await axios.post(`${BASE_URL}/logout`);
-}
+export const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('roles');
+};

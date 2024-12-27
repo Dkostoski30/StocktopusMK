@@ -9,14 +9,12 @@ interface DecodedToken {
 
 export const getRolesFromToken = (): string[] => {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (!token) {
-        console.error('Token not found');
         return [];
     }
-
     try {
         const decoded: DecodedToken = jwtDecode(token);
+        localStorage.setItem('roles', JSON.stringify(decoded.roles));
         return decoded.roles;
     } catch (error) {
         console.error('Invalid token', error);

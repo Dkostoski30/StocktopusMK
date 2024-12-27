@@ -29,7 +29,7 @@ export const RegisterForm: React.FC = () => {
         };
         try {
             await register(userDTO);
-            handleNavigation("/");
+            handleNavigation("/login");
         } catch (error) {
             console.error("Registration failed:", error);
         }

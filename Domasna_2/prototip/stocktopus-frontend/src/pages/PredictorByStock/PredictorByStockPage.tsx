@@ -54,7 +54,7 @@ export const PredictorByStockPage: React.FC = () => {
             const predictionResponse = await getPrediction(parseInt(stockId));
             if (predictionResponse.success) {
                 console.log("Prediction response:", predictionResponse.data);
-                setPredictedPrice(predictionResponse.data.price_tomorrow);  // Set the predicted price
+                setPredictedPrice(predictionResponse.data.price_tomorrow);// Set the predicted price
             } else {
                 console.error("Error fetching prediction:", predictionResponse.message);
             }
@@ -99,7 +99,7 @@ export const PredictorByStockPage: React.FC = () => {
                     </header>
 
                     <h2 className={styles.pageTitle}>{stockName}</h2>
-                    {predictedPrice !== null && (
+                    {predictedPrice !== null && predictedPrice !== undefined && (
                         <div className={styles.predictionContainer}>
                             <h3>Predicted Price Tomorrow: {predictedPrice.toFixed(2)} денари</h3>
                         </div>
