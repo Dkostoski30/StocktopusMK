@@ -21,3 +21,13 @@ export const getRolesFromToken = (): string[] => {
         return [];
     }
 };
+
+export const isUser = (): boolean => {
+    const roles = getRolesFromToken();
+    return roles.includes("ROLE_USER");
+};
+
+export const isAdmin = (): boolean => {
+    const roles = getRolesFromToken();
+    return roles.includes('ROLE_ADMIN')
+};
