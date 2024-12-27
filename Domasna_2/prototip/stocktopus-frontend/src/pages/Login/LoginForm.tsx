@@ -40,7 +40,7 @@ export const LoginForm: React.FC = () => {
                     onChange={setEmail}
                     type="text"
                     required
-                    placeholder="your_username"
+                    placeholder="Enter your username"
                 />
                 <InputField
                     label="Password"
