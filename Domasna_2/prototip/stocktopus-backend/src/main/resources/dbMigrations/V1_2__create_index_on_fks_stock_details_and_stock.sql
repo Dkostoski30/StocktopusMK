@@ -1,1 +1,1 @@
-CREATE INDEX fks_stock_details_stock ON stockdetails(stock_id);
+CREATE INDEX IF NOT EXISTS fks_stock_details_stock ON stockdetails(stock_id);

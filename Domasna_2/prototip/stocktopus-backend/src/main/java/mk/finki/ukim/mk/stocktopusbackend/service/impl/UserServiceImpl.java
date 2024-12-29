@@ -1,9 +1,12 @@
 package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.User;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.UserDetailsFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.enums.Role;
 import mk.finki.ukim.mk.stocktopusbackend.repository.UserRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,9 +44,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+
     @Override
-    public List<User> fetchUsers() {
-        return userRepository.findAll();
+    public Page<User> fetchUsers(Pageable pageable, UserDetailsFilter userDetailsFilter) {
+        return userRepository.findAll(pageable, userDetailsFilter);
     }
 
     @Override
