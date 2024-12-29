@@ -9,14 +9,11 @@ import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
-import {isAdmin} from '../../config/jwtToken.ts'
+import {getUsernameFromToken, isAdmin} from '../../config/jwtToken.ts'
 
 
 const favoriteData = [
-    { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "02", symbol: "STB", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "03", symbol: "KMB", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "04", symbol: "TTK", maxPrice: "25.218,05", avgPrice: "25.218,05" }
+
 ];
 
 const sidebarItemsAdmin = [
@@ -38,8 +35,8 @@ const sidebarItemsUser = [
 const colors = ['rgba(104,75,192,0.51)', 'rgba(187,124,72,0.5)', 'rgba(54,162,235,0.5)', 'rgba(255,206,86,0.5)'];
 export const Favorites: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
-    const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
-    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id : number }[]>([]);
+    const [bestFour, setBestFour] = useState<{ stockId: string; symbol: string; percentage: string }[]>([]);
+    const [stockData, setStockData] = useState<{ stockId: string; symbol: string; percentage: string; id : number }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
 
     useEffect(() => {
@@ -95,7 +92,7 @@ export const Favorites: React.FC = () => {
                     </header>
 
                         <section className={styles.favoritesSection}>
-                            <FavoritesSection favoriteData={favoriteData}/>
+                            <FavoritesSection username={getUsernameFromToken()}/>
                         </section>
                 </div>
             </div>

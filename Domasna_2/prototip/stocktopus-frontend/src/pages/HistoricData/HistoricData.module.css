@@ -240,3 +240,23 @@ body{
     filter: invert(1);
     cursor: pointer;
 }
+
+.favoriteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 32px; /* Adjust as needed */
+    color: red; /* Default color for filled heart */
+}
+
+.favoriteButton:focus {
+    outline: none;
+}
+
+.filledHeart {
+    color: red; /* Red color for filled heart */
+}
+
+.emptyHeart {
+    color: lightgray; /* Gray color for empty heart */
+}

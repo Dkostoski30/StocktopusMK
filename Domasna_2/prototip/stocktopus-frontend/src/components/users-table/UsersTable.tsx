@@ -78,18 +78,18 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
                             >
                                 Delete
                             </button>
-                            <button
-                                className={styles.editButton}
-                                onClick={() => onEdit(user)}
-                                aria-label={`Edit ${user.username} data`}
-                            >
-                                <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt=""
-                                    className={styles.editIcon}
-                                />
-                                <span>Edit</span>
-                            </button>
+                            {/*<button*/}
+                            {/*    className={styles.editButton}*/}
+                            {/*    onClick={() => onEdit(user)}*/}
+                            {/*    aria-label={`Edit ${user.username} data`}*/}
+                            {/*>*/}
+                            {/*    <img*/}
+                            {/*        src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"*/}
+                            {/*        alt=""*/}
+                            {/*        className={styles.editIcon}*/}
+                            {/*    />*/}
+                            {/*    <span>Edit</span>*/}
+                            {/*</button>*/}
                         </div>
                     </div>
                 ))}

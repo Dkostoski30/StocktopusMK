@@ -96,3 +96,25 @@
         font-size: 14px;
     }
 }
+.favoriteButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 32px;
+    color: red; /* Default color for filled heart */
+}
+
+.favoriteButton:focus {
+    outline: none;
+}
+
+.filledHeart {
+    color: red; /* Red color for filled heart */
+}
+
+.emptyHeart {
+    color: lightgray; /* Gray color for empty heart */
+}
+.favoriteColumn{
+    width: 10px;
+}
