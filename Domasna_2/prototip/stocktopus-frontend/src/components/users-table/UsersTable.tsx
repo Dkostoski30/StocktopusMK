@@ -1,40 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import styles from '../../pages/Users/Users.module.css';
-import { UserDTO } from '../../model/dto/UserDTO.ts';
-import { getUsers, deleteUser } from "../../service/userService.ts";
+import { deleteUser } from "../../service/userService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
-import Modal from "../modal/Modal.tsx";
 import {UserDetailsDTO} from "../../model/dto/UserDetailsDTO.ts";
 
 interface UsersTableProps {
-    //filterData: { username: string };
-    users: UserDetailsDTO[]; // Accept users directly as a prop
+    users: UserDetailsDTO[];
+    totalCount: number;
    // onDelete: (username: string) => Promise<void>; // Callback for delete
 }
 
-export const UsersTable: React.FC<UsersTableProps> = ({ filterData }) => {
-    const [users, setUsers] = useState<UserDTO[]>([]);
+export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
-    const [totalCount, setTotalCount] = useState(0);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [selectedUsername, setSelectedUsername] = useState<string | null>(null);
-
-    useEffect(() => {
-        loadUsers();
-    }, [page, size, filterData]);
-
-    const loadUsers = async () => {
-        try {
-            const response = await getUsers({ page, size, ...filterData });
-            setUsers(response.content);
-            setTotalCount(response.totalElements);
-        } catch (error) {
-            console.error("Error loading users:", error);
-        }
-    };
 
     const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         setPage(newPage);
@@ -53,11 +35,10 @@ export const UsersTable: React.FC<UsersTableProps> = ({ filterData }) => {
     const confirmDelete = async () => {
         if (selectedUsername) {
             try {
-                await deleteUser(selectedUsername); // Pass username to deleteUser function
+                await deleteUser(selectedUsername);
                 setOpenDeleteDialog(false);
                 setOpenSuccessDialog(true);
                 setSelectedUsername(null);
-                loadUsers();
             } catch (error) {
                 console.error('Error during delete:', error);
                 setOpenDeleteDialog(false);

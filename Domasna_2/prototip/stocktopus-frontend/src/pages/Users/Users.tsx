@@ -7,6 +7,7 @@ import { Footer } from "../../components/footer/Footer";
 import { UserProfile } from "../../components/UserProfile";
 import { fetchAllUsers } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
+import { Autocomplete, TextField } from '@mui/material';
 
 interface SidebarItem {
     icon: string;
@@ -22,16 +23,23 @@ const sidebarItems: SidebarItem[] = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page', path: '/', isActive: false }
 ];
 
+const roleOptions = [
+    { label: 'User', value: 'ROLE_USER' },
+    { label: 'Admin', value: 'ROLE_ADMIN' }
+];
 
 export const Users: React.FC = () => {
     const [users, setUsers] = useState<UserDetailsDTO[]>([]);
+    const [totalCount, setTotalCount] = useState(0);
     const [pagination, setPagination] = useState({ page: 0, size: 10 });
     const [filter, setFilter] = useState({ username: '', email: '', role: '' });
 
     const fetchUsers = async () => {
         try {
             const { content } = await fetchAllUsers(pagination, filter);
+            console.log('Filtered Users:', content); // Log API response
             setUsers(content);
+            setTotalCount(content.length);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -41,9 +49,20 @@ export const Users: React.FC = () => {
         fetchUsers();
     }, [pagination, filter]);
 
-    const handleFilterChange = (updatedFilter: { username: string; email: string; role: string }) => {
-        setFilter(updatedFilter);
-        setPagination({ ...pagination, page: 0 }); // Reset to the first page on filter change
+    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFilter(prevFilter => ({ ...prevFilter, [name]: value }));
+        setPagination({ ...pagination, page: 0 });
+    };
+
+    const handleRoleChange = (_event: any, newValue: { label: string, value: string } | null) => {
+        setFilter(prevFilter => ({ ...prevFilter, role: newValue ? newValue.value : '' }));
+        setPagination({ ...pagination, page: 0 });
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        fetchUsers();
     };
 
     return (
@@ -61,7 +80,44 @@ export const Users: React.FC = () => {
                         <h2 className={styles.pageTitle}>Users</h2>
                         <UserProfile />
                     </header>
-                    <UsersTable users={users}/>
+                    <form className={styles.filterForm} onSubmit={handleSubmit}>
+                        <div className={styles.filterGroup}>
+                            <label htmlFor="username" className={styles.filterLabel}>Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                className={styles.filterInput}
+                                placeholder="Username"
+                                value={filter.username}
+                                onChange={handleFilterChange}
+                            />
+                        </div>
+                        <div className={styles.filterGroup}>
+                            <label htmlFor="email" className={styles.filterLabel}>Email</label>
+                            <input
+                                type="text"
+                                id="email"
+                                name="email"
+                                className={styles.filterInput}
+                                placeholder="Email"
+                                value={filter.email}
+                                onChange={handleFilterChange}
+                            />
+                        </div>
+                        <div className={styles.filterGroup}>
+                            <label htmlFor="role" className={styles.filterLabel}>Role</label>
+                            <Autocomplete
+                                id="role"
+                                options={roleOptions}
+                                getOptionLabel={(option) => option.label}
+                                onChange={handleRoleChange}
+                                renderInput={(params) => <TextField {...params}  className={styles.filterInput} />}
+                            />
+                        </div>
+                        <button type="submit" className={styles.submitButton}>Search</button>
+                    </form>
+                    <UsersTable users={users} totalCount={totalCount} />
                 </section>
             </div>
             <Footer />

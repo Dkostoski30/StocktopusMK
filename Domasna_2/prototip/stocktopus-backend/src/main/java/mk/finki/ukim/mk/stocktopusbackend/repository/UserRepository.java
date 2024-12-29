@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, String> {
                 select u from User u
                 where (:#{#userFilter.username} is null or :#{#userFilter.username} = '' or lower(u.username) like :#{#userFilter.username}%)
                 and (:#{#userFilter.email} is null or :#{#userFilter.email} = '' or lower(u.email) like :#{#userFilter.email}%)
+                and (:#{#userFilter.role} is null or :#{#userFilter.role} = '' or lower(u.role) like :#{#userFilter.role}%)
                 order by u.username asc
             """
     )
