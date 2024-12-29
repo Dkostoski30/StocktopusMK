@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/107cbeff-2873-4b07-b4f3-bdafa95f7caa/console.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/dbMigrations/V1_0__initial.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/dbMigrations/V1_1__add_column_date_deleted_stocks.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/dbMigrations/V1_2__create_index_on_fks_stock_details_and_stock.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/dbMigrations/V1_3__add_column_full_name_to_stocks.sql" dialect="PostgreSQL" />
-    <file url="PROJECT" dialect="MySQL" />
+    <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>
