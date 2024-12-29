@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Users.module.css';
-import { FilterForm } from '../../components/FilterForm';
-import { StockDetailsTable } from "../../components/table-historic-data/StockDetailsTable";
+import { UsersTable } from '../../components/users-table/UsersTable';
 import Navigation from "../../components/navigation/Navigation";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer";
 import { UserProfile } from "../../components/UserProfile";
-import { UsersTable } from '../../components/users-table/UsersTable';
-// import { UsersTable } from '/src/components/users-table/UsersTable.tsx';
+import { fetchAllUsers } from "../../service/userService.ts";
+import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 
 interface SidebarItem {
     icon: string;
@@ -17,49 +16,35 @@ interface SidebarItem {
 }
 
 const sidebarItems: SidebarItem[] = [
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Historic data',
-        path: '/admin/historic-data', // Path for Historic Data
-        isActive: false,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Stocks',
-        path: '/admin/stocks', // Path for Stocks
-        isActive: false,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Users',
-        path: '/admin/users', // Path for Users
-        isActive: true,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Back to Home Page',
-        path: '/', // Path to go back to Home Page
-        isActive: false,
-    },
+    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic data', path: '/admin/historic-data', isActive: false },
+    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks', path: '/admin/stocks', isActive: false },
+    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Users', path: '/admin/users', isActive: true },
+    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page', path: '/', isActive: false }
 ];
 
-export const Users: React.FC = () => {
-    const [filterData, setFilterData] = useState({ stockName: '', dateFrom: '', dateTo: '' });
-    const [users, setUsers] = useState<{ username: string; mail: string; role: string }[]>([]);
 
-    const handleFilter = (data: { stockName: string; dateFrom: string; dateTo: string }) => {
-        setFilterData(data);
+export const Users: React.FC = () => {
+    const [users, setUsers] = useState<UserDetailsDTO[]>([]);
+    const [pagination, setPagination] = useState({ page: 0, size: 10 });
+    const [filter, setFilter] = useState({ username: '', email: '', role: '' });
+
+    const fetchUsers = async () => {
+        try {
+            const { content } = await fetchAllUsers(pagination, filter);
+            setUsers(content);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
     };
 
     useEffect(() => {
-        // This is where you will fetch data from your API in the future
-        // For now, we'll use some dummy data
-        const dummyUsers = [
-            { username: 'johndoe', mail: 'johndoe@example.com', role: 'admin' },
-            { username: 'janedoe', mail: 'janedoe@example.com', role: 'user' },
-        ];
-        setUsers(dummyUsers);
-    }, []);
+        fetchUsers();
+    }, [pagination, filter]);
+
+    const handleFilterChange = (updatedFilter: { username: string; email: string; role: string }) => {
+        setFilter(updatedFilter);
+        setPagination({ ...pagination, page: 0 }); // Reset to the first page on filter change
+    };
 
     return (
         <main className={styles.dashboardDesign}>
@@ -74,9 +59,9 @@ export const Users: React.FC = () => {
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
                         <h2 className={styles.pageTitle}>Users</h2>
-                        <UserProfile/>
+                        <UserProfile />
                     </header>
-                    <UsersTable users={users} />
+                    <UsersTable users={users}/>
                 </section>
             </div>
             <Footer />

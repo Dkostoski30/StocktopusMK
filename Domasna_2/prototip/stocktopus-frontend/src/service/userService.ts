@@ -3,6 +3,7 @@ import axios from "axios";
 import {UserDTO} from "../model/dto/UserDTO.ts";
 import {UserLoginDTO} from "../model/dto/UserLoginDTO.ts";
 import {getRolesFromToken} from "../config/jwtToken.ts";
+import {UserDetailsDTO} from "../model/dto/UserDetailsDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
 
@@ -60,6 +61,42 @@ export const deleteUser = async (username: string) => {
         return response.data; // Adjust based on your API response
     } catch (error) {
         console.error("Error deleting user:", error);
+        throw error;
+    }
+};
+interface PaginationParams {
+    page: number;
+    size: number;
+}
+
+interface UserFilterParams {
+    username?: string;
+    email?: string;
+    role?: string;
+}
+
+interface UserResponse {
+    totalElements: number;
+    content: UserDetailsDTO[];
+}
+
+export const fetchAllUsers = async (
+    { page, size }: PaginationParams,
+    { username, email, role }: UserFilterParams = {}
+): Promise<UserResponse> => {
+    try {
+        const response = await axios.get<UserResponse>(`${BASE_URL}/users`, {
+            params: {
+                page,
+                size,
+                username,
+                email,
+                role,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching users:", error);
         throw error;
     }
 };

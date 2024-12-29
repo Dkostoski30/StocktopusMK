@@ -5,9 +5,12 @@ import { UserDTO } from '../../model/dto/UserDTO.ts';
 import { getUsers, deleteUser } from "../../service/userService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from "../modal/Modal.tsx";
+import {UserDetailsDTO} from "../../model/dto/UserDetailsDTO.ts";
 
 interface UsersTableProps {
-    filterData: { username: string };
+    //filterData: { username: string };
+    users: UserDetailsDTO[]; // Accept users directly as a prop
+   // onDelete: (username: string) => Promise<void>; // Callback for delete
 }
 
 export const UsersTable: React.FC<UsersTableProps> = ({ filterData }) => {
@@ -77,15 +80,35 @@ export const UsersTable: React.FC<UsersTableProps> = ({ filterData }) => {
                 <div className={styles.tableHeader}>
                     <div className={styles.headerCell}>Username</div>
                     <div className={styles.headerCell}>Email</div>
+                    <div className={styles.headerCell}>Role</div>
+                    <div className={styles.headerCell}>Actions</div>
                 </div>
                 {users.map((user) => (
                     <div className={styles.tableRow} key={user.username}>
                         <div className={styles.rowCell}>{user.username}</div>
                         <div className={styles.rowCell}>{user.email}</div>
-                        <div className={styles.rowCell}>
-                            <Button onClick={() => handleDeleteClick(user.username)} color="secondary">
+                        <div className={styles.rowCell}>{user.role}</div>
+                        <div className={styles.rowCell} style={{display: "flex", justifyContent: "space-between"}}>
+                            <button
+                                className={styles.deleteButton}
+                                onClick={() => onDelete(user)}
+                                aria-label={`Delete ${user.username} data`}
+                                style={{marginRight: "1rem"}}
+                            >
                                 Delete
-                            </Button>
+                            </button>
+                            <button
+                                className={styles.editButton}
+                                onClick={() => onEdit(user)}
+                                aria-label={`Edit ${user.username} data`}
+                            >
+                                <img
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                                    alt=""
+                                    className={styles.editIcon}
+                                />
+                                <span>Edit</span>
+                            </button>
                         </div>
                     </div>
                 ))}
