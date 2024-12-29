@@ -20,7 +20,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final UserConverterService userConverterService;
-    @GetMapping("/fetchAll")
+    @GetMapping
     public Page<UserDetailsDTO> fetchAllUsers(
             Pageable pageable,
             @RequestParam(required = false) String username,
@@ -30,4 +30,5 @@ public class UserController {
         UserDetailsFilter userDetailsFilter = new UserDetailsFilter(username, email, role);
         return userService.fetchUsers(pageable, userDetailsFilter).map(userConverterService::convertToUserDetailsDTO);
     }
+
 }
