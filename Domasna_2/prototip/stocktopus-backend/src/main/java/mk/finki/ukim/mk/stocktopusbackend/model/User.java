@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -31,6 +32,9 @@ public class User implements UserDetails, Serializable {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "username")
+    private List<FavoriteStocks> favoriteStocks;
 
     public User(String username, String password, String email, Role role) {
         this.username = username;
