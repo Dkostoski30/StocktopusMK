@@ -1,5 +1,5 @@
 import './App.css';
-import { AdminDashboard } from "./pages/AdminDashboard/AdminDashboard";
+import { HistoricData } from "./pages/HistoricData/HistoricData.tsx";
 import { Route, Routes } from "react-router-dom";
 import { Dashboard } from "./pages/Index/Dashboard";
 import { LoginForm } from "./pages/Login/LoginForm";
@@ -9,20 +9,24 @@ import { StockDetailsPage } from "./pages/StockDetails/StockDetailsPage";
 import {Predictor} from "./pages/Predictor/PredictorPage.tsx";
 import {PredictorByStockPage} from "./pages/PredictorByStock/PredictorByStockPage.tsx";
 import {Favorites} from "./pages/Favorites/Favorites.tsx"
+import AuthRouteUsers from "./config/AuthRouteUsers.tsx";
+import AuthRouteAdmin from "./config/AuthRouteAdmin.tsx";
 
 function App() {
     return (
         <div className="App">
             <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/admin/*" element={<AdminDashboard />} />
+                <Route path="/" element={<AuthRouteUsers><Dashboard /></AuthRouteUsers>} />
+                <Route path="/admin/*" element={<AuthRouteAdmin><HistoricData /></AuthRouteAdmin>} />
+                <Route path="/user/*" element={<AuthRouteUsers><HistoricData /></AuthRouteUsers>} />
                 <Route path={"/login"} element={<LoginForm/>}></Route>
                 <Route path={"/register"} element={<RegisterForm/>}></Route>
-                <Route path={"/admin/stocks"} element={<AllStocks/>}></Route>
-                <Route path="/stock-details/:ticker" element={<StockDetailsPage />} />
-                <Route path={"/predictor"} element={<Predictor/>}></Route>
-                <Route path={"/predictor/:stockId"} element={<PredictorByStockPage/>}></Route>
-                <Route path={"/favorites"} element={<Favorites/>}></Route>
+                <Route path={"/admin/stocks"} element={<AuthRouteAdmin><AllStocks/></AuthRouteAdmin>}></Route>
+                <Route path={"/user/stocks"} element={<AuthRouteUsers><AllStocks/></AuthRouteUsers>}></Route>
+                <Route path="/stock-details/:ticker" element={<AuthRouteUsers><StockDetailsPage /></AuthRouteUsers>} />
+                <Route path={"/predictor"} element={<AuthRouteUsers><Predictor/></AuthRouteUsers>}></Route>
+                <Route path={"/predictor/:stockId"} element={<AuthRouteUsers><PredictorByStockPage/></AuthRouteUsers>}></Route>
+                <Route path={"/favorites"} element={<AuthRouteUsers><Favorites/></AuthRouteUsers>}></Route>
             </Routes>
         </div>
     );

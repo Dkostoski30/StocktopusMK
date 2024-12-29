@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from '../pages/AdminDashboard/AdminDashboard.module.css';
+import styles from '../pages/HistoricData/HistoricData.module.css';
 
 interface FilterFormStocksProps {
     onSubmit: (data: { stockName: string }) => void

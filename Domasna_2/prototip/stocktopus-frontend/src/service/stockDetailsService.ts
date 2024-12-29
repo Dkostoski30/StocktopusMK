@@ -77,7 +77,7 @@ export const editStockDetails = async (id: number, data: StockDetailsEditDTO) =>
 
 }
 
-export const findLatestByStockId = async (stockId) => {
+export const findLatestByStockId = async (stockId : number | string) => {
     try {
         const response = await axios.get(`${BASE_URL}/stock-details/latest/${stockId}`);
         return response.data;
