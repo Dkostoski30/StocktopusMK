@@ -10,10 +10,12 @@ interface PaginationParams {
     size: number;
 }
 
-export const getItems = async ({ page, size, stockName, dateFrom, dateTo }: PaginationParams & {
+export const getItems = async ({ page, size, stockName, dateFrom, dateTo, sortBy, sortOrder }: PaginationParams & {
     stockName?: string;
     dateFrom?: string;
     dateTo?: string;
+    sortBy?: string;
+    sortOrder?: string;
 }) => {
     try {
         const response = await axios.get<{
@@ -26,6 +28,8 @@ export const getItems = async ({ page, size, stockName, dateFrom, dateTo }: Pagi
                 stockName,
                 dateFrom,
                 dateTo,
+                sortBy,
+                sortOrder
             },
         });
         return response.data;

@@ -5,10 +5,10 @@ import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
 import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
 import { getItems, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import SuccessDialog from '../successDialog/SuccessDialog';
 import Modal from '../modal/Modal.tsx';
-import {isAdmin} from "../../config/jwtToken.ts";
-
+import { isAdmin } from "../../config/jwtToken.ts";
 
 interface StockDetailsTableProps {
     filterData: { stockName: string; dateFrom: string; dateTo: string };
@@ -23,6 +23,8 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const [selectedDetailsId, setSelectedDetailsId] = useState<number | null>(null);
+    const [sortBy, setSortBy] = useState<string | undefined>(undefined);
+    const [sortOrder, setSortOrder] = useState<string | undefined>(undefined);
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [formData, setFormData] = useState<StockDetailsEditDTO>({
@@ -38,10 +40,10 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
 
     useEffect(() => {
         loadItems();
-    }, [page, size,filterData]);
+    }, [page, size, filterData, sortBy, sortOrder]);
 
     const loadItems = async () => {
-        const response = await getItems({ page, size, ...filterData });
+        const response = await getItems({ page, size, ...filterData, sortBy, sortOrder });
         setItems(response.content);
         setTotalCount(response.totalElements);
     };
@@ -97,16 +99,34 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
         }
     };
 
-    return (
+    const handleSort = (column: string) => {
+        if (sortBy === column) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortBy(column);
+            setSortOrder('asc');
+        }
+    };
 
+    return (
         <div>
             <div className={styles.tableContainer}>
                 <div className={styles.tableHeader}>
-                    <div className={styles.headerCell}>Stock Name</div>
-                    <div className={styles.headerCell}>Date</div>
-                    <div className={styles.headerCell}>Max Price</div>
-                    <div className={styles.headerCell}>Min Price</div>
-                    <div className={styles.headerCell}>Last Transaction Price</div>
+                    <div className={styles.headerCell} onClick={() => handleSort('stockName')}>
+                        Stock Name {sortBy === 'stockName' ? (sortOrder === 'asc' ? <ArrowUpward /> : <ArrowDownward />) : <ArrowDownward />}
+                    </div>
+                    <div className={styles.headerCell} onClick={() => handleSort('date')}>
+                        Date {sortBy === 'date' ? (sortOrder === 'asc' ? <ArrowUpward /> : <ArrowDownward />) : <ArrowDownward />}
+                    </div>
+                    <div className={styles.headerCell} onClick={() => handleSort('maxPrice')}>
+                        Max Price {sortBy === 'maxPrice' ? (sortOrder === 'asc' ? <ArrowUpward /> : <ArrowDownward />) : <ArrowDownward />}
+                    </div>
+                    <div className={styles.headerCell} onClick={() => handleSort('minPrice')}>
+                        Min Price {sortBy === 'minPrice' ? (sortOrder === 'asc' ? <ArrowUpward /> : <ArrowDownward />) : <ArrowDownward />}
+                    </div>
+                    <div className={styles.headerCell} onClick={() => handleSort('lastTransactionPrice')}>
+                        Last Transaction Price {sortBy === 'lastTransactionPrice' ? (sortOrder === 'asc' ? <ArrowUpward /> : <ArrowDownward />) : <ArrowDownward />}
+                    </div>
                     {isAdmin() ? (<div className={styles.headerCell}>Actions</div>) : null}
                 </div>
                 {items.map((item) => (

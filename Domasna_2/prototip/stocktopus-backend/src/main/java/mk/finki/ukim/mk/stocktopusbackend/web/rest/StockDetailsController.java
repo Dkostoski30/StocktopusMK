@@ -2,9 +2,7 @@ package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsFilter;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.*;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.data.domain.Page;
@@ -27,13 +25,15 @@ public class StockDetailsController {
     private final StockDetailsConverterService stockDetailsConverterService;
 
     @GetMapping
-    public Page<StockDetailsDTO> findAll(Pageable pageable,
-                                         @RequestParam (required = false) String stockName,
-                                         @RequestParam (required = false) String dateFrom,
-                                         @RequestParam (required = false) String dateTo){
+    public Page<StockDetailsProjection> findAll(Pageable pageable,
+                                                @RequestParam (required = false) String stockName,
+                                                @RequestParam (required = false) String dateFrom,
+                                                @RequestParam (required = false) String dateTo,
+                                                @RequestParam (required = false) String sortBy,
+                                                @RequestParam (required = false) String sortOrder){
         StockDetailsFilter stockDetailsFilter = new StockDetailsFilter(stockName, dateFrom, dateTo);
-        return this.stockDetailsService.findAll(pageable, stockDetailsFilter)
-                .map(stockDetailsConverterService::convertToStockDetailsDTO);
+        StockDetailsSortingConfig stockDetailsSortingConfig = new StockDetailsSortingConfig(sortBy, sortOrder);
+        return this.stockDetailsService.findAll(pageable, stockDetailsFilter, stockDetailsSortingConfig);
     }
 
     @DeleteMapping("/{id}")
