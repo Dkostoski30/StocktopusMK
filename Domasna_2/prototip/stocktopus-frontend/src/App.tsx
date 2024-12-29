@@ -11,6 +11,7 @@ import {PredictorByStockPage} from "./pages/PredictorByStock/PredictorByStockPag
 import {Favorites} from "./pages/Favorites/Favorites.tsx"
 import AuthRouteUsers from "./config/AuthRouteUsers.tsx";
 import AuthRouteAdmin from "./config/AuthRouteAdmin.tsx";
+import {Users} from "./pages/Users/Users.tsx";
 
 function App() {
     return (
@@ -27,6 +28,8 @@ function App() {
                 <Route path={"/predictor"} element={<AuthRouteUsers><Predictor/></AuthRouteUsers>}></Route>
                 <Route path={"/predictor/:stockId"} element={<AuthRouteUsers><PredictorByStockPage/></AuthRouteUsers>}></Route>
                 <Route path={"/favorites"} element={<AuthRouteUsers><Favorites/></AuthRouteUsers>}></Route>
+                <Route path={"/admin/users"} element={<AuthRouteAdmin><Users/></AuthRouteAdmin>}></Route>
+
             </Routes>
         </div>
     );

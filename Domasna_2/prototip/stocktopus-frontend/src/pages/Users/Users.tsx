@@ -6,7 +6,8 @@ import Navigation from "../../components/navigation/Navigation";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer";
 import { UserProfile } from "../../components/UserProfile";
-import UserTable from '../../components/users-table/UsersTable'; // Import the UserTable component
+import { UsersTable } from '../../components/users-table/UsersTable';
+// import { UsersTable } from '/src/components/users-table/UsersTable.tsx';
 
 interface SidebarItem {
     icon: string;
@@ -75,7 +76,7 @@ export const Users: React.FC = () => {
                         <h2 className={styles.pageTitle}>Users</h2>
                         <UserProfile/>
                     </header>
-                    <UserTable users={users} />
+                    <UsersTable users={users} />
                 </section>
             </div>
             <Footer />

@@ -36,8 +36,30 @@ export const login = async (userLoginDTO: UserLoginDTO): Promise<string | null> 
     return null;
 };
 
-
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('roles');
+};
+
+
+// Fetch users with pagination and filtering
+export const getUsers = async (params: { page: number; size: number; username?: string }) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/users`, { params });
+        return response.data; // Assuming the API response contains { content: [], totalElements: number }
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        throw error;
+    }
+};
+
+// Delete a user by username
+export const deleteUser = async (username: string) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/users/${username}`);
+        return response.data; // Adjust based on your API response
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }
 };
