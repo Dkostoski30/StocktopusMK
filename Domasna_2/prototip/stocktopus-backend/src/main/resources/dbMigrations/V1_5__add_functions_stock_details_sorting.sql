@@ -13,18 +13,22 @@ CREATE OR REPLACE FUNCTION get_stock_details(
     _sort_order TEXT
 )
 RETURNS TABLE (
+    details_id BIGINT,
+    stock_id BIGINT,
     stock_name TEXT,
     date DATE,
+    last_transaction_price TEXT,
     max_price TEXT,
     min_price TEXT,
-    last_transaction_price TEXT
+    average_price TEXT,
+    percentage_change TEXT,
+    quantity TEXT,
+    trade_volume TEXT,
+    total_volume TEXT
 ) AS
 $$
-SELECT s.stock_name AS stockName,
-       sd.date,
-       NULLIF(sd.max_price, '') AS maxPrice,
-       NULLIF(sd.min_price, '') AS minPrice,
-       NULLIF(sd.last_transaction_price, '') AS lastTransactionPrice
+SELECT sd.details_id, sd.stock_id, s.stock_name, sd.date, sd.last_transaction_price, sd.max_price,
+         sd.min_price, sd.average_price, sd.percentage_change, sd.quantity, sd.trade_volume, sd.total_volume
 FROM stockdetails sd
          JOIN stocks s ON sd.stock_id = s.stock_id
 WHERE s.date_deleted IS NULL
@@ -35,6 +39,9 @@ ORDER BY
     CASE
         WHEN _sort_by IS NULL AND _sort_order IS NULL THEN sd.date
         END DESC,
+    CASE
+        WHEN _sort_by IS NULL AND _sort_order IS NULL THEN s.stock_name
+        END NULLS FIRST,
     CASE
         WHEN _sort_by = 'stockName' AND _sort_order = 'asc' THEN s.stock_name
         END NULLS FIRST,
