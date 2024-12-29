@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { StockDTO } from "../model/dto/stockDTO.ts";
 import config from "../config/config.ts";
-import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
 import {FavoriteStocksDTO} from "../model/dto/FavoriteStocksDTO.ts";
 const BASE_URL = config.API_BASE_URL;
 interface PaginationParams {

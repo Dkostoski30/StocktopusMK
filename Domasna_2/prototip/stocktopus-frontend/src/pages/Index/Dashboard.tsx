@@ -15,7 +15,7 @@ import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 import ExportTradedButton from "../../components/exportTradedButton/ExportTradedButton.tsx";
-import {isAdmin} from "../../config/jwtToken.ts";
+import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
 
 
 const favoriteData = [
@@ -180,7 +180,7 @@ export const Dashboard: React.FC = () => {
                         </section>
 
                         <section className={styles.favoritesSection}>
-                            <FavoritesSection favoriteData={favoriteData}/>
+                            <FavoritesSection username={getUsernameFromToken()}/>
                         </section>
                     </section>
                     <div>

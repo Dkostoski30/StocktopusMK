@@ -6,12 +6,11 @@ import { getItems, deleteItem, editItem } from "../../service/stockService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import Modal from "../modal/Modal.tsx";
-import { isAdmin } from "../../config/jwtToken.ts";
+import {isAdmin} from "../../config/jwtToken.ts";
 
-interface StocksTableProps {
+interface StocksTableProps   {
     filterData: { stockName: string };
 }
-
 export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
@@ -28,16 +27,6 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
         stockName: "",
         fullName: "",
     });
-
-    const [favorites, setFavorites] = useState<string[]>([]);
-
-    const toggleFavorite = (stockId: string) => {
-        setFavorites(prevFavorites =>
-            prevFavorites.includes(stockId)
-                ? prevFavorites.filter(fav => fav !== stockId)
-                : [...prevFavorites, stockId]
-        );
-    };
 
     const handleSave = async () => {
         try {
@@ -116,12 +105,14 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                     <div className={styles.headerCell}>Stock ID</div>
                     <div className={styles.headerCell}>Company name</div>
                     <div className={styles.headerCell}>Stock Name</div>
-                    {isAdmin() ? (<div className={styles.headerCell} style={{ marginLeft: '155px' }}>Actions</div>) : null}
-                    <div className={styles.headerCell}></div>
+                    {isAdmin() ? (<div className={styles.headerCell} style={{marginLeft: '155px'}}>Actions</div> ) : null}
                 </div>
                 {items.map((item) => (
-                    <div key={item.stockId}>
+                    <div
+
+                    >
                         <TableRowStocks
+                            key={item.stockId}
                             item={item}
                             onEdit={() => {
                                 setFormData({
@@ -132,11 +123,11 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                                 setModalOpen(true);
                             }}
                             onDelete={() => handleDeleteClick(item.stockId)}
-                            favorites={favorites}
-                            toggleFavorite={toggleFavorite}
                         />
                     </div>
                 ))}
+
+
             </div>
             <TablePagination
                 component="div"
@@ -155,26 +146,23 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                 <DialogTitle id="delete-dialog-title">{"Confirm Delete"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="delete-dialog-description">
-                        Are you sure you want to delete this stock data?
+                        Are you sure you want to delete this stock?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDeleteDialog} color="primary">Cancel</Button>
-                    <Button onClick={confirmDelete} color="primary" autoFocus>Delete</Button>
+                    <Button onClick={confirmDelete} color="secondary" autoFocus>
+                        Delete
+                    </Button>
                 </DialogActions>
             </Dialog>
+
             <SuccessDialog
                 open={openSuccessDialog}
+                message="The operation was successful."
                 onClose={handleCloseSuccessDialog}
-                message="Stock data updated successfully."
             />
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                onSave={handleSave}
-                formData={formData}
-                setFormData={setFormData}
-            />
+
             <Dialog
                 open={openErrorDialog}
                 onClose={handleCloseErrorDialog}
@@ -184,15 +172,40 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
                 <DialogTitle id="error-dialog-title">{"Error"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="error-dialog-description">
-                        An error occurred while updating stock data. Please try again later.
+                        There was an error processing your request.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseErrorDialog} color="primary" autoFocus>
-                        Close
-                    </Button>
+                    <Button onClick={handleCloseErrorDialog} color="primary">Close</Button>
                 </DialogActions>
             </Dialog>
+
+            <Modal
+                isOpen={isModalOpen}
+                title="Edit Item"
+                onClose={() => setModalOpen(false)}
+                onSave={handleSave}
+            >
+                <form>
+                    <div>
+                        <label htmlFor="stock_id">Stock ID:</label>
+                        <input
+                            id="stock_id"
+                            type="text"
+                            value={formData.stockId}
+                            disabled
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="stock_name">Stock Name:</label>
+                        <textarea
+                            id="stock_name"
+                            value={formData.stockName}
+                            onChange={(e) => setFormData({ ...formData, stockName: e.target.value })}
+                        />
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };

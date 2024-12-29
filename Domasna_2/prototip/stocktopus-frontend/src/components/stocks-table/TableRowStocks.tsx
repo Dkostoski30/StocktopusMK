@@ -1,58 +1,50 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { StockDTO } from "../../model/dto/stockDTO.ts";
 import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { useNavigate } from 'react-router-dom';
-import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
-import {addFavoriteStock, getFavoriteStocks, removeFavoriteStock} from "../../service/favoriteStocksService.ts";
+import { getUsernameFromToken, isAdmin } from "../../config/jwtToken.ts";
+import { addFavoriteStock, getFavoriteStocks, removeFavoriteStock } from "../../service/favoriteStocksService.ts";
 
 interface TableRowProps {
     item: StockDTO;
     onEdit: (item: StockDTO) => void;
     onDelete: (item: StockDTO) => void;
-    favorites: string[];
-    toggleFavorite: (stockId: string) => void;
 }
 
-export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete, favorites, toggleFavorite }) => {
+export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) => {
     const navigate = useNavigate();
     const username = getUsernameFromToken();
-    const [items, setItems] = useState<StockDTO[]>([]);
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(25);
-    const [totalCount, setTotalCount] = useState(0);
+    const [favoriteItems, setFavoriteItems] = useState<StockDTO[]>([]);
 
     useEffect(() => {
         loadFavoriteStocks();
-    }, [page, size]);
+    }, []);
 
     const loadFavoriteStocks = async () => {
         try {
-            const response = await getFavoriteStocks({ username, page, size });
-            setItems(response.content);
-            setTotalCount(response.totalElements);
-            setSize(response.totalElements);
+            const response = await getFavoriteStocks({ username });
+            setFavoriteItems(response.content);
         } catch (error) {
             console.error("Error loading favorite stocks:", error);
         }
     };
 
-    // const handleToggleFavorite = async (stockId: number) => {
-    //     try {
-    //         if (items.includes({stockId:stockId, fullName: "", stockName: "", username:username})) {
-    //             // Remove from favorites
-    //             await removeFavoriteStock({ username, stockId: parseInt(stockId, 10) });
-    //             setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== stockId));
-    //             console.log(`Stock ${stockId} removed from favorites.`);
-    //         } else {
-    //             // Add to favorites
-    //             await addFavoriteStock({ username, stockId: parseInt(stockId, 10) });
-    //             setFavorites((prevFavorites) => [...prevFavorites, stockId]);
-    //             console.log(`Stock ${stockId} added to favorites.`);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error toggling favorite stock:", error);
-    //     }
-    // };
+    const handleToggleFavorite = async (stockId: number) => {
+        try {
+            const isFavorite = favoriteItems.some(fav => fav.stockId === stockId);
+            if (isFavorite) {
+                await removeFavoriteStock({ username, stockId });
+                setFavoriteItems(favoriteItems.filter(fav => fav.stockId !== stockId));
+            } else {
+                await addFavoriteStock({ username, stockId });
+                setFavoriteItems([...favoriteItems, { stockId, fullName: item.fullName, stockName: item.stockName }]);
+            }
+        } catch (error) {
+            console.error("Error toggling favorite stock:", error);
+        }
+    };
+
+    const isFavorite = favoriteItems.some(fav => fav.stockId === item.stockId);
 
     return (
         <div className={styles.tableRow}>
@@ -94,14 +86,14 @@ export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete
                     </button>
                 </div>
             ) : null}
-            {/*<div className={styles.tickerCell}>*/}
-            {/*    <button*/}
-            {/*        onClick={() => handleToggleFavorite(item.stockId)}*/}
-            {/*        className={`${styles.favoriteButton} ${styles.filledHeart}`}*/}
-            {/*    >*/}
-            {/*        ♥*/}
-            {/*    </button>*/}
-            {/*</div>*/}
+            <div className={styles.tickerCell}>
+                <button
+                    onClick={() => handleToggleFavorite(item.stockId)}
+                    className={`${styles.favoriteButton} ${isFavorite ? styles.filledHeart : styles.emptyHeart}`}
+                >
+                    {isFavorite ? '♥' : '♡'}
+                </button>
+            </div>
         </div>
     );
 };
