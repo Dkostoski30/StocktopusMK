@@ -8,6 +8,7 @@ import { UserProfile } from "../../components/UserProfile";
 import { fetchAllUsers } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
+import {deleteUserByUsername} from "../../service/userService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -64,7 +65,14 @@ export const Users: React.FC = () => {
         e.preventDefault();
         fetchUsers();
     };
-
+    const handleDeleteUser = async (username: string) => {
+        try {
+            await deleteUserByUsername(username);
+            await fetchUsers(); // Refresh the user list after deletion
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
@@ -117,7 +125,7 @@ export const Users: React.FC = () => {
                         </div>
                         <button type="submit" className={styles.submitButton}>Search</button>
                     </form>
-                    <UsersTable users={users} totalCount={totalCount} />
+                    <UsersTable users={users} totalCount={totalCount} onDelete={handleDeleteUser} />
                 </section>
             </div>
             <Footer />

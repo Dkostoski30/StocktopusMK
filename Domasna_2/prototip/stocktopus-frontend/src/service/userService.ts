@@ -54,16 +54,7 @@ export const getUsers = async (params: { page: number; size: number; username?: 
     }
 };
 
-// Delete a user by username
-export const deleteUser = async (username: string) => {
-    try {
-        const response = await axios.delete(`${BASE_URL}/users/${username}`);
-        return response.data; // Adjust based on your API response
-    } catch (error) {
-        console.error("Error deleting user:", error);
-        throw error;
-    }
-};
+
 interface PaginationParams {
     page: number;
     size: number;
@@ -79,7 +70,15 @@ interface UserResponse {
     totalElements: number;
     content: UserDetailsDTO[];
 }
-
+export const deleteUserByUsername = async (username: string): Promise<void> => {
+    try {
+        await axios.delete(`${BASE_URL}/users/delete/${username}`);
+        console.log(`User with username "${username}" successfully deleted.`);
+    } catch (error) {
+        console.error(`Error deleting user with username "${username}":`, error);
+        throw error;
+    }
+};
 export const fetchAllUsers = async (
     { page, size }: PaginationParams,
     { username, email, role }: UserFilterParams = {}
