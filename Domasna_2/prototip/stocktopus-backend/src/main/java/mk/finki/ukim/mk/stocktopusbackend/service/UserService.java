@@ -12,5 +12,6 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     void register(String username, String password, String repeatPassword, String email , Role role);
     Page<User> fetchUsers(Pageable pageable, UserDetailsFilter userDetailsFilter);
+    void deleteUser(String username);
 }
 

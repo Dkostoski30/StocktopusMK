@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
+
+    @Override
+    public void deleteUser(String username) {
+        userRepository.deleteById(username);
+    }
 }

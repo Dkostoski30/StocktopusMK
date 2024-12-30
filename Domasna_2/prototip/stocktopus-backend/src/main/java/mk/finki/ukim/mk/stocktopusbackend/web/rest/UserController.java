@@ -7,10 +7,7 @@ import mk.finki.ukim.mk.stocktopusbackend.service.UserService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.UserConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,4 +28,8 @@ public class UserController {
         return userService.fetchUsers(pageable, userDetailsFilter).map(userConverterService::convertToUserDetailsDTO);
     }
 
+    @DeleteMapping("/delete/{username}")
+    public void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+    }
 }
