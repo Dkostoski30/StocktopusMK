@@ -31,7 +31,6 @@ public class LoginController {
             Authentication authentication = authenticationManager.authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Generate JWT token
             String token = JwtUtil.generateToken(authentication.getName(), Map.of("roles", authentication.getAuthorities()));
 
             return ResponseEntity.ok()

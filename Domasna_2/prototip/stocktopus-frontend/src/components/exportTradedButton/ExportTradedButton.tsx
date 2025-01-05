@@ -1,28 +1,7 @@
 import styles from "./exportMostTradedButton.module.css";
-const ExportTradedButton = () => {
-    const handleExport = () => {
-        fetch("http://localhost:8080/api/stock-details/exportMostTraded", {
-            method: "GET",
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to download CSV");
-                }
-                return response.blob();
-            })
-            .then((blob) => {
-                const url = window.URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "most_traded_stocks.csv";
-                link.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch((error) => {
-                console.error("Error exporting CSV:", error);
-            });
-    };
+import {handleExport} from "../../service/stockDetailsService.ts";
 
+const ExportTradedButton = () => {
     return (
         <button className={styles.exportButton} onClick={handleExport}>
             <img

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '../config/axiosInstance';
 import config from '../config/config.ts';
 import {LatestNewsDTO} from "../model/dto/latestNewsDTO.ts";
 
@@ -18,7 +18,7 @@ export const getLatestNewsByStockId = async ({
     content: LatestNewsDTO[];
 }> => {
     try {
-        const response = await axios.get<{
+        const response = await axiosInstance.get<{
             totalElements: number;
             content: LatestNewsDTO[];
         }>(`${BASE_URL}/latest-news/latestByStock/${stockId}`, {

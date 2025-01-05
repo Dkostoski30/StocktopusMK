@@ -1,7 +1,6 @@
 package mk.finki.ukim.mk.stocktopusbackend.service;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

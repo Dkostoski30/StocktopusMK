@@ -7,9 +7,8 @@ import mk.finki.ukim.mk.stocktopusbackend.service.UserService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.UserConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,7 +16,9 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final UserConverterService userConverterService;
-    @GetMapping
+
+    @GetMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Page<UserDetailsDTO> fetchAllUsers(
             Pageable pageable,
             @RequestParam(required = false) String username,
@@ -29,6 +30,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }

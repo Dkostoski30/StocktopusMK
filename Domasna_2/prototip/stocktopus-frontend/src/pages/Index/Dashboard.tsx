@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard';
 import { UserProfile } from '../../components/UserProfile';
@@ -16,14 +15,7 @@ import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 import ExportTradedButton from "../../components/exportTradedButton/ExportTradedButton.tsx";
 import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
-
-
-const favoriteData = [
-    { rank: "01", symbol: "ALK", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "02", symbol: "STB", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "03", symbol: "KMB", maxPrice: "25.218,05", avgPrice: "25.218,05" },
-    { rank: "04", symbol: "TTK", maxPrice: "25.218,05", avgPrice: "25.218,05" }
-];
+import axiosInstance from "../../config/axiosInstance.ts";
 
 const sidebarItemsAdmin = [
     { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
@@ -68,7 +60,7 @@ export const Dashboard: React.FC = () => {
             try {
                 const data = await getMostTradedStocks();
                 setMostTradedData(data);
-                const response = await axios.get('http://localhost:8080/api/stock-details/getMostTraded');
+                const response = await axiosInstance.get('http://localhost:8080/api/stock-details/getMostTraded');
 
                 if (Array.isArray(response.data)) {
                     const formattedData: StockDetailsDTO[] = response.data.map((stock: StockDetailsDTO) => ({

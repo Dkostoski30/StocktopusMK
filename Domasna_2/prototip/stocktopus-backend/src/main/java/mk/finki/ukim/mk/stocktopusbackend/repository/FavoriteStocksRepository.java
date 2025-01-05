@@ -28,7 +28,7 @@ public interface FavoriteStocksRepository extends JpaRepository<FavoriteStocks, 
                 SELECT s
                 FROM Stock s
                 JOIN s.favoriteStocks fs
-                WHERE fs.username = :username
+                WHERE fs.username = :username AND s.dateDeleted IS NULL
                 ORDER BY fs.id DESC
             """)
     Page<Stock> getFavoriteStocks(String username, Pageable pageable);
