@@ -9,7 +9,7 @@ import {
     Button,
 } from '@mui/material';
 import styles from '../../pages/Users/Users.module.css';
-import SuccessDialog from '../successDialog/SuccessDialog';
+import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
 import { UserDetailsDTO } from '../../model/dto/UserDetailsDTO';
 
 interface UsersTableProps {
@@ -22,7 +22,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, totalCount, onDel
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogType, setDialogType] = useState<'success' | 'error'>('success');
     const [selectedUsername, setSelectedUsername] = useState<string | null>(null);
 
     const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -43,12 +44,14 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, totalCount, onDel
         if (selectedUsername) {
             try {
                 await onDelete(selectedUsername);
+                setDialogMessage('The user was successfully deleted.');
+                setDialogType('success');
+            } catch  {
+                setDialogMessage('There was an error processing your request.');
+                setDialogType('error');
+            } finally {
                 setOpenDeleteDialog(false);
-                setOpenSuccessDialog(true);
                 setSelectedUsername(null);
-            } catch (error) {
-                console.error('Error during delete:', error);
-                setOpenDeleteDialog(false);
             }
         }
     };
@@ -58,8 +61,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, totalCount, onDel
         setSelectedUsername(null);
     };
 
-    const handleCloseSuccessDialog = () => {
-        setOpenSuccessDialog(false);
+    const handleCloseDialog = () => {
+        setDialogMessage('');
     };
 
     return (
@@ -117,10 +120,11 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users, totalCount, onDel
                     </Button>
                 </DialogActions>
             </Dialog>
-            <SuccessDialog
-                open={openSuccessDialog}
-                message="The user was successfully deleted."
-                onClose={handleCloseSuccessDialog}
+            <SuccessOrErrorDialog
+                open={!!dialogMessage}
+                message={dialogMessage}
+                onClose={handleCloseDialog}
+                type={dialogType}
             />
         </div>
     );
