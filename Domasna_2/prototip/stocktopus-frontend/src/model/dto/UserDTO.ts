@@ -3,5 +3,4 @@ export interface UserDTO {
     password: string;
     repeatedPassword: string;
     email: string;
-    role :string;
 }
