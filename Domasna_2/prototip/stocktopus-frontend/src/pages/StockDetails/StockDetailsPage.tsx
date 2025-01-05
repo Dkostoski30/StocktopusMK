@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png";
 import { UserProfile } from "../../components/UserProfile";
 import { findLatestByStockId } from '../../service/stockDetailsService';
 import { Line } from 'react-chartjs-2';
-import {getStockById} from "../../service/stockService.ts";
+import {getStockDTOById} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
 
@@ -40,7 +40,7 @@ export const StockDetailsPage: React.FC = () => {
     useEffect(() => {
         const fetchStockDetails = async () => {
             if (ticker) {
-                const stockDTO = await getStockById(parseInt(ticker));
+                const stockDTO = await getStockDTOById(parseInt(ticker));
                 setStockName(stockDTO.stockName);
 
                 const latestDetails = await findLatestByStockId(parseInt(ticker));

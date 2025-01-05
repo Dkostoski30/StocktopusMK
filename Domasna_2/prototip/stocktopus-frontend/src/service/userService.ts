@@ -57,7 +57,7 @@ interface UserResponse {
     totalElements: number;
     content: UserDetailsDTO[];
 }
-export const deleteUserByUsername = async (username: string): Promise<void> => {
+export const deleteUser = async (username: string): Promise<void> => {
     try {
         await axiosInstance.delete(`${BASE_URL}/users/delete/${username}`);
         console.log(`User with username "${username}" successfully deleted.`);

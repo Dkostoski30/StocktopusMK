@@ -8,8 +8,8 @@ import logo from '../../assets/logo.png';
 import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
-import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.ts";
-import {getBestFourStocks, getMostTradedStocks} from "../../service/stockService.ts";
+import {findByStockId} from "../../service/stockIndicatorsService.ts";
+import {findBestFour, getMostTraded} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
@@ -41,7 +41,7 @@ export const Dashboard: React.FC = () => {
 
         const fetchBestFour = async () => {
             try {
-                const data = await getBestFourStocks();
+                const data = await findBestFour();
                 const formattedData = data.map((item: { stockName: string; stockPercentage: number; stockId: number; }, index: number) => ({
                     rank: (index + 1).toString(),
                     symbol: item.stockName,
@@ -58,7 +58,7 @@ export const Dashboard: React.FC = () => {
 
         const fetchMostTradedData = async () => {
             try {
-                const data = await getMostTradedStocks();
+                const data = await getMostTraded();
                 setMostTradedData(data);
                 const response = await axiosInstance.get('http://localhost:8080/api/stock-details/getMostTraded');
 
@@ -99,7 +99,7 @@ export const Dashboard: React.FC = () => {
             try {
                 if (stockData.length > 0) {
                     const allStockIndicators = await Promise.all(
-                        stockData.map(stock => getStockIndicatorsByStockId(stock.id))
+                        stockData.map(stock => findByStockId(stock.id))
                     );
                     const combinedIndicators = allStockIndicators.flat();
                     setStockIndicatorsData(combinedIndicators);

@@ -7,7 +7,7 @@ import { Footer } from "../../components/footer/Footer.tsx";
 import { LatestNewsDTO } from "../../model/dto/latestNewsDTO.ts";
 import { getLatestNewsByStockId } from "../../service/latestNewsService.ts";
 import { useParams } from "react-router-dom";
-import {getStockById} from "../../service/stockService.ts";
+import {getStockDTOById} from "../../service/stockService.ts";
 import { getPrediction } from "../../service/stockDetailsService.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
 
@@ -45,7 +45,7 @@ export const PredictorByStockPage: React.FC = () => {
 
     const fetchStockName = async () => {
         if (stockId) {
-            const stockDTO = await getStockById(parseInt(stockId));
+            const stockDTO = await getStockDTOById(parseInt(stockId));
             setStockName(stockDTO.fullName);
             setStockImage(`/src/assets/models/stock_${stockId}/stock_${stockId}_plot.png`);
         }

@@ -4,7 +4,7 @@ import {StockIndicatorsDTO} from "../model/dto/stockIndicatorsDTO.ts";
 
 const BASE_URL = config.API_BASE_URL;
 
-export const getAllStockIndicators = async () : Promise<StockIndicatorsDTO[]> => {
+export const findAll = async () : Promise<StockIndicatorsDTO[]> => {
     try {
         const response = await axiosInstance.get(`${BASE_URL}/stock-indicators`);
         return response.data;
@@ -14,7 +14,7 @@ export const getAllStockIndicators = async () : Promise<StockIndicatorsDTO[]> =>
     }
 };
 
-export const getStockIndicatorsByStockId = async (id: number): Promise<StockIndicatorsDTO[]> => {
+export const findByStockId = async (id: number): Promise<StockIndicatorsDTO[]> => {
     try {
         const response = await axiosInstance.get(`${BASE_URL}/stock-indicators/${id}`);
         return response.data;

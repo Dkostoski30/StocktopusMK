@@ -5,7 +5,7 @@ import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
 import {Footer} from "../../components/footer/Footer.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
-import {getStockIndicatorsByStockId} from "../../service/stockIndicatorsService.ts";
+import {findByStockId} from "../../service/stockIndicatorsService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
@@ -44,7 +44,7 @@ export const Favorites: React.FC = () => {
             try {
                 if (stockData.length > 0) {
                     const allStockIndicators = await Promise.all(
-                        stockData.map(stock => getStockIndicatorsByStockId(stock.id))
+                        stockData.map(stock => findByStockId(stock.id))
                     );
                     const combinedIndicators = allStockIndicators.flat();
                     setStockIndicatorsData(combinedIndicators);

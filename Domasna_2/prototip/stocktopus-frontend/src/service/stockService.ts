@@ -9,7 +9,7 @@ interface PaginationParams {
     size: number;
 }
 
-export const getItems = async ({ page, size, stockName }: PaginationParams & { stockName?: string }) => {
+export const findAll = async ({ page, size, stockName }: PaginationParams & { stockName?: string }) => {
     try {
         const response = await axiosInstance.get<{
             totalElements: number;
@@ -29,7 +29,7 @@ export const getItems = async ({ page, size, stockName }: PaginationParams & { s
 };
 
 
-export const deleteItem = async (id: number) => {
+export const deleteStock = async (id: number) => {
     try {
         const response = await axiosInstance.delete(`${BASE_URL}/stocks/${id}`);
         if (response.status !== 200) {
@@ -40,12 +40,12 @@ export const deleteItem = async (id: number) => {
     }
 };
 
-export const editItem = async (id: number, data: StockDTO) => {
+export const editStock = async (id: number, data: StockDTO) => {
     await axiosInstance.post(`${BASE_URL}/stocks/edit/${id}`, data);
 
 }
 
-export const getBestFourStocks = async () => {
+export const findBestFour = async () => {
     try {
         const response = await axiosInstance.get(`${BASE_URL}/stocks/getBestFour`);
         return response.data;
@@ -55,7 +55,7 @@ export const getBestFourStocks = async () => {
     }
 };
 
-export const getStockById = async (id: number): Promise<StockDTO> => {
+export const getStockDTOById = async (id: number): Promise<StockDTO> => {
     try {
         const response = await axiosInstance.get<StockDTO>(`${BASE_URL}/stocks/${id}`);
         return response.data;
@@ -64,7 +64,8 @@ export const getStockById = async (id: number): Promise<StockDTO> => {
         throw error;
     }
 };
-export const getMostTradedStocks = async (): Promise<StockDetailsDTO[]> => {
+
+export const getMostTraded = async (): Promise<StockDetailsDTO[]> => {
     try {
         const response = await axiosInstance.get(`${BASE_URL}/stock-details/getMostTraded`);
 

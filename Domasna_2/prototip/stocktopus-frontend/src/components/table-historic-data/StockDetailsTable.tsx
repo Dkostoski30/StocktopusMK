@@ -3,7 +3,7 @@ import { TableRow } from './TableRow';
 import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
 import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
-import { getItems, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
+import { findAll, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 import SuccessDialog from '../successDialog/SuccessDialog';
@@ -43,7 +43,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     }, [page, size, filterData, sortBy, sortOrder]);
 
     const loadItems = async () => {
-        const response = await getItems({ page, size, ...filterData, sortBy, sortOrder });
+        const response = await findAll({ page, size, ...filterData, sortBy, sortOrder });
         setItems(response.content);
         setTotalCount(response.totalElements);
     };

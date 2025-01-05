@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TableRowStocks } from './TableRowStocks.tsx';
 import styles from '../../pages/Stocks/Stocks.module.css';
 import { StockDTO } from '../../model/dto/stockDTO.ts';
-import { getItems, deleteItem, editItem } from "../../service/stockService.ts";
+import { findAll, deleteStock, editStock } from "../../service/stockService.ts";
 import SuccessDialog from '../successDialog/SuccessDialog';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import Modal from "../modal/Modal.tsx";
@@ -31,7 +31,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const handleSave = async () => {
         try {
             if (formData.stockId !== -1) {
-                await editItem(formData.stockId, formData);
+                await editStock(formData.stockId, formData);
                 loadItems();
                 setModalOpen(false);
                 setOpenSuccessDialog(true);
@@ -48,7 +48,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
 
     const loadItems = async () => {
         try {
-            const response = await getItems({ page, size, ...filterData });
+            const response = await findAll({ page, size, ...filterData });
             setItems(response.content);
             setTotalCount(response.totalElements);
         } catch (error) {
@@ -73,7 +73,7 @@ export const StocksTable: React.FC<StocksTableProps> = ({ filterData }) => {
     const confirmDelete = async () => {
         if (selectedStockId !== null) {
             try {
-                await deleteItem(selectedStockId);
+                await deleteStock(selectedStockId);
                 setOpenDeleteDialog(false);
                 setOpenSuccessDialog(true); // Show success dialog
                 setSelectedStockId(null);

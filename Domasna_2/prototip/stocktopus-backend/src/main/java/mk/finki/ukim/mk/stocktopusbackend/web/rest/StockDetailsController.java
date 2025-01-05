@@ -39,13 +39,13 @@ public class StockDetailsController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteStock(@PathVariable Long id){
+    public void deleteStockDetails(@PathVariable Long id){
         stockDetailsService.deleteById(id);
     }
 
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public StockDetailsEditDTO editStock(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
+    public StockDetailsEditDTO editStockDetails(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
         return stockDetailsConverterService.convertToStockDetailsEditDTO(stockDetailsService.editStockDetails(id, stockDetailsEditDTO));
     }
     @GetMapping("/getMostTraded")

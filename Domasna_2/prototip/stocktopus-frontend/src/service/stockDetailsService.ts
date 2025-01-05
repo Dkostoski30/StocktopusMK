@@ -10,7 +10,7 @@ interface PaginationParams {
     size: number;
 }
 
-export const getItems = async ({ page, size, stockName, dateFrom, dateTo, sortBy, sortOrder }: PaginationParams & {
+export const findAll = async ({ page, size, stockName, dateFrom, dateTo, sortBy, sortOrder }: PaginationParams & {
     stockName?: string;
     dateFrom?: string;
     dateTo?: string;
@@ -55,17 +55,6 @@ export const getPrediction = async (tickerId: number) => {
         };
     }
 };
-export const getStockDetailsByTicker = async (ticker: number) => {
-    try {
-        const response = await axiosInstance.get<StockDetailsDTO>(
-            `${BASE_URL}/stock-details/${ticker}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching stock details by ticker:', error);
-        throw error;
-    }
-};
 
 export const deleteStockDetails = async (id: number) => {
     try {
@@ -90,7 +79,7 @@ export const findLatestByStockId = async (stockId : number | string) => {
     }
 };
 
-export const handleExport = async () => {
+export const exportMostTraded = async () => {
     try {
         const response = await axiosInstance.get(`${BASE_URL}/stock-details/exportMostTraded`, {
             responseType: 'blob'
@@ -106,5 +95,15 @@ export const handleExport = async () => {
     }
 };
 
-
+// export const getStockDetailsByTicker = async (ticker: number) => {
+//     try {
+//         const response = await axiosInstance.get<StockDetailsDTO>(
+//             `${BASE_URL}/stock-details/${ticker}`
+//         );
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error fetching stock details by ticker:', error);
+//         throw error;
+//     }
+// }; // TODO: Remove if not needed
 

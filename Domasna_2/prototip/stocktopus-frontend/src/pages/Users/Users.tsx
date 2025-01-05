@@ -8,7 +8,7 @@ import { UserProfile } from "../../components/UserProfile";
 import { fetchAllUsers } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
-import {deleteUserByUsername} from "../../service/userService.ts";
+import {deleteUser} from "../../service/userService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -67,7 +67,7 @@ export const Users: React.FC = () => {
     };
     const handleDeleteUser = async (username: string) => {
         try {
-            await deleteUserByUsername(username);
+            await deleteUser(username);
             await fetchUsers(); // Refresh the user list after deletion
         } catch (error) {
             console.error('Error deleting user:', error);

@@ -5,7 +5,7 @@ import logo from '../../assets/logo.png';
 import { UserProfile } from "../../components/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { Link as RouterLink } from "react-router-dom";
-import { getItems } from "../../service/stockService.ts";
+import { findAll } from "../../service/stockService.ts";
 import { StockDTO } from "../../model/dto/stockDTO.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
 
@@ -37,7 +37,7 @@ export const Predictor: React.FC = () => {
     const fetchStocks = async () => {
 
         try {
-            const response = await getItems({ page: currentPage, size: ITEMS_PER_PAGE, ...filterData });
+            const response = await findAll({ page: currentPage, size: ITEMS_PER_PAGE, ...filterData });
             setTotalCount(response.totalElements);
             setStocks(response.content);
         } catch (error) {
