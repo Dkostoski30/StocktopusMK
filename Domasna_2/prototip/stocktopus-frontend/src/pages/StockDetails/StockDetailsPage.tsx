@@ -10,6 +10,7 @@ import { Line } from 'react-chartjs-2';
 import {getStockDTOById} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
+import { ICONS } from "../../config/icons.ts";
 
 interface SidebarItem {
     icon: string;
@@ -19,16 +20,16 @@ interface SidebarItem {
 }
 
 const sidebarItemsAdmin: SidebarItem[] = [
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic data', path: '/admin/historic-data', isActive: false },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks', path: '/admin/stocks', isActive: true },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Users', path: '/admin/users', isActive: false },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page', path: '/', isActive: false }
+    { icon: ICONS.historicData, label: 'Historic data', path: '/admin/historic-data', isActive: false },
+    { icon: ICONS.stocks, label: 'Stocks', path: '/admin/stocks', isActive: true },
+    { icon: ICONS.users, label: 'Users', path: '/admin/users', isActive: false },
+    { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
 ];
 
 const sidebarItemsUser: SidebarItem[] = [
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic data', path: '/user/historic-data', isActive: false },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks', path: '/user/stocks', isActive: true },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page', path: '/', isActive: false }
+    { icon: ICONS.historicData, label: 'Historic data', path: '/user/historic-data', isActive: false },
+    { icon: ICONS.stocks, label: 'Stocks', path: '/user/stocks', isActive: true },
+    { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
 ];
 
 
