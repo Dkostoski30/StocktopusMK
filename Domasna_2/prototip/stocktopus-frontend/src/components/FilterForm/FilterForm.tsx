@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../pages/HistoricData/HistoricData.module.css';
+import styles from '../../pages/HistoricData/HistoricData.module.css';
 
 interface FilterFormProps {
     onSubmit: (data: { stockName: string; dateFrom: string; dateTo: string }) => void;

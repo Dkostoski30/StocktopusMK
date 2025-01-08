@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './LoginForm.module.css';
-import { InputField } from '../../components/InputField';
-import { AuthLayout } from '../../components/AuthLayout';
+import { InputField } from '../../components/InputField/InputField.tsx';
+import { AuthLayout } from '../../components/AuthLayout/AuthLayout.tsx';
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { login } from '../../service/userService.ts';

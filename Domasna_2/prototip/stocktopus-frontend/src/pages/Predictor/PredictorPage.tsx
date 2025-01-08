@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from './PredictorPage.module.css';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
-import { UserProfile } from "../../components/UserProfile.tsx";
+import { UserProfile } from "../../components/UserProfile/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { Link as RouterLink } from "react-router-dom";
 import { getItems } from "../../service/stockService.ts";

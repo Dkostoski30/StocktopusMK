@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import styles from '../HistoricData/HistoricData.module.css';
-import { FilterFormStocks } from '../../components//FilterFormStocks';
+import { FilterFormStocks } from '../../components/FilterForm/FilterFormStocks.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {StocksTable} from "../../components/stocks-table/StocksTable.tsx";
 import logo from "../../assets/logo.png";
 import {Footer} from "../../components/footer/Footer.tsx";
-import {UserProfile} from "../../components/UserProfile.tsx";
+import {UserProfile} from "../../components/UserProfile/UserProfile.tsx";
 import {isAdmin} from "../../config/jwtToken.ts";
 
 interface SidebarItem {

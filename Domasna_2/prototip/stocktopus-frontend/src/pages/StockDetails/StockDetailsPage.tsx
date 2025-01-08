@@ -4,7 +4,7 @@ import styles from './StockDetailsPage.module.css';
 import Navigation from "../../components/navigation/Navigation";
 import { Footer } from "../../components/footer/Footer";
 import logo from "../../assets/logo.png";
-import { UserProfile } from "../../components/UserProfile";
+import { UserProfile } from "../../components/UserProfile/UserProfile.tsx";
 import { findLatestByStockId } from '../../service/stockDetailsService';
 import { Line } from 'react-chartjs-2';
 import {getStockById} from "../../service/stockService.ts";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from './PredictorByStockPage.module.css';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
-import { UserProfile } from "../../components/UserProfile.tsx";
+import { UserProfile } from "../../components/UserProfile/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { LatestNewsDTO } from "../../model/dto/latestNewsDTO.ts";
 import { getLatestNewsByStockId } from "../../service/latestNewsService.ts";

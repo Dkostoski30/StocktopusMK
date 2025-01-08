@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../pages/Login/LoginForm.module.css';
+import styles from '../../pages/Login/LoginForm.module.css';
 
 interface CheckboxProps {
     label: string;

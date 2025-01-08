@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import styles from './Dashboard.module.css';
-import { StockCard } from '../../components/StockCard';
-import { UserProfile } from '../../components/UserProfile';
+import { StockCard } from '../../components/StockCard/StockCard.tsx';
+import { UserProfile } from '../../components/UserProfile/UserProfile.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {MostTradedTable} from '../MostTradedTable/MostTradedTable.tsx'
 import logo from '../../assets/logo.png';
