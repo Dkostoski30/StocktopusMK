@@ -95,15 +95,30 @@ export const exportMostTraded = async () => {
     }
 };
 
-// export const getStockDetailsByTicker = async (ticker: number) => {
-//     try {
-//         const response = await axiosInstance.get<StockDetailsDTO>(
-//             `${BASE_URL}/stock-details/${ticker}`
-//         );
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error fetching stock details by ticker:', error);
-//         throw error;
-//     }
-// }; // TODO: Remove if not needed
+export const getMostTraded = async (): Promise<StockDetailsDTO[]> => {
+    try {
+        const response = await axiosInstance.get(`${BASE_URL}/stock-details/getMostTraded`);
+
+        if (Array.isArray(response.data)) {
+            return response.data.map((stock: StockDetailsDTO) => ({
+                detailsId: stock.detailsId || 0,
+                stockId: stock.stockId || 0,
+                stockName: stock.stockName || 'N/A',
+                date: stock.date ? new Date(stock.date) : new Date(),
+                lastTransactionPrice: stock.lastTransactionPrice?.toString() || '0',
+                maxPrice: stock.maxPrice?.toString() || '0',
+                minPrice: stock.minPrice?.toString() || '0',
+                averagePrice: stock.averagePrice?.toString() || '0',
+                percentageChange: stock.percentageChange?.toString() || '0%',
+                quantity: stock.quantity?.toString() || '0',
+                tradeVolume: stock.tradeVolume?.toString() || '0',
+                totalVolume: stock.totalVolume?.toString() || '0',
+            }));
+        } else {
+            return [];
+        }
+    } catch{
+        return [];
+    }
+};
 

@@ -9,14 +9,14 @@ import {Footer} from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
 import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
 import {findByStockId} from "../../service/stockIndicatorsService.ts";
-import {findBestFour, getMostTraded} from "../../service/stockService.ts";
+import {findBestFour} from "../../service/stockService.ts";
 import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
 
 import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
 import ExportTradedButton from "../../components/exportTradedButton/ExportTradedButton.tsx";
 import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
-import axiosInstance from "../../config/axiosInstance.ts";
 import {ICONS} from "../../config/icons.ts";
+import {getMostTraded} from "../../service/stockDetailsService.ts";
 
 const sidebarItemsAdmin = [
     { label: 'Home Page', path: '/', icon: ICONS.homePage, isActive: true },
@@ -52,49 +52,23 @@ export const Dashboard: React.FC = () => {
                     id: item.stockId
                 }));
                 setBestFour(formattedData);
-                setStockData(formattedData); // TODO adapt this with bestfour
+                setStockData(formattedData);
             } catch (error) {
                 console.error("Error fetching best four stocks:", error);
             }
         };
         fetchBestFour();
 
-        const fetchMostTradedData = async () => {
+        const mostTraded = async () => {
             try {
                 const data = await getMostTraded();
                 setMostTradedData(data);
-                const response = await axiosInstance.get('http://localhost:8080/api/stock-details/getMostTraded');
-
-                if (Array.isArray(response.data)) {
-                    const formattedData: StockDetailsDTO[] = response.data.map((stock: StockDetailsDTO) => ({
-                        detailsId: stock.detailsId || 0,
-                        stockId: stock.stockId || 0,
-                        stockName: stock.stockName || "N/A",
-                        date: stock.date ? new Date(stock.date) : new Date(),
-                        lastTransactionPrice: stock.lastTransactionPrice?.toString() || "0",
-                        maxPrice: stock.maxPrice?.toString() || "0",
-                        minPrice: stock.minPrice?.toString() || "0",
-                        averagePrice: stock.averagePrice?.toString() || "0",
-                        percentageChange: stock.percentageChange?.toString() || "0%",
-                        quantity: stock.quantity?.toString() || "0",
-                        tradeVolume: stock.tradeVolume?.toString() || "0",
-                        totalVolume: stock.totalVolume?.toString() || "0",
-                    }));
-
-                    setMostTradedData(formattedData);
-                } else {
-                    console.error("Invalid data format received:", response.data);
-                    setMostTradedData([]);
-                }
             } catch (error) {
-                console.error('Error setting most traded data:', error);
-                setMostTradedData([]);
-                console.error("Error fetching most traded stocks:", error);
+                console.error('Error fetching most traded stocks:', error);
                 setMostTradedData([]);
             }
         };
-
-        fetchMostTradedData();
+        mostTraded();
     }, []);
 
     useEffect(() => {
@@ -136,7 +110,6 @@ export const Dashboard: React.FC = () => {
                                 <img
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
                                     alt="" className={styles.searchIcon}/>
-                                {/*<label htmlFor="search" className="visually-hidden">Search</label>*/}
                                 <input
                                     id="search"
                                     type="search"
