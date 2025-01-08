@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '../../pages/Login/LoginForm.module.css';
 import logo from '../../assets/logo.png';
-
 interface AuthLayoutProps {
     title: string;
     children: React.ReactNode;

@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '../../pages/Login/LoginForm.module.css';
 import { InputFieldProps } from './types';
-
 export const InputField: React.FC<InputFieldProps> = ({
                                                           label,
                                                           value,
