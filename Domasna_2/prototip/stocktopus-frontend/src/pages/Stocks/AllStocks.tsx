@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from '../HistoricData/HistoricData.module.css';
-import { FilterFormStocks } from '../../components//FilterFormStocks';
+import { FilterFormStocks } from '../../components/FilterForm/FilterFormStocks';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {StocksTable} from "../../components/stocks-table/StocksTable.tsx";
 import logo from "../../assets/logo.png";
