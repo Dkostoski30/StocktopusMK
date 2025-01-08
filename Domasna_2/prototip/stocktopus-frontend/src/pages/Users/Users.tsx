@@ -4,10 +4,11 @@ import { UsersTable } from '../../components/users-table/UsersTable';
 import Navigation from "../../components/navigation/Navigation";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer";
-import { UserProfile } from "../../components/UserProfile/UserProfile.tsx";
+import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
 import { fetchAllUsers } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
+import {deleteUser} from "../../service/userService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -64,7 +65,14 @@ export const Users: React.FC = () => {
         e.preventDefault();
         fetchUsers();
     };
-
+    const handleDeleteUser = async (username: string) => {
+        try {
+            await deleteUser(username);
+            await fetchUsers(); // Refresh the user list after deletion
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
@@ -117,7 +125,7 @@ export const Users: React.FC = () => {
                         </div>
                         <button type="submit" className={styles.submitButton}>Search</button>
                     </form>
-                    <UsersTable users={users} totalCount={totalCount} />
+                    <UsersTable users={users} totalCount={totalCount} onDelete={handleDeleteUser} />
                 </section>
             </div>
             <Footer />

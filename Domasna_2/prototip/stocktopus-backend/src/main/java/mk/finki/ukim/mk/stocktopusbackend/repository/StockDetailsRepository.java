@@ -30,8 +30,7 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
     SELECT sd
     FROM StockDetails sd
     JOIN Stock s ON sd.stockId = s.stockId
-    WHERE sd.date = :yesterday
-    ORDER BY sd.tradeVolume DESC
+    ORDER BY sd.date DESC, sd.tradeVolume DESC
     LIMIT 10
 """)
     List<StockDetails> getMostTraded(@Param("yesterday") java.sql.Date yesterday);

@@ -247,3 +247,6 @@ body{
     border-color: black;
 }
 
+.error {
+    color: red;
+}

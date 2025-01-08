@@ -2,27 +2,28 @@ import React, { useState, useEffect } from "react";
 import styles from './PredictorPage.module.css';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
-import { UserProfile } from "../../components/UserProfile/UserProfile.tsx";
+import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { Link as RouterLink } from "react-router-dom";
-import { getItems } from "../../service/stockService.ts";
+import { findAll } from "../../service/stockService.ts";
 import { StockDTO } from "../../model/dto/stockDTO.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
+import { ICONS } from "../../config/icons.ts";
 
 const sidebarItemsAdmin = [
-    { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
-    { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false},
-    { label: 'Favorites', path: '/favorites', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e5e2117fd75d3701dbf88f7e792aa11874d249c73d02332b8a2aaed30bc7475c?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
-    { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
-    { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false},
+    { label: 'Home Page', path: '/', icon: ICONS.homePage, isActive: false },
+    { label: 'Admin Dashboard', path: '/admin/stockdetails', icon: ICONS.adminDashboard, isActive: false },
+    { label: 'Favorites', path: '/favorites', icon: ICONS.favorites, isActive: false },
+    { label: 'AI Predictor', path: '/predictor', icon: ICONS.aiPredictor, isActive: true },
+    { label: 'Sign out', path: '/login', icon: ICONS.signOut, isActive: false },
 ];
 
 const sidebarItemsUser = [
-    { label: 'Home Page', path: '/', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
-    { label: 'Favorites', path: '/favorites', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e5e2117fd75d3701dbf88f7e792aa11874d249c73d02332b8a2aaed30bc7475c?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: false },
-    { label: 'AI Predictor', path: '/predictor', icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/9857e2e6d9091abf3f92f025fee0e2f66291bd116bf07d3836751ece1b8653e8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', isActive: true },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks', path: '/user/stocks', isActive: false },
-    { label: 'Sign out', path: '/login', icon: 'https://img.icons8.com/?size=100&id=100528&format=png&color=000000', isActive: false},
+    { label: 'Home Page', path: '/', icon: ICONS.homePage, isActive: false },
+    { label: 'Favorites', path: '/favorites', icon: ICONS.favorites, isActive: false },
+    { label: 'AI Predictor', path: '/predictor', icon: ICONS.aiPredictor, isActive: true },
+    { label: 'Stocks', path: '/user/stocks', icon: ICONS.stocks, isActive: false },
+    { label: 'Sign out', path: '/login', icon: ICONS.signOut, isActive: false },
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -37,7 +38,7 @@ export const Predictor: React.FC = () => {
     const fetchStocks = async () => {
 
         try {
-            const response = await getItems({ page: currentPage, size: ITEMS_PER_PAGE, ...filterData });
+            const response = await findAll({ page: currentPage, size: ITEMS_PER_PAGE, ...filterData });
             setTotalCount(response.totalElements);
             setStocks(response.content);
         } catch (error) {

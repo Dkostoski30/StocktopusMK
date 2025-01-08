@@ -27,8 +27,7 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
             "FROM stockdetails sd " +
             "JOIN stocks s ON sd.stock_id = s.stock_id " +
             "WHERE sd.percentage_change IS NOT NULL AND sd.percentage_change != '' " +
-            "AND sd.date = CURRENT_DATE - INTERVAL '1 DAY' " +
-            "ORDER BY CAST(REPLACE(REPLACE(sd.percentage_change, '.', ''), ',', '.') AS NUMERIC) DESC " +
+            "ORDER BY sd.date desc, CAST(REPLACE(REPLACE(sd.percentage_change, '.', ''), ',', '.') AS NUMERIC) DESC " +
             "LIMIT 4",
             nativeQuery = true)
     List<Object[]> getBestFour();

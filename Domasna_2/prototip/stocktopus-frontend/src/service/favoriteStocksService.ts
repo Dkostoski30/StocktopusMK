@@ -1,7 +1,6 @@
-import axios from 'axios';
+import axiosInstance from '../config/axiosInstance';
 import { StockDTO } from "../model/dto/stockDTO.ts";
 import config from "../config/config.ts";
-import {StockDetailsDTO} from "../model/dto/stockDetailsDTO.ts";
 import {FavoriteStocksDTO} from "../model/dto/FavoriteStocksDTO.ts";
 const BASE_URL = config.API_BASE_URL;
 interface PaginationParams {
@@ -11,7 +10,7 @@ interface PaginationParams {
 
 export const getFavoriteStocks = async ({ username, page, size }: { username: string } & PaginationParams) => {
     try {
-        const response = await axios.get<{
+        const response = await axiosInstance.get<{
             totalElements: number;
             content: StockDTO[];
         }>(`${BASE_URL}/favorite-stocks`, {
@@ -28,8 +27,8 @@ export const getFavoriteStocks = async ({ username, page, size }: { username: st
     }
 };
 export const addFavoriteStock = async (data: FavoriteStocksDTO) => {
-    await axios.post(`${BASE_URL}/favorite-stocks/add`, data);
+    await axiosInstance.post(`${BASE_URL}/favorite-stocks/add`, data);
 };
 export const removeFavoriteStock = async (data: FavoriteStocksDTO) => {
-    await axios.delete(`${BASE_URL}/favorite-stocks/remove`, { data });
+    await axiosInstance.delete(`${BASE_URL}/favorite-stocks/remove`, { data });
 };

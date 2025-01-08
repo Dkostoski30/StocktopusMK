@@ -3,10 +3,10 @@ import { TableRow } from './TableRow';
 import styles from '../../pages/HistoricData/HistoricData.module.css';
 import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
 import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
-import { getItems, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
+import { findAll, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import SuccessDialog from '../successDialog/SuccessDialog';
+import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
 import Modal from '../modal/Modal.tsx';
 import { isAdmin } from "../../config/jwtToken.ts";
 
@@ -20,8 +20,8 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     const [size, setSize] = useState(25);
     const [totalCount, setTotalCount] = useState(0);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
-    const [openErrorDialog, setOpenErrorDialog] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogType, setDialogType] = useState<'success' | 'error'>('success');
     const [selectedDetailsId, setSelectedDetailsId] = useState<number | null>(null);
     const [sortBy, setSortBy] = useState<string | undefined>(undefined);
     const [sortOrder, setSortOrder] = useState<string | undefined>(undefined);
@@ -43,7 +43,7 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
     }, [page, size, filterData, sortBy, sortOrder]);
 
     const loadItems = async () => {
-        const response = await getItems({ page, size, ...filterData, sortBy, sortOrder });
+        const response = await findAll({ page, size, ...filterData, sortBy, sortOrder });
         setItems(response.content);
         setTotalCount(response.totalElements);
     };
@@ -64,11 +64,18 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
 
     const confirmDelete = async () => {
         if (selectedDetailsId !== null) {
-            await deleteStockDetails(selectedDetailsId);
-            setOpenDeleteDialog(false);
-            setOpenSuccessDialog(true);
-            setSelectedDetailsId(null);
-            loadItems();
+            try {
+                await deleteStockDetails(selectedDetailsId);
+                setOpenDeleteDialog(false);
+                setDialogMessage('The operation was successful.');
+                setDialogType('success');
+                setSelectedDetailsId(null);
+                loadItems();
+            } catch {
+                setDialogMessage('There was an error processing your request.');
+                setDialogType('error');
+                setOpenDeleteDialog(false);
+            }
         }
     };
 
@@ -77,12 +84,8 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
         setSelectedDetailsId(null);
     };
 
-    const handleCloseSuccessDialog = () => {
-        setOpenSuccessDialog(false);
-    };
-
-    const handleCloseErrorDialog = () => {
-        setOpenErrorDialog(false);
+    const handleCloseDialog = () => {
+        setDialogMessage('');
     };
 
     const handleSave = async () => {
@@ -91,11 +94,12 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                 await editStockDetails(selectedDetailsId, formData);
                 loadItems();
                 setModalOpen(false);
-                setOpenSuccessDialog(true);
+                setDialogMessage('The operation was successful.');
+                setDialogType('success');
             }
-        } catch (error) {
-            console.error("Error editing stock details:", error);
-            setOpenErrorDialog(true);
+        } catch {
+            setDialogMessage('There was an error processing your request.');
+            setDialogType('error');
         }
     };
 
@@ -180,28 +184,12 @@ export const StockDetailsTable: React.FC<StockDetailsTableProps> = ({ filterData
                 </DialogActions>
             </Dialog>
 
-            <SuccessDialog
-                open={openSuccessDialog}
-                message="The stock detail has been successfully edited."
-                onClose={handleCloseSuccessDialog}
+            <SuccessOrErrorDialog
+                open={!!dialogMessage}
+                message={dialogMessage}
+                onClose={handleCloseDialog}
+                type={dialogType}
             />
-
-            <Dialog
-                open={openErrorDialog}
-                onClose={handleCloseErrorDialog}
-                aria-labelledby="error-dialog-title"
-                aria-describedby="error-dialog-description"
-            >
-                <DialogTitle id="error-dialog-title">{"Error"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="error-dialog-description">
-                        There was an error processing your request.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseErrorDialog} color="primary">Close</Button>
-                </DialogActions>
-            </Dialog>
 
             <Modal
                 isOpen={isModalOpen}

@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
-import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import {
+    TablePagination,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Button,
+} from '@mui/material';
 import styles from '../../pages/Users/Users.module.css';
-import { deleteUser } from "../../service/userService.ts";
-import SuccessDialog from '../successDialog/SuccessDialog';
-import {UserDetailsDTO} from "../../model/dto/UserDetailsDTO.ts";
+import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
+import { UserDetailsDTO } from '../../model/dto/UserDetailsDTO';
 
 interface UsersTableProps {
     users: UserDetailsDTO[];
     totalCount: number;
-   // onDelete: (username: string) => Promise<void>; // Callback for delete
+    onDelete: (username: string) => Promise<void>;
 }
 
-export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
+export const UsersTable: React.FC<UsersTableProps> = ({ users, totalCount, onDelete }) => {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(25);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogType, setDialogType] = useState<'success' | 'error'>('success');
     const [selectedUsername, setSelectedUsername] = useState<string | null>(null);
 
     const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -35,13 +43,15 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
     const confirmDelete = async () => {
         if (selectedUsername) {
             try {
-                await deleteUser(selectedUsername);
+                await onDelete(selectedUsername);
+                setDialogMessage('The user was successfully deleted.');
+                setDialogType('success');
+            } catch  {
+                setDialogMessage('There was an error processing your request.');
+                setDialogType('error');
+            } finally {
                 setOpenDeleteDialog(false);
-                setOpenSuccessDialog(true);
                 setSelectedUsername(null);
-            } catch (error) {
-                console.error('Error during delete:', error);
-                setOpenDeleteDialog(false);
             }
         }
     };
@@ -51,8 +61,8 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
         setSelectedUsername(null);
     };
 
-    const handleCloseSuccessDialog = () => {
-        setOpenSuccessDialog(false);
+    const handleCloseDialog = () => {
+        setDialogMessage('');
     };
 
     return (
@@ -69,27 +79,14 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
                         <div className={styles.rowCell}>{user.username}</div>
                         <div className={styles.rowCell}>{user.email}</div>
                         <div className={styles.rowCell}>{user.role}</div>
-                        <div className={styles.rowCell} style={{display: "flex", justifyContent: "space-between"}}>
+                        <div className={styles.rowCell}>
                             <button
                                 className={styles.deleteButton}
-                                onClick={() => onDelete(user)}
+                                onClick={() => handleDeleteClick(user.username)}
                                 aria-label={`Delete ${user.username} data`}
-                                style={{marginRight: "1rem"}}
                             >
                                 Delete
                             </button>
-                            {/*<button*/}
-                            {/*    className={styles.editButton}*/}
-                            {/*    onClick={() => onEdit(user)}*/}
-                            {/*    aria-label={`Edit ${user.username} data`}*/}
-                            {/*>*/}
-                            {/*    <img*/}
-                            {/*        src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4065550e60189e9315171cf0f5888bc6a869eb69f08c6fdf3b6bf9e0133403f?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"*/}
-                            {/*        alt=""*/}
-                            {/*        className={styles.editIcon}*/}
-                            {/*    />*/}
-                            {/*    <span>Edit</span>*/}
-                            {/*</button>*/}
                         </div>
                     </div>
                 ))}
@@ -115,16 +112,19 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users,totalCount }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog} color="primary">Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">
+                        Cancel
+                    </Button>
                     <Button onClick={confirmDelete} color="secondary" autoFocus>
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
-            <SuccessDialog
-                open={openSuccessDialog}
-                message="The user was successfully deleted."
-                onClose={handleCloseSuccessDialog}
+            <SuccessOrErrorDialog
+                open={!!dialogMessage}
+                message={dialogMessage}
+                onClose={handleCloseDialog}
+                type={dialogType}
             />
         </div>
     );

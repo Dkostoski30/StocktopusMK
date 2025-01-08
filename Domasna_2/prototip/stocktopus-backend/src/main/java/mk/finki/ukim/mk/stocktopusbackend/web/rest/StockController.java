@@ -8,6 +8,7 @@ import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +32,13 @@ public class StockController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStock(@PathVariable Long id){
         stockService.deleteById(id);
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public StockDTO editStock(@PathVariable Long id, @RequestBody StockDTO stockDTO){
         return stockConverterService.convertToStockDTO(stockService.editStockById(id, stockDTO));
     }

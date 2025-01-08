@@ -1,0 +1,40 @@
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.userName {
+    color: #151d48;
+    font-weight: 700;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+.userRole {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    display: inline-block;
+}
+
+.admin {
+    color: #f0ad4e;
+    background: rgba(240, 173, 78, 0.1);
+}
+
+.user {
+    color: #5bc0de;
+    background: rgba(91, 192, 222, 0.1);
+}

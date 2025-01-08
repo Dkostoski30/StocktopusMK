@@ -2,7 +2,6 @@ package mk.finki.ukim.mk.stocktopusbackend.repository;
 
 import mk.finki.ukim.mk.stocktopusbackend.model.FavoriteStocks;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,7 +27,7 @@ public interface FavoriteStocksRepository extends JpaRepository<FavoriteStocks, 
                 SELECT s
                 FROM Stock s
                 JOIN s.favoriteStocks fs
-                WHERE fs.username = :username
+                WHERE fs.username = :username AND s.dateDeleted IS NULL
                 ORDER BY fs.id DESC
             """)
     Page<Stock> getFavoriteStocks(String username, Pageable pageable);

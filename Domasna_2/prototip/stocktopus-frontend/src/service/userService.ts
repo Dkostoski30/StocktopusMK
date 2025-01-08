@@ -1,5 +1,5 @@
 import config from "../config/config.ts";
-import axios from "axios";
+import axiosInstance from "../config/axiosInstance.ts"
 import {UserDTO} from "../model/dto/UserDTO.ts";
 import {UserLoginDTO} from "../model/dto/UserLoginDTO.ts";
 import {getRolesFromToken} from "../config/jwtToken.ts";
@@ -8,7 +8,7 @@ import {UserDetailsDTO} from "../model/dto/UserDetailsDTO.ts";
 const BASE_URL = config.API_BASE_URL;
 
 export const register = async (userDTO : UserDTO) => {
-    await axios.post(`${BASE_URL}/register`, userDTO);
+    await axiosInstance.post(`${BASE_URL}/register`, userDTO);
 }
 
 
@@ -22,7 +22,7 @@ export const fetchTokenFromHeader = async (response: any): Promise<string | null
 
 export const login = async (userLoginDTO: UserLoginDTO): Promise<string | null> => {
     try {
-        const response = await axios.post(`${BASE_URL}/login`, userLoginDTO);
+        const response = await axiosInstance.post(`${BASE_URL}/login`, userLoginDTO);
 
         const token = await fetchTokenFromHeader(response);
 
@@ -42,28 +42,6 @@ export const logout = () => {
     localStorage.removeItem('roles');
 };
 
-
-// Fetch users with pagination and filtering
-export const getUsers = async (params: { page: number; size: number; username?: string }) => {
-    try {
-        const response = await axios.get(`${BASE_URL}/users`, { params });
-        return response.data; // Assuming the API response contains { content: [], totalElements: number }
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        throw error;
-    }
-};
-
-// Delete a user by username
-export const deleteUser = async (username: string) => {
-    try {
-        const response = await axios.delete(`${BASE_URL}/users/${username}`);
-        return response.data; // Adjust based on your API response
-    } catch (error) {
-        console.error("Error deleting user:", error);
-        throw error;
-    }
-};
 interface PaginationParams {
     page: number;
     size: number;
@@ -79,13 +57,21 @@ interface UserResponse {
     totalElements: number;
     content: UserDetailsDTO[];
 }
-
+export const deleteUser = async (username: string): Promise<void> => {
+    try {
+        await axiosInstance.delete(`${BASE_URL}/users/delete/${username}`);
+        console.log(`User with username "${username}" successfully deleted.`);
+    } catch (error) {
+        console.error(`Error deleting user with username "${username}":`, error);
+        throw error;
+    }
+};
 export const fetchAllUsers = async (
     { page, size }: PaginationParams,
     { username, email, role }: UserFilterParams = {}
 ): Promise<UserResponse> => {
     try {
-        const response = await axios.get<UserResponse>(`${BASE_URL}/users`, {
+        const response = await axiosInstance.get<UserResponse>(`${BASE_URL}/users`, {
             params: {
                 page,
                 size,

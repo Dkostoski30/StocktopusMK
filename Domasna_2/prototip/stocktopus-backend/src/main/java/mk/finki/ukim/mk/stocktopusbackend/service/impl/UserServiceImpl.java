@@ -3,6 +3,9 @@ package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 import mk.finki.ukim.mk.stocktopusbackend.model.User;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.UserDetailsFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.enums.Role;
+import mk.finki.ukim.mk.stocktopusbackend.model.exceptions.PasswordsDoNotMatchException;
+import mk.finki.ukim.mk.stocktopusbackend.model.exceptions.UserAlreadyExistsException;
+import mk.finki.ukim.mk.stocktopusbackend.model.exceptions.UsernameAndPasswordAreRequired;
 import mk.finki.ukim.mk.stocktopusbackend.repository.UserRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.UserService;
 import org.springframework.data.domain.Page;
@@ -28,15 +31,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String username, String password, String repeatPassword, String email, Role role) {
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-            throw new RuntimeException("Username and password are required"); // TODO: Create a custom exception
+            throw new UsernameAndPasswordAreRequired("Username and password are required");
         }
 
         if (!password.equals(repeatPassword)) {
-            throw new RuntimeException("Passwords do not match"); // TODO: Create a custom exception PasswordsDoNotMatchException
+            throw new PasswordsDoNotMatchException("Passwords do not match");
         }
 
         if (this.userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("User already exists"); // TODO: Create a custom exception UserAlreadyExistsException
+            throw new UserAlreadyExistsException("User already exists");
         }
 
         User user = new User(username, passwordEncoder.encode(password),email, role);
@@ -53,5 +56,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        userRepository.deleteById(username);
     }
 }
