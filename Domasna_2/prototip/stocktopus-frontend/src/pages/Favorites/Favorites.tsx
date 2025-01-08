@@ -1,5 +1,5 @@
 import styles from './Favorites.module.css';
-import { UserProfile } from '../../components/UserProfile';
+import { UserProfile } from '../../components/userProfile/UserProfile.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from '../../assets/logo.png';
 import {Footer} from "../../components/footer/Footer.tsx";

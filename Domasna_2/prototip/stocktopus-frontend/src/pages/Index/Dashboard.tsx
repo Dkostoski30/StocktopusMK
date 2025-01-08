@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard';
-import { UserProfile } from '../../components/UserProfile';
+import { UserProfile } from '../../components/userProfile/UserProfile.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import {MostTradedTable} from '../MostTradedTable/MostTradedTable.tsx'
 import logo from '../../assets/logo.png';

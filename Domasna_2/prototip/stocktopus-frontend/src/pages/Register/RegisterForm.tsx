@@ -59,7 +59,7 @@ export const RegisterForm: React.FC = () => {
     };
 
     return (
-        <AuthLayout title="Register to your Account">
+        <AuthLayout title="Register">
             {loading && <LoadingScreen />}
             <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField

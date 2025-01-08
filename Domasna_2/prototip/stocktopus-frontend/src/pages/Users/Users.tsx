@@ -4,7 +4,7 @@ import { UsersTable } from '../../components/users-table/UsersTable';
 import Navigation from "../../components/navigation/Navigation";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer";
-import { UserProfile } from "../../components/UserProfile";
+import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
 import { fetchAllUsers } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
