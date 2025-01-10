@@ -11,6 +11,7 @@ import {getStockDTOById} from "../../service/stockService.ts";
 import { getPrediction } from "../../service/stockDetailsService.ts";
 import {isAdmin} from "../../config/jwtToken.ts";
 import { ICONS } from "../../config/icons.ts";
+import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 
 const sidebarItemsAdmin = [
     { label: 'Home Page', path: '/', icon: ICONS.homePage, isActive: false },
@@ -88,20 +89,7 @@ export const PredictorByStockPage: React.FC = () => {
 
                 <div className={styles.mainContent}>
                     <header className={styles.header}>
-                        <div className={styles.searchWrapper}>
-                            <form className={styles.searchForm} role="search">
-                                <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt="" className={styles.searchIcon}/>
-                                <input
-                                    id="search"
-                                    type="search"
-                                    placeholder="Search here..."
-                                    className={styles.searchInput}
-                                />
-                            </form>
-                        </div>
-
+                        <SearchBar />
                         <UserProfile/>
                     </header>
 

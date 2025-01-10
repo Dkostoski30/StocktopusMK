@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Dashboard.module.css';
 import { StockCard } from '../../components/StockCard/StockCard.tsx';
 import { UserProfile } from '../../components/userProfile/UserProfile.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
-import {MostTradedTable} from '../MostTradedTable/MostTradedTable.tsx'
+import { MostTradedTable } from '../MostTradedTable/MostTradedTable.tsx';
 import logo from '../../assets/logo.png';
-import {Footer} from "../../components/footer/Footer.tsx";
+import { Footer } from "../../components/footer/Footer.tsx";
 import Chart from "../../components/chart/Chart.tsx";
-import {StockIndicatorsDTO} from "../../model/dto/stockIndicatorsDTO.ts";
-import {findByStockId} from "../../service/stockIndicatorsService.ts";
-import {findBestFour} from "../../service/stockService.ts";
-import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
-
-import {FavoritesSection} from "../../components/Favorites/FavoritesSection.tsx";
+import { StockIndicatorsDTO } from "../../model/dto/stockIndicatorsDTO.ts";
+import { findByStockId } from "../../service/stockIndicatorsService.ts";
+import { findBestFour } from "../../service/stockService.ts";
+import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
+import { FavoritesSection } from "../../components/Favorites/FavoritesSection.tsx";
 import ExportTradedButton from "../../components/exportTradedButton/ExportTradedButton.tsx";
-import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
-import {ICONS} from "../../config/icons.ts";
-import {getMostTraded} from "../../service/stockDetailsService.ts";
+import { getUsernameFromToken, isAdmin } from "../../config/jwtToken.ts";
+import { ICONS } from "../../config/icons.ts";
+import { getMostTraded } from "../../service/stockDetailsService.ts";
+import SearchBar from '../../components/SearchBar/SearchBar.tsx';
 
 const sidebarItemsAdmin = [
     { label: 'Home Page', path: '/', icon: ICONS.homePage, isActive: true },
@@ -38,10 +38,10 @@ const colors = ['rgba(104,75,192,0.51)', 'rgba(187,124,72,0.5)', 'rgba(54,162,23
 export const Dashboard: React.FC = () => {
     const [stockIndicatorsData, setStockIndicatorsData] = useState<StockIndicatorsDTO[]>([]);
     const [bestFour, setBestFour] = useState<{ rank: string; symbol: string; percentage: string }[]>([]);
-    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id : number }[]>([]);
+    const [stockData, setStockData] = useState<{ rank: string; symbol: string; percentage: string; id: number }[]>([]);
     const [mostTradedData, setMostTradedData] = useState<StockDetailsDTO[]>([]);
-    useEffect(() => {
 
+    useEffect(() => {
         const fetchBestFour = async () => {
             try {
                 const data = await findBestFour();
@@ -98,28 +98,13 @@ export const Dashboard: React.FC = () => {
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
 
-                    <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser}/>
+                    <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser} />
                 </nav>
 
                 <div className={styles.mainContent}>
                     <header className={styles.header}>
-
-
-                        <div className={styles.searchWrapper}>
-                            <form className={styles.searchForm} role="search">
-                                <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                                    alt="" className={styles.searchIcon}/>
-                                <input
-                                    id="search"
-                                    type="search"
-                                    placeholder="Search here..."
-                                    className={styles.searchInput}
-                                />
-                            </form>
-                        </div>
-
-                        <UserProfile/>
+                        <SearchBar />
+                        <UserProfile />
                     </header>
 
                     <section className={styles.stockSection}>
@@ -128,7 +113,6 @@ export const Dashboard: React.FC = () => {
                                 <h2 className={styles.sectionTitle}>Today's Top</h2>
                                 <p className={styles.sectionSubtitle}>Summary</p>
                             </div>
-
                         </div>
 
                         <div className={styles.stockGrid}>
@@ -143,21 +127,21 @@ export const Dashboard: React.FC = () => {
                     </section>
                     <section className={styles.tableFavoritesSection}>
                         <section className={styles.stockSection}>
-                            <ExportTradedButton/>
-                            <MostTradedTable data={mostTradedData}/>
+                            <ExportTradedButton />
+                            <MostTradedTable data={mostTradedData} />
                         </section>
 
                         <section className={styles.favoritesSection}>
-                            <FavoritesSection username={getUsernameFromToken()}/>
+                            <FavoritesSection username={getUsernameFromToken()} />
                         </section>
                     </section>
                     <div>
                         <h1>Stock Indicators Chart</h1>
-                        <Chart data={stockIndicatorsData}/>
+                        <Chart data={stockIndicatorsData} />
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </main>
     );
 };

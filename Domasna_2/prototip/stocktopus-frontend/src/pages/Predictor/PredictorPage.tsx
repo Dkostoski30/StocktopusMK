@@ -73,12 +73,12 @@ export const Predictor: React.FC = () => {
                         <div className={styles.searchWrapper}>
                             <form className={styles.searchForm} role="search">
                                 <img
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/179581b66afe025dc77ca49045dc08f9859e92dee37dd974a66344b3140b3b04?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
+                                    src={ICONS.searchIcon}
                                     alt="" className={styles.searchIcon} />
                                 <input
                                     id="search"
                                     type="search"
-                                    placeholder="Search here..."
+                                    placeholder="Search by stock name..."
                                     className={styles.searchInput}
                                     onChange={(e) => setFilterData({ stockName: e.target.value })}
                                 />
@@ -91,7 +91,6 @@ export const Predictor: React.FC = () => {
                         {stocks.map(stock => (
                             <div key={stock.stockId} className={styles.card}>
                                 <h2>{stock.fullName}</h2>
-                                <p>Model Accuracy: test</p>
                                 <RouterLink to={`/predictor/${stock.stockId}`}>View Details</RouterLink>
                             </div>
                         ))}

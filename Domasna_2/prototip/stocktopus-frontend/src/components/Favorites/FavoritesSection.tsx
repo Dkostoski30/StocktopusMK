@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './FavoritesSection.module.css';
 import { StockDTO } from "../../model/dto/stockDTO.ts";
 import { getFavoriteStocks, removeFavoriteStock } from "../../service/favoriteStocksService.ts";
@@ -13,6 +14,7 @@ export const FavoritesSection: React.FC<FavoriteStocksProps> = ({ username }) =>
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
     const [totalCount, setTotalCount] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadFavoriteStocks();
@@ -46,6 +48,10 @@ export const FavoritesSection: React.FC<FavoriteStocksProps> = ({ username }) =>
         setPage(0);
     };
 
+    const handleRowClick = (stockId: number) => {
+        navigate(`/stock-details/${stockId}`);
+    };
+
     return (
         <section className={styles.favoritesSection}>
             <h2 className={styles.sectionTitle}>Favorites</h2>
@@ -60,13 +66,16 @@ export const FavoritesSection: React.FC<FavoriteStocksProps> = ({ username }) =>
                 </thead>
                 <tbody>
                 {items.map((favorite) => (
-                    <tr key={favorite.stockId}>
+                    <tr key={favorite.stockId} onClick={() => handleRowClick(favorite.stockId)}>
                         <td>{favorite.stockId}</td>
                         <td>{favorite.fullName}</td>
                         <td>{favorite.stockName}</td>
                         <td className={styles.favoriteColumn}>
                             <button
-                                onClick={() => handleRemoveFavorite(favorite.stockId)}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveFavorite(favorite.stockId);
+                                }}
                                 className={`${styles.favoriteButton} ${styles.filledHeart}`}
                             >
                                 ♥
