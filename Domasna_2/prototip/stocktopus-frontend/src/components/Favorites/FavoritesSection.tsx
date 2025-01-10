@@ -11,7 +11,7 @@ interface FavoriteStocksProps {
 export const FavoritesSection: React.FC<FavoriteStocksProps> = ({ username }) => {
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(5);
+    const [size, setSize] = useState(10);
     const [totalCount, setTotalCount] = useState(0);
 
     useEffect(() => {

@@ -65,8 +65,8 @@ const Chart: React.FC<Props> = ({ data }) => {
 
         return {
             label: stockNames[stock.stockId]
-                ? `Stock ${stockNames[stock.stockId]} - SMA50`
-                : `Stock ${stock.stockId} - SMA50`,
+                ? `${stockNames[stock.stockId]} - SMA50`
+                : `${stock.stockId} - SMA50`,
             data: stockData,
             borderColor: colors[index],
             backgroundColor: backgroundColors[index],
