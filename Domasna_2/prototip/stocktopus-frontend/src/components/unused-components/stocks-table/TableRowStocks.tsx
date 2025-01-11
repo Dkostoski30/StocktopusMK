@@ -22,7 +22,7 @@ export const TableRowStocks: React.FC<TableRowProps> = ({ item, onEdit, onDelete
 
     const loadFavoriteStocks = async () => {
         try {
-            const response = await getFavoriteStocks({ username });
+            const response = await getFavoriteStocks({page: 0, size: 0, username });
             setFavoriteItems(response.content);
         } catch (error) {
             console.error("Error loading favorite stocks:", error);

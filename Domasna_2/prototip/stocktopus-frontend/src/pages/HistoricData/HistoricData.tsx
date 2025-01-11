@@ -1,19 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './HistoricData.module.css';
 import { FilterForm } from '../../components/FilterForm/FilterForm.tsx';
 import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from "../../assets/logo.png";
-import {Footer} from "../../components/footer/Footer.tsx";
-import {UserProfile} from "../../components/userProfile/UserProfile.tsx";
-import {isAdmin} from "../../config/jwtToken.ts";
-import {ICONS} from "../../config/icons.ts";
+import { Footer } from "../../components/footer/Footer.tsx";
+import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
+import { isAdmin } from "../../config/jwtToken.ts";
+import { ICONS } from "../../config/icons.ts";
 import Modal from "../../components/modal/Modal.tsx";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import {StockDetailsEditDTO} from "../../model/dto/stockDetailsEditDTO.ts";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { StockDetailsEditDTO } from "../../model/dto/stockDetailsEditDTO.ts";
 import SuccessOrErrorDialog from "../../components/successOrErrorDialog/SuccessOrErrorDialog.tsx";
-import {deleteStockDetails, editStockDetails, findAll} from "../../service/stockDetailsService.ts";
-import {StockDetailsDTO} from "../../model/dto/stockDetailsDTO.ts";
+import { deleteStockDetails, editStockDetails, findAll } from "../../service/stockDetailsService.ts";
+import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
 import ReusableTable from "../../components/table/Table.tsx";
+import {LoadingScreen} from "../../components/loadingScreen/loadingScreen.tsx";
 
 interface SidebarItem {
     icon: string;
@@ -34,6 +35,7 @@ const sidebarItemsUser: SidebarItem[] = [
     { icon: ICONS.stocks, label: 'Stocks', path: '/user/stocks', isActive: false },
     { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
 ];
+
 const columns = [
     { label: 'Stock Name', key: 'stockName', sortable: true },
     { label: 'Date', key: 'date', sortable: true },
@@ -42,6 +44,7 @@ const columns = [
     { label: 'Last Transaction Price', key: 'lastTransactionPrice', sortable: true },
     ...(isAdmin() ? [{ label: 'Actions', key: 'actions', sortable: false }] : [])
 ];
+
 export const HistoricData: React.FC = () => {
     const [filterData, setFilterData] = useState({ stockName: '', dateFrom: '', dateTo: '' });
     const [items, setItems] = useState<StockDetailsDTO[]>([]);
@@ -55,6 +58,7 @@ export const HistoricData: React.FC = () => {
     const [sortBy, setSortBy] = useState<string | undefined>(undefined);
     const [sortOrder, setSortOrder] = useState<string | undefined>(undefined);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
     const [formData, setFormData] = useState<StockDetailsEditDTO>({
         lastTransactionPrice: '',
         maxPrice: '',
@@ -65,6 +69,7 @@ export const HistoricData: React.FC = () => {
         tradeVolume: '',
         totalVolume: '',
     });
+
     const handleFilter = (data: { stockName: string; dateFrom: string; dateTo: string }) => {
         setFilterData(data);
     };
@@ -74,9 +79,11 @@ export const HistoricData: React.FC = () => {
     }, [page, size, filterData, sortBy, sortOrder]);
 
     const loadItems = async () => {
+        setIsLoading(true); // Set loading to true before fetching data
         const response = await findAll({ page, size, ...filterData, sortBy, sortOrder });
         setItems(response.content);
         setTotalCount(response.totalElements);
+        setIsLoading(false); // Set loading to false after data is fetched
     };
 
     const handleDeleteClick = (detailsId: number) => {
@@ -132,80 +139,90 @@ export const HistoricData: React.FC = () => {
             setSortBy(column);
             setSortOrder('asc');
         }
-
     };
 
     const renderRow = (item: any) => (
         <>
             <td>{item.stockName}</td>
             <td>{item.date}</td>
-            <td>{item.maxPrice}</td>
-            <td>{item.minPrice}</td>
-            <td>{item.lastTransactionPrice}</td>
+            <td>{item.maxPrice !== null && item.maxPrice !== '' ? item.maxPrice : '0,00'}</td>
+            <td>{item.minPrice !== null && item.minPrice !== '' ? item.minPrice : '0,00'}</td>
+            <td>{item.lastTransactionPrice !== null && item.lastTransactionPrice !== '' ? item.lastTransactionPrice : '0,00'}</td>
             {isAdmin() && (
                 <td>
-                    <button
-                       onClick={() => handleDeleteClick(item.detailsId)}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        onClick={() => {
-                            setSelectedDetailsId(item.detailsId);
-                            setFormData({
-                                lastTransactionPrice: item.lastTransactionPrice,
-                                maxPrice: item.maxPrice,
-                                minPrice: item.minPrice,
-                                averagePrice: item.averagePrice,
-                                percentageChange: item.percentageChange,
-                                quantity: item.quantity,
-                                tradeVolume: item.tradeVolume,
-                                totalVolume: item.totalVolume,
-                            });
-                            setModalOpen(true);
-                        }}
-                        className={styles.editButton}
-                        aria-label={`Edit ${item.stockId} data`}
-                    >
-                        Edit
-                    </button>
+                    <div className={styles.actionCell}>
+                        <button
+                            className={styles.deleteButton}
+                            onClick={() => handleDeleteClick(item.detailsId)}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSelectedDetailsId(item.detailsId);
+                                setFormData({
+                                    lastTransactionPrice: item.lastTransactionPrice !== '' ? item.lastTransactionPrice : '0,00',
+                                    maxPrice: item.maxPrice !== '' ? item.maxPrice : '0,00',
+                                    minPrice: item.minPrice !== '' ? item.minPrice : '0,00',
+                                    averagePrice: item.averagePrice !== '' ? item.averagePrice : '0,00',
+                                    percentageChange: item.percentageChange !== '' ? item.percentageChange : '0,00',
+                                    quantity: item.quantity !== '' ? item.quantity : '0,00',
+                                    tradeVolume: item.tradeVolume !== '' ? item.tradeVolume : '0,00',
+                                    totalVolume: item.totalVolume !== '' ? item.totalVolume : '0,00',
+                                });
+                                setModalOpen(true);
+                            }}
+                            className={styles.editButton}
+                            aria-label={`Edit ${item.stockId} data`}
+                        >
+                            <img
+                                src={ICONS.edit}
+                                alt=""
+                                className={styles.editIcon}
+                            />
+                            <span>Edit</span>
+                        </button>
+                    </div>
                 </td>
             )}
         </>
     );
+
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
                 <nav className={styles.sidebar}>
                     <div className={styles.logo}>
-                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
+                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage} />
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
-
-                    <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser}/>
+                    <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser} />
                 </nav>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
                         <h2 className={styles.pageTitle}>Historic data</h2>
-                        <UserProfile/>
+                        <UserProfile />
                     </header>
-                    <FilterForm onSubmit={handleFilter}/>
-                    <ReusableTable
-                        columns={columns}
-                        data={items}
-                        page={page}
-                        size={size}
-                        totalCount={totalCount}
-                        onPageChange={setPage}
-                        onRowsPerPageChange={setSize}
-                        onSort={handleSort}
-                        sortBy={sortBy}
-                        sortOrder={sortOrder}
-                        renderRow={renderRow}
-                    />
+                    <FilterForm onSubmit={handleFilter} />
+                    <div className={styles.tableContainer}>
+                        <ReusableTable
+                            columns={columns}
+                            data={items}
+                            page={page}
+                            size={size}
+                            totalCount={totalCount}
+                            onPageChange={setPage}
+                            onRowsPerPageChange={setSize}
+                            onSort={handleSort}
+                            sortBy={sortBy}
+                            sortOrder={sortOrder}
+                            renderRow={renderRow}
+                        />
+                        {isLoading && <LoadingScreen />}
+                    </div>
                 </section>
             </div>
-            <Footer/>
+            <Footer />
             <Dialog
                 open={openDeleteDialog}
                 onClose={handleCloseDeleteDialog}
@@ -231,7 +248,6 @@ export const HistoricData: React.FC = () => {
                 onClose={handleCloseDialog}
                 type={dialogType}
             />
-
             <Modal
                 isOpen={isModalOpen}
                 title="Edit Stock Details"

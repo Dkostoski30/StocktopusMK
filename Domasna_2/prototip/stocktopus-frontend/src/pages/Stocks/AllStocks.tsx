@@ -13,6 +13,7 @@ import SuccessOrErrorDialog from '../../components/successOrErrorDialog/SuccessO
 import { findAll, deleteStock, editStock } from "../../service/stockService.ts";
 import Modal from "../../components/modal/Modal.tsx";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {LoadingScreen} from "../../components/loadingScreen/loadingScreen.tsx";
 
 interface SidebarItem {
     icon: string;
@@ -35,7 +36,6 @@ const sidebarItemsUser: SidebarItem[] = [
 ];
 
 export const AllStocks: React.FC = () => {
-
     const [filterData, setFilterData] = useState({ stockName: '' });
     const [items, setItems] = useState<StockDTO[]>([]);
     const [page, setPage] = useState(0);
@@ -46,6 +46,7 @@ export const AllStocks: React.FC = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedStock, setSelectedStock] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const columns = [
         { label: 'Stock ID', key: 'stockId', sortable: true },
@@ -59,12 +60,15 @@ export const AllStocks: React.FC = () => {
     }, [page, size, filterData]);
 
     const loadItems = async () => {
+        setIsLoading(true);
         try {
             const response = await findAll({ page, size, ...filterData });
             setItems(response.content);
             setTotalCount(response.totalElements);
         } catch (error) {
             console.error("Error loading stocks:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -92,7 +96,7 @@ export const AllStocks: React.FC = () => {
             await loadItems();
             setDialogMessage('The stock was successfully updated.');
             setDialogType('success');
-        } catch (error) {
+        } catch {
             setDialogMessage('There was an error updating the stock.');
             setDialogType('error');
         } finally {
@@ -107,24 +111,32 @@ export const AllStocks: React.FC = () => {
             <td>{item.stockName}</td>
             {isAdmin() && (
                 <td>
-                    <button
-                        onClick={() => {
-                            setSelectedStock(item);
-                            setDeleteDialogOpen(true);
-                        }}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        onClick={() => {
-                            setSelectedStock(item);
-                            setEditModalOpen(true);
-                        }}
-                        className={styles.editButton}
-                        aria-label={`Edit ${item.stockId} data`}
-                    >
-                        Edit
-                    </button>
+                    <div className={styles.actionCell}>
+                        <button
+                            className={styles.deleteButton}
+                            onClick={() => {
+                                setSelectedStock(item);
+                                setDeleteDialogOpen(true);
+                            }}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSelectedStock(item);
+                                setEditModalOpen(true);
+                            }}
+                            className={styles.editButton}
+                            aria-label={`Edit ${item.stockId} data`}
+                        >
+                            <img
+                                src={ICONS.edit}
+                                alt=""
+                                className={styles.editIcon}
+                            />
+                            <span>Edit</span>
+                        </button>
+                    </div>
                 </td>
             )}
         </>
@@ -138,25 +150,27 @@ export const AllStocks: React.FC = () => {
                         <img src={logo} alt="Stocktopus logo" className={styles.logoImage} />
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
-
                     <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser} />
                 </nav>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Stocks </h2>
+                        <h2 className={styles.pageTitle}>Stocks</h2>
                         <UserProfile />
                     </header>
                     <FilterFormStocks onSubmit={handleFilter} />
-                    <ReusableTable
-                        columns={columns}
-                        data={items}
-                        page={page}
-                        size={size}
-                        totalCount={totalCount}
-                        onPageChange={setPage}
-                        onRowsPerPageChange={setSize}
-                        renderRow={renderRow}
-                    />
+                    <div className={styles.tableContainer}>
+                        <ReusableTable
+                            columns={columns}
+                            data={items}
+                            page={page}
+                            size={size}
+                            totalCount={totalCount}
+                            onPageChange={setPage}
+                            onRowsPerPageChange={setSize}
+                            renderRow={renderRow}
+                        />
+                        {isLoading && <LoadingScreen />}
+                    </div>
                 </section>
             </div>
             <Footer />

@@ -140,8 +140,9 @@
     background: #ff4000;
     color: #fff;
     border: none;
-    border-radius: 100px;
-    padding: 10px 24px;
+    border-radius: 16px;
+    padding: 10px 13px;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -150,16 +151,17 @@
     color: #faaa8d;
     border: none;
     border-radius: 16px;
-    padding: 8px 16px;
+    padding: 10px 13px;
+    font-size: 15px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
     cursor: pointer;
 }
 
 .editIcon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 *{
     color: gray;

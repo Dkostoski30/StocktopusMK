@@ -9,6 +9,9 @@ import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
 import ReusableTable from "../../components/table/Table.tsx";
 import TableCell from '@mui/material/TableCell';
+import { ICONS } from "../../config/icons.ts";
+import { LoadingScreen } from "../../components/loadingScreen/loadingScreen.tsx";
+
 interface SidebarItem {
     icon: string;
     label: string;
@@ -17,10 +20,10 @@ interface SidebarItem {
 }
 
 const sidebarItems: SidebarItem[] = [
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Historic data', path: '/admin/historic-data', isActive: false },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Stocks', path: '/admin/stocks', isActive: false },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Users', path: '/admin/users', isActive: true },
-    { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078', label: 'Back to Home Page', path: '/', isActive: false }
+    { icon: ICONS.historicData, label: 'Historic data', path: '/admin/historic-data', isActive: false },
+    { icon: ICONS.stocks, label: 'Stocks', path: '/admin/stocks', isActive: false },
+    { icon: ICONS.users, label: 'Users', path: '/admin/users', isActive: true },
+    { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false }
 ];
 
 const roleOptions = [
@@ -33,42 +36,44 @@ export const Users: React.FC = () => {
     const [totalCount, setTotalCount] = useState(0);
     const [pagination, setPagination] = useState({ page: 0, size: 10 });
     const [filter, setFilter] = useState({ username: '', email: '', role: '' });
+    const [isLoading, setIsLoading] = useState(true);
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (filterData: { username: string; email: string; role: string }) => {
+        setIsLoading(true);
         try {
-            const { content } = await fetchAllUsers(pagination, filter);
-            console.log('Filtered Users:', content); // Log API response
+            const { content } = await fetchAllUsers(pagination, filterData);
             setUsers(content);
             setTotalCount(content.length);
         } catch (error) {
             console.error('Error fetching users:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchUsers();
-    }, [pagination, filter]);
+        fetchUsers(filter);
+    }, [pagination]);
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFilter(prevFilter => ({ ...prevFilter, [name]: value }));
-        setPagination({ ...pagination, page: 0 });
     };
 
     const handleRoleChange = (_event: any, newValue: { label: string, value: string } | null) => {
         setFilter(prevFilter => ({ ...prevFilter, role: newValue ? newValue.value : '' }));
-        setPagination({ ...pagination, page: 0 });
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        fetchUsers();
+        setPagination({ ...pagination, page: 0 });
+        fetchUsers(filter);
     };
 
     const handleDeleteUser = async (username: string) => {
         try {
             await deleteUser(username);
-            fetchUsers();
+            fetchUsers(filter);
         } catch (error) {
             console.error('Error deleting user:', error);
         }
@@ -153,21 +158,24 @@ export const Users: React.FC = () => {
                                 options={roleOptions}
                                 getOptionLabel={(option) => option.label}
                                 onChange={handleRoleChange}
-                                renderInput={(params) => <TextField {...params}  className={styles.filterInput} />}
+                                renderInput={(params) => <TextField {...params} className={styles.filterInput} />}
                             />
                         </div>
                         <button type="submit" className={styles.submitButton}>Search</button>
                     </form>
-                    <ReusableTable
-                        columns={columns}
-                        data={users}
-                        page={pagination.page}
-                        size={pagination.size}
-                        totalCount={totalCount}
-                        onPageChange={handlePageChange}
-                        onRowsPerPageChange={handleRowsPerPageChange}
-                        renderRow={renderRow}
-                    />
+                    <div className={styles.tableContainer}>
+                        <ReusableTable
+                            columns={columns}
+                            data={users}
+                            page={pagination.page}
+                            size={pagination.size}
+                            totalCount={totalCount}
+                            onPageChange={handlePageChange}
+                            onRowsPerPageChange={handleRowsPerPageChange}
+                            renderRow={renderRow}
+                        />
+                        {isLoading && <LoadingScreen />}
+                    </div>
                 </section>
             </div>
             <Footer />
