@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '../../pages/HistoricData/HistoricData.module.css';
-import { StockDetailsDTO } from "../../model/dto/stockDetailsDTO.ts";
+import styles from '../../../pages/HistoricData/HistoricData.module.css';
+import { StockDetailsDTO } from "../../../model/dto/stockDetailsDTO.ts";
 import { useNavigate } from 'react-router-dom';
-import {isAdmin} from "../../config/jwtToken.ts";
+import {isAdmin} from "../../../config/jwtToken.ts";
 
 interface TableRowProps {
     item: StockDetailsDTO;
@@ -15,7 +15,7 @@ export const TableRow: React.FC<TableRowProps> = ({ item, onEdit, onDelete }) =>
     const formatDate = (date: Date): string => {
         const parsedDate = new Date(date);
         const day = parsedDate.getDate().toString().padStart(2, '0');
-        const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+        const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
         const year = parsedDate.getFullYear();
         return `${day}-${month}-${year}`;
     };

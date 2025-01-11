@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { TableRow } from './TableRow';
-import styles from '../../pages/HistoricData/HistoricData.module.css';
-import { StockDetailsDTO } from '../../model/dto/stockDetailsDTO.ts';
-import { StockDetailsEditDTO } from '../../model/dto/stockDetailsEditDTO.ts';
-import { findAll, deleteStockDetails, editStockDetails } from '../../service/stockDetailsService.ts';
+import { TableRow } from './TableRow.tsx';
+import styles from '../../../pages/HistoricData/HistoricData.module.css';
+import { StockDetailsDTO } from '../../../model/dto/stockDetailsDTO.ts';
+import { StockDetailsEditDTO } from '../../../model/dto/stockDetailsEditDTO.ts';
+import { findAll, deleteStockDetails, editStockDetails } from '../../../service/stockDetailsService.ts';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
-import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
-import Modal from '../modal/Modal.tsx';
-import { isAdmin } from "../../config/jwtToken.ts";
+import SuccessOrErrorDialog from '../../successOrErrorDialog/SuccessOrErrorDialog.tsx';
+import Modal from '../../modal/Modal.tsx';
+import { isAdmin } from "../../../config/jwtToken.ts";
 
 interface StockDetailsTableProps {
     filterData: { stockName: string; dateFrom: string; dateTo: string };

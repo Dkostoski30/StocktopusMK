@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Users.module.css';
-import { UsersTable } from '../../components/users-table/UsersTable';
 import Navigation from "../../components/navigation/Navigation";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer";
 import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
-import { fetchAllUsers } from "../../service/userService.ts";
+import { fetchAllUsers, deleteUser } from "../../service/userService.ts";
 import { UserDetailsDTO } from "../../model/dto/UserDetailsDTO.ts";
 import { Autocomplete, TextField } from '@mui/material';
-import {deleteUser} from "../../service/userService.ts";
-
+import ReusableTable from "../../components/table/Table.tsx";
+import TableCell from '@mui/material/TableCell';
 interface SidebarItem {
     icon: string;
     label: string;
@@ -65,14 +64,48 @@ export const Users: React.FC = () => {
         e.preventDefault();
         fetchUsers();
     };
+
     const handleDeleteUser = async (username: string) => {
         try {
             await deleteUser(username);
-            await fetchUsers(); // Refresh the user list after deletion
+            fetchUsers();
         } catch (error) {
             console.error('Error deleting user:', error);
         }
     };
+
+    const handlePageChange = (newPage: number) => {
+        setPagination(prev => ({ ...prev, page: newPage }));
+    };
+
+    const handleRowsPerPageChange = (newSize: number) => {
+        setPagination(prev => ({ ...prev, size: newSize }));
+    };
+
+    const columns = [
+        { label: 'Username', key: 'username', sortable: true },
+        { label: 'Email', key: 'email', sortable: true },
+        { label: 'Role', key: 'role', sortable: true },
+        { label: 'Actions', key: 'actions' }
+    ];
+
+    const renderRow = (user: UserDetailsDTO) => (
+        <>
+            <TableCell>{user.username}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.role}</TableCell>
+            <TableCell>
+                <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDeleteUser(user.username)}
+                    aria-label={`Delete ${user.username} data`}
+                >
+                    Delete
+                </button>
+            </TableCell>
+        </>
+    );
+
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
@@ -125,7 +158,16 @@ export const Users: React.FC = () => {
                         </div>
                         <button type="submit" className={styles.submitButton}>Search</button>
                     </form>
-                    <UsersTable users={users} totalCount={totalCount} onDelete={handleDeleteUser} />
+                    <ReusableTable
+                        columns={columns}
+                        data={users}
+                        page={pagination.page}
+                        size={pagination.size}
+                        totalCount={totalCount}
+                        onPageChange={handlePageChange}
+                        onRowsPerPageChange={handleRowsPerPageChange}
+                        renderRow={renderRow}
+                    />
                 </section>
             </div>
             <Footer />

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { TableRowStocks } from './TableRowStocks.tsx';
-import styles from '../../pages/Stocks/Stocks.module.css';
-import { StockDTO } from '../../model/dto/stockDTO.ts';
-import { findAll, deleteStock, editStock } from "../../service/stockService.ts";
-import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
+import styles from '../../../pages/Stocks/Stocks.module.css';
+import { StockDTO } from '../../../model/dto/stockDTO.ts';
+import { findAll, deleteStock, editStock } from "../../../service/stockService.ts";
+import SuccessOrErrorDialog from '../../successOrErrorDialog/SuccessOrErrorDialog.tsx';
 import { TablePagination, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
-import Modal from "../modal/Modal.tsx";
-import { isAdmin } from "../../config/jwtToken.ts";
+import Modal from "../../modal/Modal.tsx";
+import { isAdmin } from "../../../config/jwtToken.ts";
 
 interface StocksTableProps {
     filterData: { stockName: string };

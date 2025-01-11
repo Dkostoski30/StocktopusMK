@@ -8,9 +8,9 @@ import {
     DialogTitle,
     Button,
 } from '@mui/material';
-import styles from '../../pages/Users/Users.module.css';
-import SuccessOrErrorDialog from '../successOrErrorDialog/SuccessOrErrorDialog.tsx';
-import { UserDetailsDTO } from '../../model/dto/UserDetailsDTO';
+import styles from '../../../pages/Users/Users.module.css';
+import SuccessOrErrorDialog from '../../successOrErrorDialog/SuccessOrErrorDialog.tsx';
+import { UserDetailsDTO } from '../../../model/dto/UserDetailsDTO.ts';
 
 interface UsersTableProps {
     users: UserDetailsDTO[];

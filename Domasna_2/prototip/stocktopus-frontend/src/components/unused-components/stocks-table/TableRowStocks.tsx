@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StockDTO } from "../../model/dto/stockDTO.ts";
-import styles from '../../pages/HistoricData/HistoricData.module.css';
+import { StockDTO } from "../../../model/dto/stockDTO.ts";
+import styles from '../../../pages/HistoricData/HistoricData.module.css';
 import { useNavigate } from 'react-router-dom';
-import { getUsernameFromToken, isAdmin } from "../../config/jwtToken.ts";
-import { addFavoriteStock, getFavoriteStocks, removeFavoriteStock } from "../../service/favoriteStocksService.ts";
+import { getUsernameFromToken, isAdmin } from "../../../config/jwtToken.ts";
+import { addFavoriteStock, getFavoriteStocks, removeFavoriteStock } from "../../../service/favoriteStocksService.ts";
 
 interface TableRowProps {
     item: StockDTO;
