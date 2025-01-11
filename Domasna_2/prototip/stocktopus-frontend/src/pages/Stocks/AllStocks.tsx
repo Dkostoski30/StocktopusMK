@@ -107,8 +107,16 @@ export const AllStocks: React.FC = () => {
     const renderRow = (item: any) => (
         <>
             <td>{item.stockId}</td>
-            <td>{item.fullName}</td>
-            <td>{item.stockName}</td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.fullName}
+                </a>
+            </td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.stockName}
+                </a>
+            </td>
             {isAdmin() && (
                 <td>
                     <div className={styles.actionCell}>
