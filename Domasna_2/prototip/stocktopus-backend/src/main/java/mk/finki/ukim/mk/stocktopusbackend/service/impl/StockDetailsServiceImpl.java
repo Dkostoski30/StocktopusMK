@@ -63,9 +63,4 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         Date sqlDay = Date.valueOf(sevenDaysAgo);
         return stockDetailsRepository.findByStockIdAndDateAfter(stockId, sqlDay);
     }
-
-//    @Override
-//    public Page<StockDetails> findByStockId(Long stockId, Pageable pageable) {
-//        return stockDetailsRepository.findAllByStockId(stockId,pageable);
-//    }
 }

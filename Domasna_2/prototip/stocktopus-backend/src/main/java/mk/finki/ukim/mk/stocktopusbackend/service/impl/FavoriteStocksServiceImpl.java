@@ -2,7 +2,6 @@ package mk.finki.ukim.mk.stocktopusbackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import mk.finki.ukim.mk.stocktopusbackend.repository.FavoriteStocksRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.FavoriteStocksService;
 import org.springframework.data.domain.Page;
