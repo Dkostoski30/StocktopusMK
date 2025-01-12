@@ -143,7 +143,11 @@ export const HistoricData: React.FC = () => {
 
     const renderRow = (item: any) => (
         <>
-            <td>{item.stockName}</td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.stockName}
+                </a>
+            </td>
             <td>{item.date}</td>
             <td>{item.maxPrice !== null && item.maxPrice !== '' ? item.maxPrice : '0,00'}</td>
             <td>{item.minPrice !== null && item.minPrice !== '' ? item.minPrice : '0,00'}</td>
