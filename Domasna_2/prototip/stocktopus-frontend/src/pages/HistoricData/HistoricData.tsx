@@ -36,14 +36,7 @@ const sidebarItemsUser: SidebarItem[] = [
     { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
 ];
 
-const columns = [
-    { label: 'Stock Name', key: 'stockName', sortable: true },
-    { label: 'Date', key: 'date', sortable: true },
-    { label: 'Max Price', key: 'maxPrice', sortable: true },
-    { label: 'Min Price', key: 'minPrice', sortable: true },
-    { label: 'Last Transaction Price', key: 'lastTransactionPrice', sortable: true },
-    ...(isAdmin() ? [{ label: 'Actions', key: 'actions', sortable: false }] : [])
-];
+
 
 export const HistoricData: React.FC = () => {
     const [filterData, setFilterData] = useState({ stockName: '', dateFrom: '', dateTo: '' });
@@ -69,7 +62,14 @@ export const HistoricData: React.FC = () => {
         tradeVolume: '',
         totalVolume: '',
     });
-
+    const columns = [
+        { label: 'Stock Name', key: 'stockName', sortable: true },
+        { label: 'Date', key: 'date', sortable: true },
+        { label: 'Max Price', key: 'maxPrice', sortable: true },
+        { label: 'Min Price', key: 'minPrice', sortable: true },
+        { label: 'Last Transaction Price', key: 'lastTransactionPrice', sortable: true },
+        ...(isAdmin() ? [{ label: 'Actions', key: 'actions', sortable: false }] : [])
+    ];
     const handleFilter = (data: { stockName: string; dateFrom: string; dateTo: string }) => {
         setFilterData(data);
     };
@@ -143,7 +143,11 @@ export const HistoricData: React.FC = () => {
 
     const renderRow = (item: any) => (
         <>
-            <td>{item.stockName}</td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.stockName}
+                </a>
+            </td>
             <td>{item.date}</td>
             <td>{item.maxPrice !== null && item.maxPrice !== '' ? item.maxPrice : '0,00'}</td>
             <td>{item.minPrice !== null && item.minPrice !== '' ? item.minPrice : '0,00'}</td>

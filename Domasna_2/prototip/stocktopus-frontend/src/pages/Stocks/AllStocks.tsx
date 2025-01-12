@@ -5,7 +5,7 @@ import Navigation from "../../components/navigation/Navigation.tsx";
 import logo from "../../assets/logo.png";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
-import { isAdmin } from "../../config/jwtToken.ts";
+import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
 import { ICONS } from "../../config/icons.ts";
 import { StockDTO } from '../../model/dto/stockDTO.ts';
 import ReusableTable from '../../components/table/Table.tsx';
@@ -14,6 +14,7 @@ import { findAll, deleteStock, editStock } from "../../service/stockService.ts";
 import Modal from "../../components/modal/Modal.tsx";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import {LoadingScreen} from "../../components/loadingScreen/loadingScreen.tsx";
+import {addFavoriteStock, getFavoriteStocks, removeFavoriteStock} from "../../service/favoriteStocksService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -46,8 +47,9 @@ export const AllStocks: React.FC = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedStock, setSelectedStock] = useState<any>(null);
+    const username = getUsernameFromToken();
     const [isLoading, setIsLoading] = useState(true);
-
+    const [favoriteItems, setFavoriteItems] = useState<StockDTO[]>([]);
     const columns = [
         { label: 'Stock ID', key: 'stockId', sortable: true },
         { label: 'Company Name', key: 'fullName', sortable: true },
@@ -71,10 +73,38 @@ export const AllStocks: React.FC = () => {
             setIsLoading(false);
         }
     };
+    useEffect(() => {
+        loadFavoriteStocks();
+    }, []);
 
+    const loadFavoriteStocks = async () => {
+        try {
+            const response = await getFavoriteStocks({page: 0, size: 0, username });
+            setFavoriteItems(response.content);
+        } catch (error) {
+            console.error("Error loading favorite stocks:", error);
+        }
+    };
     const handleFilter = (data: { stockName: string }) => {
         setFilterData(data);
     };
+
+    const handleToggleFavorite = async (stockId: number, item:StockDTO) => {
+        try {
+            const isFavorite = favoriteItems.some(fav => fav.stockId === stockId);
+            if (isFavorite) {
+                await removeFavoriteStock({ username, stockId });
+                setFavoriteItems(favoriteItems.filter(fav => fav.stockId !== stockId));
+            } else {
+                await addFavoriteStock({ username, stockId });
+                setFavoriteItems([...favoriteItems, { stockId, fullName: item.fullName, stockName: item.stockName }]);
+            }
+        } catch (error) {
+            console.error("Error toggling favorite stock:", error);
+        }
+    };
+
+    const isFavorite = (stockId: number) => favoriteItems.some(fav => fav.stockId === stockId);
 
     const handleDeleteConfirm = async () => {
         try {
@@ -107,8 +137,16 @@ export const AllStocks: React.FC = () => {
     const renderRow = (item: any) => (
         <>
             <td>{item.stockId}</td>
-            <td>{item.fullName}</td>
-            <td>{item.stockName}</td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.fullName}
+                </a>
+            </td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.stockName}
+                </a>
+            </td>
             {isAdmin() && (
                 <td>
                     <div className={styles.actionCell}>
@@ -139,8 +177,17 @@ export const AllStocks: React.FC = () => {
                     </div>
                 </td>
             )}
+            <td>
+                <button
+                    onClick={() => handleToggleFavorite(item.stockId, item)}
+                    className={`${styles.favoriteButton} ${isFavorite(item.stockId) ? styles.filledHeart : styles.emptyHeart}`}
+                >
+                    {isFavorite(item.stockId) ? '♥' : '♡'}
+                </button>
+            </td>
         </>
     );
+
 
     return (
         <main className={styles.dashboardDesign}>
