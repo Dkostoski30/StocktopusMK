@@ -51,7 +51,7 @@ export const HistoricData: React.FC = () => {
     const [sortBy, setSortBy] = useState<string | undefined>(undefined);
     const [sortOrder, setSortOrder] = useState<string | undefined>(undefined);
     const [isModalOpen, setModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
+    const [isLoading, setIsLoading] = useState(true);
     const [formData, setFormData] = useState<StockDetailsEditDTO>({
         lastTransactionPrice: '',
         maxPrice: '',
@@ -79,11 +79,11 @@ export const HistoricData: React.FC = () => {
     }, [page, size, filterData, sortBy, sortOrder]);
 
     const loadItems = async () => {
-        setIsLoading(true); // Set loading to true before fetching data
+        setIsLoading(true);
         const response = await findAll({ page, size, ...filterData, sortBy, sortOrder });
         setItems(response.content);
         setTotalCount(response.totalElements);
-        setIsLoading(false); // Set loading to false after data is fetched
+        setIsLoading(false);
     };
 
     const handleDeleteClick = (detailsId: number) => {

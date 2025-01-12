@@ -231,13 +231,6 @@ body{
     background: #ffe2e5;
 }
 
-/*.stockIndicator {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fa5a7d;
-}*/
-
 .stockRank {
     color: #151d48;
     font-size: 24px;
@@ -376,11 +369,11 @@ body{
     flex-direction: row;
     align-content: center;
 
-    gap: 20px; /* Adjust as needed */
+    gap: 20px;
 }
 
 .stockSection {
-    flex: 0 0 53%; /* 60% of the available space */
+    flex: 0 0 53%;
     background: #fff;
     border-radius: 20px;
     padding: 28px;
@@ -389,7 +382,7 @@ body{
 }
 
 .favoritesSection {
-    flex: 0 0 30%; /* 40% of the available space */
+    flex: 0 0 30%;
     background: #fff;
     border-radius: 20px;
     padding: 28px;

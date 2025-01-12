@@ -17,8 +17,6 @@
 
 .content {
     width: 74%;
-    /*margin-left: 20px;*/
-    /*margin-top: 37px;*/
 }
 
 .contentHeader {
@@ -109,7 +107,6 @@
     display: flex;
     align-items: center;
     gap: 24px;
-    /*color: #0b63f8;*/
 }
 
 .tickerIcon {
@@ -120,14 +117,12 @@
 .dataCell {
     display: flex;
     gap: 48px;
-    /*justify-content: space-between;*/
 }
 
 .actionCell {
     display: flex;
     align-items: center;
     gap: 12px;
-    /* margin-left: auto;*/
 }
 
 .deleteButton {
@@ -193,7 +188,6 @@
         width: 83%;
         margin-left: 20px;
         margin-top: 37px;
-        /*margin-left: 20%;*/
     }
 }
 

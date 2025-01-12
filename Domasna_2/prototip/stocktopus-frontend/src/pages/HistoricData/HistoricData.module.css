@@ -17,8 +17,6 @@
 
 .content {
     width: 74%;
-    /*margin-left: 20px;*/
-    /*margin-top: 37px;*/
 }
 
 .contentHeader {
@@ -109,7 +107,6 @@
     display: flex;
     align-items: center;
     gap: 24px;
-    /*color: #0b63f8;*/
 }
 .fullName{
     display: flex;
@@ -126,14 +123,12 @@
 .dataCell {
     display: flex;
     gap: 48px;
-    /*justify-content: space-between;*/
 }
 
 .actionCell {
     display: flex;
     align-items: center;
     gap: 12px;
-    /* margin-left: auto;*/
 }
 
 .deleteButton {
@@ -201,7 +196,6 @@
         width: 83%;
         margin-left: 20px;
         margin-top: 37px;
-        /*margin-left: 20%;*/
     }
 }
 
@@ -247,8 +241,8 @@ body{
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 32px; /* Adjust as needed */
-    color: red; /* Default color for filled heart */
+    font-size: 32px;
+    color: red;
 }
 
 .favoriteButton:focus {
@@ -256,9 +250,9 @@ body{
 }
 
 .filledHeart {
-    color: red; /* Red color for filled heart */
+    color: red;
 }
 
 .emptyHeart {
-    color: lightgray; /* Gray color for empty heart */
+    color: lightgray;
 }

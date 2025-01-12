@@ -66,7 +66,7 @@ export const PredictorByStockPage: React.FC = () => {
             const predictionResponse = await getPrediction(parseInt(stockId));
             if (predictionResponse.success) {
                 console.log("Prediction response:", predictionResponse.data);
-                setPredictedPrice(predictionResponse.data.price_tomorrow);// Set the predicted price
+                setPredictedPrice(predictionResponse.data.price_tomorrow);
             } else {
                 console.error("Error fetching prediction:", predictionResponse.message);
             }

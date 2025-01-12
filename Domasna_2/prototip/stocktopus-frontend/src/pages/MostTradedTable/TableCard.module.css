@@ -1,4 +1,4 @@
-/* Table Card */
+
 .tableCard {
     margin: 20px 0;
     background: #fff;
@@ -13,7 +13,7 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Title */
+
 .title {
     font-size: 26px;
     font-weight: 600;
@@ -26,7 +26,7 @@
     padding-bottom: 8px;
 }
 
-/* Stock Table */
+
 .stockTable {
     width: 100%;
     border-collapse: collapse;
@@ -67,26 +67,26 @@
     border-bottom: none;
 }
 
-/* Row-specific styles */
+
 .positive {
-    background-color: #d4f7e7 !important; /* Light mint green */
-    color: #388e3c; /* Dark green */
+    background-color: #d4f7e7 !important;
+    color: #388e3c;
     transform: scale(1.03);
 }
 
 .negative {
-    background-color: #fddde0 !important; /* Light blush pink */
-    color: #d32f2f; /* Dark red */
+    background-color: #fddde0 !important;
+    color: #d32f2f;
     transform: scale(1.03);
 }
 
 .zero {
-    background-color: #e0f7fa !important; /* Light cyan */
-    color: #0288d1; /* Dark cyan */
+    background-color: #e0f7fa !important;
+    color: #0288d1;
     transform: scale(1.03);
 }
 
-/* Hover effect on rows */
+
 .stockTable tr:hover.positive {
     background-color: #b8e9d6;
 }
@@ -99,21 +99,21 @@
     background-color: #b3e5fc;
 }
 
-/* Indicator-specific styles */
+
 .greenIcon {
-    color: #388e3c; /* Green icon */
+    color: #388e3c;
     font-size: 22px;
     transition: color 0.2s ease;
 }
 
 .redIcon {
-    color: #d32f2f; /* Red icon */
+    color: #d32f2f;
     font-size: 22px;
     transition: color 0.2s ease;
 }
 
 .blueIcon {
-    color: #0288d1; /* Blue icon */
+    color: #0288d1;
     font-size: 22px;
     transition: color 0.2s ease;
 }
@@ -124,7 +124,7 @@
     transform: scale(1.2);
 }
 
-/* Responsive tweaks */
+
 @media (max-width: 768px) {
     .tableCard {
         padding: 15px;
