@@ -169,7 +169,6 @@ def store_predictions_to_db(df, stock_id, timeframe):
                 );
                 """
                 cursor.execute(create_table_query)
-                # logging.info("Table `stocks_indicators` created or already exists.")
 
                 df.columns = df.columns.str.replace(' ', '_')
 
