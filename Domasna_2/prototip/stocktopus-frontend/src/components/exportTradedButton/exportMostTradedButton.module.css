@@ -12,7 +12,7 @@
 }
 
 .exportButton:hover {
-    background-color: #0056b3;
+    background-color: rgba(190, 244, 190, 0.89);
 }
 
 .exportIcon {

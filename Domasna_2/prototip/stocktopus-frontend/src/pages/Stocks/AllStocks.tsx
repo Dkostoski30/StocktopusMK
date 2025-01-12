@@ -1,11 +1,20 @@
-import React, {useState} from 'react';
-import styles from '../AdminDashboard/AdminDashboard.module.css';
-import { FilterFormStocks } from '../../components//FilterFormStocks';
+import React, { useEffect, useState } from 'react';
+import styles from '../HistoricData/HistoricData.module.css';
+import { FilterFormStocks } from '../../components/FilterForm/FilterFormStocks';
 import Navigation from "../../components/navigation/Navigation.tsx";
-import {StocksTable} from "../../components/stocks-table/StocksTable.tsx";
 import logo from "../../assets/logo.png";
-import {Footer} from "../../components/footer/Footer.tsx";
-import {UserProfile} from "../../components/UserProfile.tsx";
+import { Footer } from "../../components/footer/Footer.tsx";
+import { UserProfile } from "../../components/userProfile/UserProfile.tsx";
+import {getUsernameFromToken, isAdmin} from "../../config/jwtToken.ts";
+import { ICONS } from "../../config/icons.ts";
+import { StockDTO } from '../../model/dto/stockDTO.ts';
+import ReusableTable from '../../components/table/Table.tsx';
+import SuccessOrErrorDialog from '../../components/successOrErrorDialog/SuccessOrErrorDialog.tsx';
+import { findAll, deleteStock, editStock } from "../../service/stockService.ts";
+import Modal from "../../components/modal/Modal.tsx";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {LoadingScreen} from "../../components/loadingScreen/loadingScreen.tsx";
+import {addFavoriteStock, getFavoriteStocks, removeFavoriteStock} from "../../service/favoriteStocksService.ts";
 
 interface SidebarItem {
     icon: string;
@@ -14,77 +23,265 @@ interface SidebarItem {
     isActive: boolean;
 }
 
-const sidebarItems: SidebarItem[] = [
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/f82a8295d3dcfe19d1110553350c5151b3590b9747973a89f58114ed3ae4775d?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Historic data',
-        path: '/admin/historic-data',
-        isActive: false,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/b328694d610eca444166961c972325a5cd97af94df16694bcf61bff11793da87?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Stocks',
-        path: '/admin/stocks',
-        isActive: true,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/170996ea976592f23f0dc12558b6946a7ce322f5ecff2f0a0341da620be554d6?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Users',
-        path: '/admin/users',
-        isActive: false,
-    },
-    {
-        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3a442f00011bfdbf7a7cab35a09d701dda8da4ee43a4154bdc25a8467e88124b?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078',
-        label: 'Back to Home Page',
-        path: '/',
-        isActive: false,
-    },
+const sidebarItemsAdmin: SidebarItem[] = [
+    { icon: ICONS.historicData, label: 'Historic data', path: '/admin/historic-data', isActive: false },
+    { icon: ICONS.stocks, label: 'Stocks', path: '/admin/stocks', isActive: true },
+    { icon: ICONS.users, label: 'Users', path: '/admin/users', isActive: false },
+    { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
 ];
 
-// const adminDashboard: HistoricDataItem[] = [
-//     {
-//         ticker: 'KMB',
-//         date: '23/09/2022',
-//         max: '24.300,00',
-//         min: '24.200,00',
-//         lastPrice: '24.200,00',
-//         iconSrc: 'https://cdn.builder.io/api/v1/image/assets/TEMP/78afbf77b7283a2ab4d0498aaa3ac5465213ab2b58eb75d671c400a4b5d1ade8?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078'
-//     },
-// ];
+const sidebarItemsUser: SidebarItem[] = [
+    { icon: ICONS.historicData, label: 'Historic data', path: '/user/historic-data', isActive: false },
+    { icon: ICONS.stocks, label: 'Stocks', path: '/user/stocks', isActive: true },
+    { icon: ICONS.backToHome, label: 'Back to Home Page', path: '/', isActive: false },
+];
 
 export const AllStocks: React.FC = () => {
+    const [filterData, setFilterData] = useState({ stockName: '' });
+    const [items, setItems] = useState<StockDTO[]>([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(25);
+    const [totalCount, setTotalCount] = useState(0);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogType, setDialogType] = useState<'success' | 'error'>('success');
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedStock, setSelectedStock] = useState<any>(null);
+    const username = getUsernameFromToken();
+    const [isLoading, setIsLoading] = useState(true);
+    const [favoriteItems, setFavoriteItems] = useState<StockDTO[]>([]);
+    const columns = [
+        { label: 'Stock ID', key: 'stockId', sortable: true },
+        { label: 'Company Name', key: 'fullName', sortable: true },
+        { label: 'Stock Name', key: 'stockName', sortable: true },
+        ...(isAdmin() ? [{ label: 'Actions', key: 'actions', sortable: false }] : [])
+    ];
 
-    const [filterData, setFilterData] = useState({ stockName: ''});
+    useEffect(() => {
+        loadItems();
+    }, [page, size, filterData]);
 
-    const handleFilter = (data: { stockName: string}) => {
+    const loadItems = async () => {
+        setIsLoading(true);
+        try {
+            const response = await findAll({ page, size, ...filterData });
+            setItems(response.content);
+            setTotalCount(response.totalElements);
+        } catch (error) {
+            console.error("Error loading stocks:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    useEffect(() => {
+        loadFavoriteStocks();
+    }, []);
+
+    const loadFavoriteStocks = async () => {
+        try {
+            const response = await getFavoriteStocks({page: 0, size: 0, username });
+            setFavoriteItems(response.content);
+        } catch (error) {
+            console.error("Error loading favorite stocks:", error);
+        }
+    };
+    const handleFilter = (data: { stockName: string }) => {
         setFilterData(data);
     };
+
+    const handleToggleFavorite = async (stockId: number, item:StockDTO) => {
+        try {
+            const isFavorite = favoriteItems.some(fav => fav.stockId === stockId);
+            if (isFavorite) {
+                await removeFavoriteStock({ username, stockId });
+                setFavoriteItems(favoriteItems.filter(fav => fav.stockId !== stockId));
+            } else {
+                await addFavoriteStock({ username, stockId });
+                setFavoriteItems([...favoriteItems, { stockId, fullName: item.fullName, stockName: item.stockName }]);
+            }
+        } catch (error) {
+            console.error("Error toggling favorite stock:", error);
+        }
+    };
+
+    const isFavorite = (stockId: number) => favoriteItems.some(fav => fav.stockId === stockId);
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await deleteStock(selectedStock.stockId);
+            setDialogMessage('The stock was successfully deleted.');
+            setDialogType('success');
+            loadItems();
+        } catch {
+            setDialogMessage('There was an error deleting the stock.');
+            setDialogType('error');
+        } finally {
+            setDeleteDialogOpen(false);
+        }
+    };
+
+    const handleEditConfirm = async () => {
+        try {
+            await editStock(selectedStock.stockId, selectedStock);
+            await loadItems();
+            setDialogMessage('The stock was successfully updated.');
+            setDialogType('success');
+        } catch {
+            setDialogMessage('There was an error updating the stock.');
+            setDialogType('error');
+        } finally {
+            setEditModalOpen(false);
+        }
+    };
+
+    const renderRow = (item: any) => (
+        <>
+            <td>{item.stockId}</td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.fullName}
+                </a>
+            </td>
+            <td>
+                <a href={`/stock-details/${item.stockId}`} className={styles.customLink }>
+                    {item.stockName}
+                </a>
+            </td>
+            {isAdmin() && (
+                <td>
+                    <div className={styles.actionCell}>
+                        <button
+                            className={styles.deleteButton}
+                            onClick={() => {
+                                setSelectedStock(item);
+                                setDeleteDialogOpen(true);
+                            }}
+                        >
+                            Delete
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSelectedStock(item);
+                                setEditModalOpen(true);
+                            }}
+                            className={styles.editButton}
+                            aria-label={`Edit ${item.stockId} data`}
+                        >
+                            <img
+                                src={ICONS.edit}
+                                alt=""
+                                className={styles.editIcon}
+                            />
+                            <span>Edit</span>
+                        </button>
+                    </div>
+                </td>
+            )}
+            <td>
+                <button
+                    onClick={() => handleToggleFavorite(item.stockId, item)}
+                    className={`${styles.favoriteButton} ${isFavorite(item.stockId) ? styles.filledHeart : styles.emptyHeart}`}
+                >
+                    {isFavorite(item.stockId) ? '♥' : '♡'}
+                </button>
+            </td>
+        </>
+    );
+
 
     return (
         <main className={styles.dashboardDesign}>
             <div className={styles.layout}>
                 <nav className={styles.sidebar}>
                     <div className={styles.logo}>
-                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage}/>
+                        <img src={logo} alt="Stocktopus logo" className={styles.logoImage} />
                         <h1 className={styles.logoText}>Stocktopus</h1>
                     </div>
-
-                    <Navigation items={sidebarItems}/>
+                    <Navigation items={isAdmin() ? sidebarItemsAdmin : sidebarItemsUser} />
                 </nav>
                 <section className={styles.content}>
                     <header className={styles.contentHeader}>
-                        <h2 className={styles.pageTitle}>Stocks </h2>
-                        <UserProfile
-                            name="Daniela"
-                            role="Admin"
-                            imageUrl="https://cdn.builder.io/api/v1/image/assets/TEMP/1755c11e7b6a7afcce83903ab9166d8511e788b72277ae143f1158a138de7f56?placeholderIfAbsent=true&apiKey=daff80472fc549e0971c12890da5e078"
-                        />
+                        <h2 className={styles.pageTitle}>Stocks</h2>
+                        <UserProfile />
                     </header>
-                    <FilterFormStocks onSubmit={handleFilter}/>
-                    <StocksTable filterData={filterData}/>
+                    <FilterFormStocks onSubmit={handleFilter} />
+                    <div className={styles.tableContainer}>
+                        <ReusableTable
+                            columns={columns}
+                            data={items}
+                            page={page}
+                            size={size}
+                            totalCount={totalCount}
+                            onPageChange={setPage}
+                            onRowsPerPageChange={setSize}
+                            renderRow={renderRow}
+                        />
+                        {isLoading && <LoadingScreen />}
+                    </div>
                 </section>
             </div>
-            <Footer/>
+            <Footer />
+            <Dialog
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
+            >
+                <DialogTitle id="delete-dialog-title">{"Confirm Delete"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="delete-dialog-description">
+                        Are you sure you want to delete this stock?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDeleteDialogOpen(false)} color="primary">Cancel</Button>
+                    <Button onClick={handleDeleteConfirm} color="secondary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Modal
+                isOpen={editModalOpen}
+                title="Edit Stock"
+                onClose={() => setEditModalOpen(false)}
+                onSave={handleEditConfirm}
+            >
+                <form>
+                    <div>
+                        <label htmlFor="stock_id">Stock ID:</label>
+                        <input
+                            id="stock_id"
+                            type="text"
+                            value={selectedStock?.stockId || ''}
+                            disabled
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="stock_name">Stock Name:</label>
+                        <input
+                            id="stock_name"
+                            type="text"
+                            value={selectedStock?.stockName || ''}
+                            onChange={(e) => setSelectedStock({ ...selectedStock, stockName: e.target.value })}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="company_name">Company Name:</label>
+                        <input
+                            id="company_name"
+                            type="text"
+                            value={selectedStock?.fullName || ''}
+                            onChange={(e) => setSelectedStock({ ...selectedStock, fullName: e.target.value })}
+                        />
+                    </div>
+                </form>
+            </Modal>
+            <SuccessOrErrorDialog
+                open={!!dialogMessage}
+                message={dialogMessage}
+                onClose={() => setDialogMessage('')}
+                type={dialogType}
+            />
         </main>
     );
 };

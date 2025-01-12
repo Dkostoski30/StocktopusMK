@@ -5,6 +5,7 @@ import mk.finki.ukim.mk.stocktopusbackend.model.Stock;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockFilter;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockPercentageDTO;
+import mk.finki.ukim.mk.stocktopusbackend.model.exceptions.StockIdNotFoundException;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockService;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public Stock findById(Long id) {
-        return stockRepository.findById(id).get(); //TODO: add exception handling
+        return stockRepository.findById(id).orElseThrow(() -> new StockIdNotFoundException("Stock with id " + id + " not found"));
     }
 
     @Override
@@ -46,17 +47,18 @@ public class StockServiceImpl implements StockService {
 
         return rawResults.stream()
                 .map(record -> new StockPercentageDTO(
-                        ((Number) record[0]).longValue(), // stockId
-                        (String) record[1],               // stockName
-                        ((Number) record[2]).doubleValue() // stockPercentage
+                        ((Number) record[0]).longValue(),
+                        (String) record[1],
+                        ((Number) record[2]).doubleValue()
                 ))
                 .toList();
     }
 
     @Override
     public Stock editStockById(Long id, StockDTO stockDTO) {
-        Stock stock = stockRepository.findById(id).orElseThrow(RuntimeException::new); // TODO add exception handling
+        Stock stock = this.findById(id);
         stock.setStockName(stockDTO.stockName());
+        stock.setFullName(stockDTO.fullName());
         return stockRepository.save(stock);
     }
 
@@ -64,6 +66,6 @@ public class StockServiceImpl implements StockService {
     public StockDTO findStockDTOById(Long id) {
         return stockRepository.findById(id)
                 .map(stock -> new StockDTO(stock.getStockId(), stock.getStockName(), stock.getFullName()))
-                .orElseThrow(RuntimeException::new); // TODO add exception handling
+                .orElseThrow(() -> new StockIdNotFoundException("Stock with id " + id + " not found"));
     }
 }

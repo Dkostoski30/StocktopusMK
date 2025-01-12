@@ -30,5 +30,8 @@ public class Stock {
 
     @OneToMany(mappedBy = "stockId")
     private List<NewsAndStocks> newsAndStocks;
+
+    @OneToMany(mappedBy = "stockId")
+    private List<FavoriteStocks> favoriteStocks;
 }
 

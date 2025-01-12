@@ -2,15 +2,14 @@ package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsDTO;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
-import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsFilter;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.*;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import mk.finki.ukim.mk.stocktopusbackend.service.converter.StockDetailsConverterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,22 +26,26 @@ public class StockDetailsController {
     private final StockDetailsConverterService stockDetailsConverterService;
 
     @GetMapping
-    public Page<StockDetailsDTO> findAll(Pageable pageable,
-                                         @RequestParam (required = false) String stockName,
-                                         @RequestParam (required = false) String dateFrom,
-                                         @RequestParam (required = false) String dateTo){
+    public Page<StockDetailsProjection> findAll(Pageable pageable,
+                                                @RequestParam (required = false) String stockName,
+                                                @RequestParam (required = false) String dateFrom,
+                                                @RequestParam (required = false) String dateTo,
+                                                @RequestParam (required = false) String sortBy,
+                                                @RequestParam (required = false) String sortOrder){
         StockDetailsFilter stockDetailsFilter = new StockDetailsFilter(stockName, dateFrom, dateTo);
-        return this.stockDetailsService.findAll(pageable, stockDetailsFilter)
-                .map(stockDetailsConverterService::convertToStockDetailsDTO);
+        StockDetailsSortingConfig stockDetailsSortingConfig = new StockDetailsSortingConfig(sortBy, sortOrder);
+        return this.stockDetailsService.findAll(pageable, stockDetailsFilter, stockDetailsSortingConfig);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStock(@PathVariable Long id){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteStockDetails(@PathVariable Long id){
         stockDetailsService.deleteById(id);
     }
 
     @PostMapping("/edit/{id}")
-    public StockDetailsEditDTO editStock(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public StockDetailsEditDTO editStockDetails(@PathVariable Long id, @RequestBody StockDetailsEditDTO stockDetailsEditDTO){
         return stockDetailsConverterService.convertToStockDetailsEditDTO(stockDetailsService.editStockDetails(id, stockDetailsEditDTO));
     }
     @GetMapping("/getMostTraded")

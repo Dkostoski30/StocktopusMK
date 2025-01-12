@@ -16,11 +16,7 @@ public class RegisterController {
 
     @PostMapping
     public void register(@RequestBody UserDTO userDTO) {
-        try {
-            this.userService.register(userDTO.username(), userDTO.password(), userDTO.repeatedPassword(), userDTO.email(), Role.ROLE_USER);
-        } catch (RuntimeException ex) {
-            System.out.println(ex.getMessage());
-        }
+        this.userService.register(userDTO.username(), userDTO.password(), userDTO.repeatedPassword(), userDTO.email(), Role.ROLE_USER);
     }
 }
 

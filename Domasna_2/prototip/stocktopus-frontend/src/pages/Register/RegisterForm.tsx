@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styles from './RegisterForm.module.css';
-import { InputField } from '../../components/InputField';
-import { AuthLayout } from '../../components/AuthLayout';
+import { InputField } from '../../components/InputField/InputField.tsx';
+import { AuthLayout } from '../../components/AuthLayout/AuthLayout.tsx';
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../../components/footer/Footer.tsx";
 import { register } from '../../service/userService.ts';
 import { UserDTO } from '../../model/dto/UserDTO.ts';
+import { LoadingScreen } from '../../components/loadingScreen/loadingScreen.tsx';
+import SuccessOrErrorDialog from '../../components/successOrErrorDialog/SuccessOrErrorDialog.tsx';
 
 export const RegisterForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +16,9 @@ export const RegisterForm: React.FC = () => {
         password: '',
         repeatPassword: ''
     });
+    const [loading, setLoading] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState('');
+    const [dialogType, setDialogType] = useState<'success' | 'error'>('success');
 
     const handleInputChange = (field: string) => (value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -21,6 +26,7 @@ export const RegisterForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         const userDTO: UserDTO = {
             email: formData.email,
             username: formData.username,
@@ -29,9 +35,13 @@ export const RegisterForm: React.FC = () => {
         };
         try {
             await register(userDTO);
-            handleNavigation("/");
-        } catch (error) {
-            console.error("Registration failed:", error);
+            setDialogMessage('Registration successful!');
+            setDialogType('success');
+        } catch {
+            setDialogMessage('Registration failed');
+            setDialogType('error');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -41,8 +51,16 @@ export const RegisterForm: React.FC = () => {
         navigate(path);
     };
 
+    const handleCloseDialog = () => {
+        setDialogMessage('');
+        if (dialogMessage === 'Registration successful!') {
+            handleNavigation("/login");
+        }
+    };
+
     return (
-        <AuthLayout title="Register to your Account">
+        <AuthLayout title="Register">
+            {loading && <LoadingScreen />}
             <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField
                     label="Email"
@@ -85,6 +103,12 @@ export const RegisterForm: React.FC = () => {
                 </button>
             </div>
             <Footer />
+            <SuccessOrErrorDialog
+                open={!!dialogMessage}
+                message={dialogMessage}
+                onClose={handleCloseDialog}
+                type={dialogType}
+            />
         </AuthLayout>
     );
 };

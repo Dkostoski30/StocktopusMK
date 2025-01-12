@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.model.StockDetails;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsEditDTO;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsFilter;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsProjection;
+import mk.finki.ukim.mk.stocktopusbackend.model.dto.StockDetailsSortingConfig;
 import mk.finki.ukim.mk.stocktopusbackend.repository.StockDetailsRepository;
 import mk.finki.ukim.mk.stocktopusbackend.service.StockDetailsService;
 import org.springframework.data.domain.Page;
@@ -21,8 +23,8 @@ public class StockDetailsServiceImpl implements StockDetailsService {
     private final StockDetailsRepository stockDetailsRepository;
 
     @Override
-    public Page<StockDetails> findAll(Pageable pageable, StockDetailsFilter stockDetailsFilter) {
-        return stockDetailsRepository.findAll(pageable, stockDetailsFilter);
+    public Page<StockDetailsProjection> findAll(Pageable pageable, StockDetailsFilter stockDetailsFilter, StockDetailsSortingConfig stockDetailsSortingConfig) {
+        return stockDetailsRepository.findAll(pageable, stockDetailsFilter, stockDetailsSortingConfig);
     }
 
     @Override
@@ -61,9 +63,4 @@ public class StockDetailsServiceImpl implements StockDetailsService {
         Date sqlDay = Date.valueOf(sevenDaysAgo);
         return stockDetailsRepository.findByStockIdAndDateAfter(stockId, sqlDay);
     }
-
-//    @Override
-//    public Page<StockDetails> findByStockId(Long stockId, Pageable pageable) {
-//        return stockDetailsRepository.findAllByStockId(stockId,pageable);
-//    }
 }

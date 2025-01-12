@@ -11,7 +11,7 @@ import {
     Legend,
 } from 'chart.js';
 import { StockIndicatorsDTO } from "../../model/dto/stockIndicatorsDTO.ts";
-import { getStockById } from "../../service/stockService.ts";
+import { getStockDTOById } from "../../service/stockService.ts";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -32,7 +32,7 @@ const Chart: React.FC<Props> = ({ data }) => {
                 for (const stock of data) {
                     if (!fetchedStockIds.current.has(stock.stockId)) {
                         try {
-                            const stockDetails = await getStockById(stock.stockId);
+                            const stockDetails = await getStockDTOById(stock.stockId);
                             names[stock.stockId] = stockDetails.stockName;
                             fetchedStockIds.current.add(stock.stockId);
                         } catch (error) {
@@ -65,8 +65,8 @@ const Chart: React.FC<Props> = ({ data }) => {
 
         return {
             label: stockNames[stock.stockId]
-                ? `Stock ${stockNames[stock.stockId]} - SMA50`
-                : `Stock ${stock.stockId} - SMA50`,
+                ? `${stockNames[stock.stockId]} - SMA50`
+                : `${stock.stockId} - SMA50`,
             data: stockData,
             borderColor: colors[index],
             backgroundColor: backgroundColors[index],
