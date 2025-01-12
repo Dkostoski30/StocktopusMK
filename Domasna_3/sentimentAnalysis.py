@@ -24,7 +24,7 @@ def sentiment(text):
 def analyze_sentiment(text,news_id):
     score = sentiment(text)
 
-    # print(f'Sentiment score for news with id: {news_id} is {score}')
+
     if score < 0:
         sentiment_label = "Negative"
     elif score == 0 or score < 0.5:

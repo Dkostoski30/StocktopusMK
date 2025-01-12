@@ -1,4 +1,3 @@
-/* Favorites Section */
 .favoritesSection {
     background: #fff;
     border-radius: 20px;
@@ -67,20 +66,20 @@
     border-bottom: none;
 }
 
-/* Row-specific styles for visual feedback */
+
 .favoritesTable tr:hover.positive {
-    background-color: #d4f7e7; /* Light mint green */
+    background-color: #d4f7e7;
 }
 
 .favoritesTable tr:hover.negative {
-    background-color: #fddde0; /* Light blush pink */
+    background-color: #fddde0;
 }
 
 .favoritesTable tr:hover.zero {
-    background-color: #e0f7fa; /* Light cyan */
+    background-color: #e0f7fa;
 }
 
-/* Responsive styles */
+
 @media (max-width: 768px) {
     .favoritesSection {
         padding: 20px;
@@ -101,7 +100,7 @@
     border: none;
     cursor: pointer;
     font-size: 32px;
-    color: red; /* Default color for filled heart */
+    color: red;
 }
 
 .favoriteButton:focus {
@@ -109,11 +108,11 @@
 }
 
 .filledHeart {
-    color: red; /* Red color for filled heart */
+    color: red;
 }
 
 .emptyHeart {
-    color: lightgray; /* Gray color for empty heart */
+    color: lightgray;
 }
 .favoriteColumn{
     width: 10px;

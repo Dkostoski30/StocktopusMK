@@ -77,7 +77,6 @@ def prepare_prediction_data(df, feature_column='last_transaction_price'):
     price_scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_prices = price_scaler.fit_transform(df[[feature_column]])
 
-    # Prepare the input for prediction (last LOOK_BACK days)
     input_data = scaled_prices[-LOOK_BACK:]
     input_data = input_data.reshape(1, LOOK_BACK, 1)
 
@@ -92,31 +91,24 @@ def predict_price(ticker_id):
         return jsonify({"error": f"Model for Stock ID {ticker_id} not found"}), 404
 
     try:
-        # Load the model
         model = load_model(model_path)
 
-        # Fetch the last 60 days of data
         data = get_ticker_data(ticker_id)
         if data.empty or len(data) < 60:
             return jsonify({"error": "Insufficient data for prediction"}), 400
 
-        # Add default sentiment if not available
         data['sentiment'] = data.get('sentiment', 'Neutral')
         data['mapped_sentiment'] = data['sentiment'].map({'Positive': 1, 'Neutral': 0, 'Negative': -1}).fillna(0)
 
-        # Scale the price and combine features
         scaler = MinMaxScaler(feature_range=(0, 1))
         scaled_prices = scaler.fit_transform(data[['last_transaction_price']].tail(60))
         combined_features = np.hstack([scaled_prices, data['mapped_sentiment'].tail(60).values.reshape(-1, 1)])
 
-        # Reshape for prediction
         input_data = combined_features.reshape(1, 60, 2)
 
-        # Predict the next day's price
         predicted_scaled_price = model.predict(input_data)
         predicted_price = scaler.inverse_transform(predicted_scaled_price.reshape(-1, 1))[0, 0]
 
-        # Return the result
         return jsonify({
             "id": ticker_id,
             "price_tomorrow": float(predicted_price)  # Convert to native float

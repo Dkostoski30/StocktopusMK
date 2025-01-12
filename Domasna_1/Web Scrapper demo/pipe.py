@@ -21,7 +21,7 @@ def check_table(table_name, conn):
 global time_taken
 
 def main():
-    time_taken = 0
+
     start_time = time.time()
     conn = psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
@@ -70,7 +70,6 @@ def main():
     print(f'Script executed..')
 
 def scheduled_main():
-    # main() za testiranje
     while True:
         now = datetime.datetime.now()
         target_time = now.replace(hour=14, minute=41, second=0, microsecond=0)

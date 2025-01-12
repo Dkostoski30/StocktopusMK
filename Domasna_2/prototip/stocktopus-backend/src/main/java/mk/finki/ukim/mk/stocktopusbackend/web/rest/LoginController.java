@@ -3,7 +3,6 @@ package mk.finki.ukim.mk.stocktopusbackend.web.rest;
 
 import lombok.RequiredArgsConstructor;
 import mk.finki.ukim.mk.stocktopusbackend.config.JwtUtil;
-import mk.finki.ukim.mk.stocktopusbackend.model.User;
 import mk.finki.ukim.mk.stocktopusbackend.model.dto.UserLoginDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

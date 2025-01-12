@@ -9,22 +9,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 def has_num(shifra):
     return any(char.isdigit() for char in shifra)
-
 
 def check_table(table_name, conn):
     try:
         with conn.cursor() as cur:
-            count_query = f"SELECT COUNT(*) FROM {table_name};"
-            cur.execute(count_query)
+            cur.execute(f"SELECT COUNT(*) FROM {table_name};")
             row_count = cur.fetchone()[0]
             return row_count == 0
     except Exception as e:
         logging.error(f"Error checking table {table_name}: {e}")
         return False
-
 
 def fetch_tikeri_bs():
     url = 'https://www.mse.mk/mk/stats/symbolhistory/kmb'
@@ -35,11 +31,10 @@ def fetch_tikeri_bs():
         return []
 
     soup = BeautifulSoup(response.text, 'html.parser')
-
     dropdown = soup.find('select', {'id': 'Code'})
     options = dropdown.find_all('option') if dropdown else []
 
-    if len(options) == 0:
+    if not options:
         url = 'https://www.mse.mk/en/stats/current-schedule'
         response = requests.get(url)
         if response.status_code != 200:
@@ -64,7 +59,6 @@ def save_to_json(shifri_list):
     except Exception as e:
         logging.error(f"Error saving to JSON: {e}")
 
-
 def get_all_tickers():
     query_all = "SELECT stock_name FROM stocks"
     conn = None
@@ -80,7 +74,6 @@ def get_all_tickers():
     finally:
         if conn:
             db_pool.putconn(conn)
-
 
 def insert_into_db(shifri_list):
     conn = None
@@ -106,7 +99,6 @@ def insert_into_db(shifri_list):
     finally:
         if conn:
             db_pool.putconn(conn)
-
 
 def init():
     conn = None
@@ -135,7 +127,6 @@ db_pool = psycopg2.pool.SimpleConnectionPool(
     host=os.getenv("DB_HOST", "localhost"),
     port=os.getenv("DB_PORT")
 )
-
 
 if __name__ == "__main__":
     try:
