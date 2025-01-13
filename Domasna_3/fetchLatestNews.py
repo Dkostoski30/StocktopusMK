@@ -121,7 +121,7 @@ def fetch_latest_news(conn):
                                             insert_news_and_stocks(conn, stock_id, news_id)
 
 
-def init():
+def main():
     print("Fetching latest news...")
 
     try:
@@ -172,5 +172,5 @@ def init():
 
 
 if __name__ == "__main__":
-    init()
+    main()
     sentimentAnalysis.init()
