@@ -3,7 +3,7 @@ import os
 import logging
 import numpy as np
 from flask import Flask, jsonify, request
-from tf_keras.models import load_model
+from tensorflow.keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 from dotenv import load_dotenv
@@ -13,7 +13,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5174"])
+CORS(app, origins="*")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 LOOK_BACK = 60
@@ -73,7 +73,7 @@ def get_ticker_data(stock_id):
 
 
 def prepare_prediction_data(df, feature_column='last_transaction_price'):
-    # Scale the price column
+
     price_scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_prices = price_scaler.fit_transform(df[[feature_column]])
 
@@ -111,7 +111,7 @@ def predict_price(ticker_id):
 
         return jsonify({
             "id": ticker_id,
-            "price_tomorrow": float(predicted_price)  # Convert to native float
+            "price_tomorrow": float(predicted_price)
         })
 
     except Exception as e:
