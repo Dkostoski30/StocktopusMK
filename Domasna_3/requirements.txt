@@ -1,0 +1,11 @@
+# Core dependencies
+requests
+beautifulsoup4
+psycopg2-binary
+python-dotenv
+torch
+transformers
+pandas
+ta
+numpy
+importlib-metadata

@@ -14,7 +14,7 @@ def main():
 
             now = datetime.datetime.now()
 
-            target_time = now.replace(hour=15, minute=2, second=0, microsecond=0)
+            target_time = now.replace(hour=13, minute=49, second=0, microsecond=0)
 
             if now > target_time:
                 target_time += datetime.timedelta(days=1)
