@@ -1,5 +1,4 @@
 import time
-
 import datetime
 import psycopg2
 import filter_one
@@ -9,7 +8,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 def check_table(table_name, conn):
     cur = conn.cursor()
@@ -21,7 +19,6 @@ def check_table(table_name, conn):
 global time_taken
 
 def main():
-
     start_time = time.time()
     conn = psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
@@ -41,6 +38,7 @@ def main():
 
     create_table_sql = """
         CREATE TABLE IF NOT EXISTS stockdetails (
+                details_id SERIAL PRIMARY KEY,
                 stock_id int NOT NULL,
                 date DATE NOT NULL,
                 last_transaction_price VARCHAR(255),
@@ -51,15 +49,41 @@ def main():
                 quantity VARCHAR(255),
                 trade_volume VARCHAR(255),
                 total_volume VARCHAR(255),
-                PRIMARY KEY (stock_id, date),
                 FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
             );
     """
     cursor.execute(create_table_sql)
+
+    create_users_table_sql = """
+        CREATE TABLE IF NOT EXISTS stocktopus_users (
+            username VARCHAR(255) NOT NULL PRIMARY KEY,
+            password VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            is_account_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+            is_account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,
+            is_credentials_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+            is_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+            role VARCHAR(255) NOT NULL
+        );
+    """
+    cursor.execute(create_users_table_sql)
+
+    create_favorite_stocks_table_sql = """
+        CREATE TABLE IF NOT EXISTS favorite_stocks (
+            id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+            username VARCHAR(255) NOT NULL,
+            stock_id BIGINT NOT NULL,
+            CONSTRAINT fk_user FOREIGN KEY (username) REFERENCES stocktopus_users(username),
+            CONSTRAINT fk_stock FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id),
+            CONSTRAINT unique_user_stock_pair UNIQUE (stock_id, username)
+        );
+    """
+    cursor.execute(create_favorite_stocks_table_sql)
+
     conn.commit()
     tickers = filter_one.init()
     conn.close()
-    print('Creating stockdetails table and fetching historic data for each ticker')
+    print('Creating stockdetails, stocktopus_users, and favorite_stocks tables and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
 
     filter_three.init(latest_data)
@@ -73,7 +97,6 @@ def scheduled_main():
     while True:
         now = datetime.datetime.now()
         target_time = now.replace(hour=14, minute=41, second=0, microsecond=0)
-
 
         if now > target_time:
             target_time += datetime.timedelta(days=1)
@@ -107,6 +130,7 @@ if __name__ == '__main__':
 
     create_table_sql = """
         CREATE TABLE IF NOT EXISTS stockdetails (
+                details_id SERIAL PRIMARY KEY,
                 stock_id int NOT NULL,
                 date DATE NOT NULL,
                 last_transaction_price VARCHAR(255),
@@ -117,15 +141,40 @@ if __name__ == '__main__':
                 quantity VARCHAR(255),
                 trade_volume VARCHAR(255),
                 total_volume VARCHAR(255),
-                PRIMARY KEY (stock_id, date),
                 FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
             );
     """
     cursor.execute(create_table_sql)
+
+    create_users_table_sql = """
+        CREATE TABLE IF NOT EXISTS stocktopus_users (
+            username VARCHAR(255) NOT NULL PRIMARY KEY,
+            password VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            is_account_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+            is_account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,
+            is_credentials_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+            is_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+            role VARCHAR(255) NOT NULL
+        );
+    """
+    cursor.execute(create_users_table_sql)
+
+    create_favorite_stocks_table_sql = """
+        CREATE TABLE IF NOT EXISTS favorite_stocks (
+            id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+            username VARCHAR(255) NOT NULL,
+            stock_id BIGINT NOT NULL,
+            CONSTRAINT fk_user FOREIGN KEY (username) REFERENCES stocktopus_users(username),
+            CONSTRAINT fk_stock FOREIGN KEY (stock_id) REFERENCES Stocks(stock_id)
+        );
+    """
+    cursor.execute(create_favorite_stocks_table_sql)
+
     conn.commit()
     tickers = filter_one.init()
     conn.close()
-    print('Creating stockdetails table and fetching historic data for each ticker')
+    print('Creating stockdetails, stocktopus_users, and favorite_stocks tables and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
 
     filter_three.init(latest_data)

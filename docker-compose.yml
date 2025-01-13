@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  web_scrapper:
+    build:
+      context: ./Domasna_1/Web Scrapper demo
+      dockerfile: Dockerfile
+    container_name: web_scrapper
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - POSTGRES_HOST=db
+    volumes:
+      - ./Domasna_1/Web Scrapper demo:/app
+    working_dir: /app
+    command: ["bash", "-c", "pip install -r requirements.txt && python pipe.py"]
+    healthcheck:
+      test: ["CMD-SHELL", "/app/healthcheck.sh"]
+      interval: 10s
+      retries: 3
+      timeout: 5s
+
+  backend:
+    build:
+      context: ./Domasna_2/prototip/stocktopus-backend
+      dockerfile: Dockerfile-backend
+    container_name: backend_app
+    environment:
+      - SPRING_APPLICATION_NAME=stocktopus-backend
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_DATASOURCE_HIKARI_CONNECTIONTIMEOUT=20000
+      - SPRING_DATASOURCE_HIKARI_MAXIMUMPOOLSIZE=5
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_FLYWAY_ENABLED=true
+      - SPRING_FLYWAY_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_FLYWAY_USER=postgres
+      - SPRING_FLYWAY_PASSWORD=1234
+      - SPRING_FLYWAY_LOCATIONS=classpath:dbMigrations
+      - SPRING_FLYWAY_BASELINE_ON_MIGRATE=true
+      - SPRING_MVC_PATHMATCH_MATCHING_STRATEGY=ant_path_matcher
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_PORT=$POSTGRES_PORT
+      - FLYWAY_URL=jdbc:postgresql://db:5432/$POSTGRES_DB
+      - FLYWAY_USER=$POSTGRES_USER
+      - FLYWAY_PASSWORD=$POSTGRES_PASSWORD
+      - FLYWAY_BASELINE_ON_MIGRATE=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      web_scrapper:
+        condition: service_started
+volumes:
+  postgres_data:

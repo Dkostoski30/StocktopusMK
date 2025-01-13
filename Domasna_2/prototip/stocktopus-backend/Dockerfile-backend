@@ -1,0 +1,3 @@
+FROM openjdk:17
+ADD target/stocktopus-backend-0.0.1-SNAPSHOT.jar stocktopus-backend.jar
+ENTRYPOINT [ "java", "-jar", "stocktopus-backend.jar" ]

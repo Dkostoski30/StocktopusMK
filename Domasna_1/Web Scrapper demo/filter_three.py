@@ -94,7 +94,7 @@ def batch_insert_data(ticker, data, conn):
         INSERT INTO stockdetails (stock_id, date, last_transaction_price, max_price, min_price, 
                                   average_price, percentage_change, quantity, trade_volume, total_volume)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (stock_id, date) DO NOTHING;
+        ON CONFLICT DO NOTHING;
     """
     try:
         with conn.cursor() as cursor:

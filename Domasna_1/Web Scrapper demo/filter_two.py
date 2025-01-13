@@ -53,7 +53,7 @@ insert_sql = """
     INSERT INTO stockdetails (stock_id, date, last_transaction_price, max_price, min_price, 
                               average_price, percentage_change, quantity, trade_volume, total_volume)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    ON CONFLICT (stock_id, date) DO NOTHING;
+    ON CONFLICT DO NOTHING;
 """
 
 def batch_insert_data(data_with_id, cursor):
@@ -165,7 +165,7 @@ def init(pipe_tickers):
             dbname=os.getenv("POSTGRES_DB"),
             user=os.getenv("POSTGRES_USER"),
             password=os.getenv("POSTGRES_PASSWORD"),
-            host=os.getenv("DB_HOST", "localhost"),
+            host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT")
         )
 
