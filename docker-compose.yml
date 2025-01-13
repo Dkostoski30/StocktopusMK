@@ -55,7 +55,6 @@ services:
       interval: 10s
       retries: 3
       timeout: 5s
-
   backend:
     build:
       context: ./Domasna_2/prototip/stocktopus-backend
@@ -96,5 +95,20 @@ services:
         condition: service_healthy
       scheduler:
         condition: service_started
+  frontend:
+    build:
+      context: ./Domasna_2/prototip/stocktopus-frontend
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Domasna_2/prototip/stocktopus-frontend:/app
+      - /app/node_modules
+    networks:
+      - network
+networks:
+ network:
 volumes:
   postgres_data:
