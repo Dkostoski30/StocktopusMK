@@ -95,6 +95,22 @@ services:
         condition: service_healthy
       scheduler:
         condition: service_started
+  predictor_app:
+    build:
+      context: ./Domasna_3/predictor
+      dockerfile: Dockerfile
+    container_name: predictor_app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./Domasna_3/predictor:/app
+    command: [ "python", "predict_data.py" ]
+
   frontend:
     build:
       context: ./Domasna_2/prototip/stocktopus-frontend
