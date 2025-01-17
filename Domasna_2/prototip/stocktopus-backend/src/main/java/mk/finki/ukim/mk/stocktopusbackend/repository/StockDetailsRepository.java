@@ -26,13 +26,20 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails,Long>
     """, nativeQuery = true)
     Page<StockDetailsProjection> findAll(Pageable pageable, StockDetailsFilter stockDetailsFilter, StockDetailsSortingConfig stockDetailsSortingConfig);
 
-    @Query("""
-    SELECT sd
-    FROM StockDetails sd
-    JOIN Stock s ON sd.stockId = s.stockId
-    ORDER BY sd.date DESC, sd.tradeVolume DESC
-    LIMIT 10
-""")
+    @Query(value = """
+WITH latest_stock_data AS (
+    SELECT DISTINCT ON (sd.stock_id)
+        sd.*
+    FROM stockdetails sd
+    JOIN stocks s ON sd.stock_id = s.stock_id
+    ORDER BY sd.stock_id, sd.date DESC, sd.trade_volume DESC
+)
+SELECT *
+FROM latest_stock_data
+ORDER BY date DESC, trade_volume DESC
+LIMIT 10
+""", nativeQuery = true)
+
     List<StockDetails> getMostTraded(@Param("yesterday") java.sql.Date yesterday);
 
     Page<StockDetails> findAllByStockId(Long stockId, Pageable pageable);

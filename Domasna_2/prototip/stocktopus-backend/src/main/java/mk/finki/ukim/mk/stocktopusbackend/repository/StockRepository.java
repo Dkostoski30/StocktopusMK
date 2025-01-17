@@ -22,14 +22,27 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
             """)
     Page<Stock> findAll(Pageable pageable, StockFilter stockFilter);
 
-    @Query(value = "SELECT s.stock_id, s.stock_name, " +
-            "CAST(REPLACE(REPLACE(sd.percentage_change, '.', ''), ',', '.') AS NUMERIC) AS stock_percentage " +
-            "FROM stockdetails sd " +
-            "JOIN stocks s ON sd.stock_id = s.stock_id " +
-            "WHERE sd.percentage_change IS NOT NULL AND sd.percentage_change != '' " +
-            "ORDER BY sd.date desc, CAST(REPLACE(REPLACE(sd.percentage_change, '.', ''), ',', '.') AS NUMERIC) DESC " +
-            "LIMIT 4",
-            nativeQuery = true)
+    @Query(value = """
+WITH latest_stock_data AS (
+    SELECT DISTINCT ON (sd.stock_id)  
+        s.stock_id,
+        s.stock_name,
+        CAST(REPLACE(REPLACE(sd.percentage_change, '.', ''), ',', '.') AS NUMERIC) AS stock_percentage,
+        sd.date,
+        sd.trade_volume
+    FROM stockdetails sd
+    JOIN stocks s ON sd.stock_id = s.stock_id
+    WHERE sd.percentage_change IS NOT NULL AND sd.percentage_change != ''
+    ORDER BY sd.stock_id, sd.date DESC, sd.trade_volume DESC
+)
+SELECT
+    stock_id, 
+    stock_name, 
+    stock_percentage
+FROM latest_stock_data
+ORDER BY date DESC, trade_volume DESC
+LIMIT 4
+""", nativeQuery = true)
     List<Object[]> getBestFour();
 
 }
