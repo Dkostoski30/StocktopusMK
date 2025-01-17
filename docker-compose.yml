@@ -124,6 +124,11 @@ services:
       - /app/node_modules
     networks:
       - network
+    environment:
+      - VITE_BACKEND_HOST=localhost
+      - VITE_BACKEND_PORT=8080
+      - VITE_PREDICTOR_HOST=localhost
+      - VITE_PREDICTOR_PORT=5000
 networks:
  network:
 volumes:
