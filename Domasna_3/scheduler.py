@@ -9,6 +9,9 @@ import indicators
 print("Current working directory:", os.getcwd())
 
 def main():
+    fetchCompanyNames.main()
+    fetchLatestNews.main()
+    indicators.main()
     while True:
         try:
 
