@@ -36,6 +36,25 @@ services:
       retries: 3
       timeout: 5s
 
+  scheduler:
+    build:
+      context: ./Domasna_3
+      dockerfile: Dockerfile
+    container_name: scheduler
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - POSTGRES_HOST=db
+    volumes:
+      - ./Domasna_3:/app
+    working_dir: /app
+    command: [  "bash", "-c", "pip install -r requirements.txt  && python scheduler.py" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "/app/healthcheck.sh" ]
+      interval: 10s
+      retries: 3
+      timeout: 5s
   backend:
     build:
       context: ./Domasna_2/prototip/stocktopus-backend
@@ -74,7 +93,22 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      web_scrapper:
+      scheduler:
         condition: service_started
+  frontend:
+    build:
+      context: ./Domasna_2/prototip/stocktopus-frontend
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Domasna_2/prototip/stocktopus-frontend:/app
+      - /app/node_modules
+    networks:
+      - network
+networks:
+ network:
 volumes:
   postgres_data:

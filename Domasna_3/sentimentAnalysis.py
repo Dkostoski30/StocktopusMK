@@ -60,7 +60,7 @@ def init():
             dbname=os.getenv("POSTGRES_DB"),
             user=os.getenv("POSTGRES_USER"),
             password=os.getenv("POSTGRES_PASSWORD"),
-            host=os.getenv("DB_HOST", "localhost"),
+            host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT")
         )
 

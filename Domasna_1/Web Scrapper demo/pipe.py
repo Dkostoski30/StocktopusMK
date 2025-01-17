@@ -176,10 +176,31 @@ if __name__ == '__main__':
     conn.close()
     print('Creating stockdetails, stocktopus_users, and favorite_stocks tables and fetching historic data for each ticker')
     latest_data = filter_two.init(tickers)
-
-    filter_three.init(latest_data)
-
     end_time = time.time()
 
-    print(f'Time taken from start to finish: {end_time-start_time:.2f}')
+    print(f'Time taken from start to finish: {end_time - start_time:.2f}')
     print(f'Script executed..')
+
+
+    while True:
+        try:
+
+            now = datetime.datetime.now()
+
+            target_time = now.replace(hour=12, minute=25, second=0, microsecond=0)
+
+            if now > target_time:
+                target_time += datetime.timedelta(days=1)
+
+            time_to_wait = (target_time - now).total_seconds()
+            print(
+                f"Waiting for {time_to_wait // 60:.0f} minutes and {time_to_wait % 60:.0f} seconds to execute the script..."
+            )
+
+            time.sleep(time_to_wait)
+
+            print("Executing scheduled_main() from pipe.py...")
+            filter_three.init(latest_data)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            time.sleep(60)

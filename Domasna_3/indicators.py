@@ -4,7 +4,6 @@ import pandas as pd
 import psycopg2
 from psycopg2.extras import RealDictCursor, execute_values
 from dotenv import load_dotenv
-import matplotlib.pyplot as plt
 import ta
 import logging
 
@@ -198,7 +197,7 @@ def store_predictions_to_db(df, stock_id, timeframe):
     except psycopg2.Error as e:
         logging.error(f"Database error: {e}")
 
-if __name__ == "__main__":
+def main():
     ticker_ids = get_all_tickers()
     timeframes = ['daily', 'weekly', 'monthly']
 

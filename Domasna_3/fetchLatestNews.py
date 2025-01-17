@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from datetime import datetime
 
-from Domasna_3 import sentimentAnalysis
+import sentimentAnalysis
 
 load_dotenv()
 
@@ -121,7 +121,7 @@ def fetch_latest_news(conn):
                                             insert_news_and_stocks(conn, stock_id, news_id)
 
 
-def init():
+def main():
     print("Fetching latest news...")
 
     try:
@@ -129,7 +129,7 @@ def init():
             dbname=os.getenv("POSTGRES_DB"),
             user=os.getenv("POSTGRES_USER"),
             password=os.getenv("POSTGRES_PASSWORD"),
-            host=os.getenv("DB_HOST", "localhost"),
+            host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT")
         )
 
@@ -172,5 +172,5 @@ def init():
 
 
 if __name__ == "__main__":
-    init()
+    main()
     sentimentAnalysis.init()
